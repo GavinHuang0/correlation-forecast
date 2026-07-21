@@ -1,0 +1,46 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local data, model artifacts, and generated outputs
+data/
+artifacts/
+models/
+outputs/
+reports/generated/
+*.parquet
+*.feather
+*.arrow
+*.pickle
+*.pkl
+*.joblib
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and coverage
+*.log
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
