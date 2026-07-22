@@ -1,0 +1,120 @@
+{
+  "schema_name": "stock_sector_news_semantics",
+  "schema_version": "0.1.0",
+  "description": "Auditable article-level semantic labels for stock-sector coupling research. Labels describe supplied text only and never forecast market outcomes.",
+  "closed_label_fields": {
+    "relevance": [
+      "direct_target",
+      "sector_or_peer",
+      "macro_relevant",
+      "irrelevant",
+      "insufficient"
+    ],
+    "event_scope": [
+      "firm_specific",
+      "peer_specific",
+      "sector_wide",
+      "macro_market",
+      "mixed",
+      "unclear"
+    ],
+    "event_type": [
+      "earnings",
+      "guidance",
+      "product_technology",
+      "demand_customer_contract",
+      "supply_chain_capacity",
+      "regulation_trade_policy",
+      "analyst_action",
+      "corporate_action",
+      "legal_governance_operations",
+      "macro_market",
+      "other",
+      "unclear"
+    ],
+    "affected_breadth": [
+      "single_firm",
+      "several_same_sector",
+      "cross_sector",
+      "broad_market",
+      "unclear"
+    ],
+    "target_direction": [
+      "positive",
+      "negative",
+      "neutral",
+      "mixed",
+      "unknown",
+      "not_applicable"
+    ],
+    "sector_direction": [
+      "positive",
+      "negative",
+      "neutral",
+      "mixed",
+      "unknown",
+      "not_applicable"
+    ],
+    "peer_effect": [
+      "same_direction",
+      "opposite_direction",
+      "mixed",
+      "none_stated",
+      "unknown",
+      "not_applicable"
+    ],
+    "explicit_surprise": [
+      "positive",
+      "negative",
+      "mixed",
+      "none",
+      "unknown"
+    ],
+    "information_status": [
+      "confirmed",
+      "scheduled_or_expected",
+      "rumor_or_unconfirmed",
+      "analysis_or_opinion",
+      "unclear"
+    ]
+  },
+  "transmission_channels": {
+    "max_items": 2,
+    "allowed_values": [
+      "demand",
+      "pricing_margin",
+      "supply_capacity",
+      "technology_product",
+      "competition",
+      "regulation_trade",
+      "rates_financing",
+      "macro_growth",
+      "geopolitical",
+      "capital_allocation",
+      "legal_operational",
+      "other",
+      "unclear"
+    ]
+  },
+  "open_fields": {
+    "affected_companies": "Array of companies explicitly named or explicitly covered by the event.",
+    "affected_sectors": "Array of sectors explicitly named or directly covered by the event.",
+    "evidence": {
+      "scope": "Short exact substring supporting scope; empty string only when unsupported.",
+      "direction": "Short exact substring supporting target/sector direction; empty string only when unsupported.",
+      "surprise": "Short exact substring supporting explicit surprise; empty string when no explicit surprise appears."
+    },
+    "abstain_reason": "Short explanation when relevance is insufficient; otherwise null in version 0."
+  },
+  "flan_core_fields": [
+    "relevance",
+    "event_scope",
+    "affected_breadth",
+    "event_type",
+    "information_status",
+    "explicit_surprise",
+    "target_direction",
+    "sector_direction",
+    "peer_effect"
+  ]
+}

@@ -1,0 +1,7 @@
+# Install the correct PyTorch build for your CPU/GPU first from pytorch.org.
+# The extractor records exact runtime versions in its output manifest.
+transformers>=4.45,<5
+accelerate>=0.34,<2
+sentencepiece>=0.2,<1
+safetensors>=0.4,<1
+huggingface-hub>=0.24,<2

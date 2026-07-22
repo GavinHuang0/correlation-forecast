@@ -1,0 +1,27 @@
+{
+  "default_target_for_sector_and_macro_candidates": "AMD",
+  "sector": "Semiconductors",
+  "sector_benchmark": "SOXX",
+  "targets": {
+    "AMD": {
+      "company": "Advanced Micro Devices",
+      "peers": ["NVDA", "INTC", "MU", "AVGO", "QCOM"]
+    },
+    "NVDA": {
+      "company": "NVIDIA Corporation",
+      "peers": ["AMD", "INTC", "MU", "AVGO", "QCOM"]
+    },
+    "INTC": {
+      "company": "Intel Corporation",
+      "peers": ["AMD", "NVDA", "MU", "AVGO", "QCOM"]
+    },
+    "MU": {
+      "company": "Micron Technology",
+      "peers": ["AMD", "NVDA", "INTC", "AVGO", "QCOM"]
+    },
+    "AVGO": {
+      "company": "Broadcom Inc.",
+      "peers": ["AMD", "NVDA", "INTC", "MU", "QCOM"]
+    }
+  }
+}
