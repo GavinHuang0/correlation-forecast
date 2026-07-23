@@ -63,6 +63,23 @@ class ClosedPassTests(unittest.TestCase):
         self.assertFalse(parsed["valid"])
         self.assertIsNone(parsed["values"]["relevance"])
 
+    def test_single_enum_strict_and_non_strict(self) -> None:
+        strict = MODULE.parse_single_enum("firm_specific", "event_scope", SCHEMA)
+        prefixed = MODULE.parse_single_enum("EVENT_SCOPE: firm_specific", "event_scope", SCHEMA)
+        self.assertTrue(strict["valid"])
+        self.assertTrue(strict["strict_format_valid"])
+        self.assertTrue(prefixed["valid"])
+        self.assertFalse(prefixed["strict_format_valid"])
+
+    def test_single_enum_rejects_option_list(self) -> None:
+        parsed = MODULE.parse_single_enum(
+            "firm_specific, peer_specific, sector_wide",
+            "event_scope",
+            SCHEMA,
+        )
+        self.assertFalse(parsed["valid"])
+        self.assertIsNone(parsed["values"]["event_scope"])
+
 
 class ExtendedPassTests(unittest.TestCase):
     def test_channels(self) -> None:
@@ -78,6 +95,10 @@ class ExtendedPassTests(unittest.TestCase):
         parsed = MODULE.parse_channels("NONE", SCHEMA)
         self.assertTrue(parsed["valid"])
         self.assertEqual(parsed["values"], [])
+
+    def test_blank_channel_is_invalid(self) -> None:
+        parsed = MODULE.parse_channels("", SCHEMA)
+        self.assertFalse(parsed["valid"])
 
     def test_entities(self) -> None:
         source = "AMD and NVIDIA are semiconductor companies."
@@ -112,8 +133,46 @@ class ExtendedPassTests(unittest.TestCase):
         )
         self.assertFalse(parsed["valid"])
 
+    def test_single_entity_field(self) -> None:
+        parsed = MODULE.parse_entity_field(
+            "AMD; NVIDIA",
+            "AMD and NVIDIA announced new products.",
+            "company",
+        )
+        self.assertTrue(parsed["valid"])
+        self.assertEqual(parsed["values"], ["AMD", "NVIDIA"])
+
+    def test_blank_entity_field_is_invalid(self) -> None:
+        parsed = MODULE.parse_entity_field("", "AMD announced a product.", "company")
+        self.assertFalse(parsed["valid"])
+
+    def test_single_evidence_field(self) -> None:
+        parsed = MODULE.parse_evidence_field(
+            "evidence_surprise",
+            "above expectations",
+            "AMD reported revenue above expectations.",
+            {"explicit_surprise": "positive"},
+        )
+        self.assertTrue(parsed["valid"])
+        self.assertEqual(parsed["values"], {"surprise": "above expectations"})
+
+    def test_blank_optional_evidence_is_invalid(self) -> None:
+        parsed = MODULE.parse_evidence_field(
+            "evidence_surprise",
+            "",
+            "AMD announced a product.",
+            {"explicit_surprise": "none"},
+        )
+        self.assertFalse(parsed["valid"])
+
 
 class PromptTests(unittest.TestCase):
+    def test_versioned_pass_counts(self) -> None:
+        self.assertEqual(len(MODULE.core_passes_for(MODULE.PROMPT_VERSION)), 9)
+        self.assertEqual(len(MODULE.passes_for(MODULE.PROMPT_VERSION, "full")), 15)
+        self.assertEqual(len(MODULE.core_passes_for(MODULE.LEGACY_PROMPT_VERSION)), 3)
+        self.assertEqual(len(MODULE.passes_for(MODULE.LEGACY_PROMPT_VERSION, "full")), 6)
+
     def test_all_prompts_include_article_and_target(self) -> None:
         record = sample_record()
         MODULE.validate_input_record(record)
@@ -122,7 +181,25 @@ class PromptTests(unittest.TestCase):
                 prompt = MODULE.build_prompt(pass_name, record, SCHEMA)
                 self.assertIn(record["headline"], prompt)
                 self.assertIn(record["target"]["company"], prompt)
-                self.assertIn("Use only", prompt)
+                self.assertIn("only", prompt.lower())
+
+    def test_v0_2_core_prompts_ask_for_one_field(self) -> None:
+        record = sample_record()
+        for pass_name in MODULE.CORE_PASSES:
+            prompt = MODULE.build_prompt(pass_name, record, SCHEMA)
+            self.assertIn(f"What is the {pass_name} label?", prompt)
+            self.assertNotIn(" | ", prompt)
+            self.assertTrue(prompt.endswith("Answer:"))
+            self.assertIn("Allowed labels:", prompt)
+
+    def test_legacy_prompt_contract_is_still_available(self) -> None:
+        prompt = MODULE.build_prompt(
+            "scope",
+            sample_record(),
+            SCHEMA,
+            prompt_version=MODULE.LEGACY_PROMPT_VERSION,
+        )
+        self.assertTrue(prompt.endswith("RELEVANCE | EVENT_SCOPE | AFFECTED_BREADTH"))
 
 
 if __name__ == "__main__":

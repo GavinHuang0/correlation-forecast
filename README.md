@@ -14,14 +14,23 @@ The main hypothesis is that the scope of a new information shock matters:
 
 ## Current benchmark
 
-The repository now contains the version-0 semantic extraction protocol and a 300-article GPT-5.6 Sol silver-reference label set for evaluating frozen FLAN-T5-Large. Article text and licensed/raw provider data remain Git-ignored.
+The repository contains the original semantic schema v0.1.0, a reduced coarse schema v0.2.0, FLAN prompt contracts through v0.4.0, and a 300-article GPT-5.6 Sol silver-reference label set for evaluating frozen FLAN-T5-Large. Article text and licensed/raw provider data remain Git-ignored.
 
 - Human-readable schema: [`docs/news_feature_schema.md`](docs/news_feature_schema.md)
 - Machine-readable schema: [`config/news_feature_schema.json`](config/news_feature_schema.json)
+- Coarse machine-readable schema: [`config/news_feature_schema_coarse.json`](config/news_feature_schema_coarse.json)
 - FLAN-T5 procedure: [`docs/flan_t5_evaluation.md`](docs/flan_t5_evaluation.md)
+- v0.4 protocol and results: [`docs/flan_t5_v0_4_results.md`](docs/flan_t5_v0_4_results.md)
+- Compact locked result: [`reports/flan_t5_v0_4_evaluation_summary.json`](reports/flan_t5_v0_4_evaluation_summary.json)
 - Reference labels: [`annotations/chatgpt_5_6_sol_reference.jsonl`](annotations/chatgpt_5_6_sol_reference.jsonl)
 
 The reference labels measure agreement with GPT-5.6 Sol, not objective ground-truth accuracy. Exact evidence is preserved so disagreements can be manually audited.
+
+The first FLAN-T5 run exposed an output-contract failure: prompts requesting three labels at once were often echoed or completed with option lists, leaving all 300 core records invalid under the strict parser. The corrected fine-schema version asks one closed-label question at a time and constrains greedy decoding to the field's legal labels. The original `v0.1.0` contract remains available for audit, fine-schema reproduction uses `v0.2.0`, and the later accuracy experiment uses the coarse `v0.4.0` protocol.
+
+The accuracy-improvement experiment keeps the exact same pinned FLAN-T5-Large checkpoint and adds a deterministic relevance gate, deterministic explicit-surprise rules, a four-field coarse ontology, article-first single-field prompts, hierarchical routing, and option-order-averaged label scoring. A fixed 72-article development split selected a fieldwise FLAN-only hybrid; the remaining 228 records were then evaluated without changing that selection.
+
+On the 228-record split, mean semantic macro-F1 increased from **0.341** for mapped v0.2 predictions to **0.446** for the hybrid, and mean field accuracy increased from **0.422** to **0.494**. The relevance gate reached F1 **0.935**, while the conservative explicit-surprise rule reached accuracy **0.930**. These are agreement statistics against a coarsened GPT silver reference. None of the four semantic fields cleared its predefined go/no-go macro-F1 threshold, so FLAN-T5-Large remains a research baseline rather than the production extractor.
 
 ## Initial research design
 

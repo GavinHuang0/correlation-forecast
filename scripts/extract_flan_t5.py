@@ -13,15 +13,42 @@ from typing import Any, Callable
 
 
 MODEL_DEFAULT = "google/flan-t5-large"
-PROMPT_VERSION = "flan-stock-sector-news-v0.1.0"
-CORE_PASSES = ("scope", "event", "direction")
-FULL_PASSES = CORE_PASSES + ("channels", "entities", "evidence")
-PASS_FIELDS = {
+LEGACY_PROMPT_VERSION = "flan-stock-sector-news-v0.1.0"
+PROMPT_VERSION = "flan-stock-sector-news-v0.2.0"
+PROMPT_VERSIONS = (LEGACY_PROMPT_VERSION, PROMPT_VERSION)
+
+LEGACY_CORE_PASSES = ("scope", "event", "direction")
+LEGACY_FULL_PASSES = LEGACY_CORE_PASSES + ("channels", "entities", "evidence")
+LEGACY_PASS_FIELDS = {
     "scope": ("relevance", "event_scope", "affected_breadth"),
     "event": ("event_type", "information_status", "explicit_surprise"),
     "direction": ("target_direction", "sector_direction", "peer_effect"),
 }
-MAX_NEW_TOKENS = {
+
+CORE_PASSES = (
+    "relevance",
+    "event_scope",
+    "affected_breadth",
+    "event_type",
+    "information_status",
+    "explicit_surprise",
+    "target_direction",
+    "sector_direction",
+    "peer_effect",
+)
+FULL_PASSES = CORE_PASSES + (
+    "channels",
+    "affected_companies",
+    "affected_sectors",
+    "evidence_scope",
+    "evidence_direction",
+    "evidence_surprise",
+)
+
+# Backward-compatible alias used by the v0.1 parser tests and evaluator.
+PASS_FIELDS = LEGACY_PASS_FIELDS
+
+LEGACY_MAX_NEW_TOKENS = {
     "scope": 32,
     "event": 40,
     "direction": 40,
@@ -29,6 +56,38 @@ MAX_NEW_TOKENS = {
     "entities": 96,
     "evidence": 160,
 }
+
+MAX_NEW_TOKENS = {
+    **{field: 16 for field in CORE_PASSES},
+    "channels": 32,
+    "affected_companies": 96,
+    "affected_sectors": 64,
+    "evidence_scope": 96,
+    "evidence_direction": 96,
+    "evidence_surprise": 96,
+}
+
+
+def core_passes_for(prompt_version: str) -> tuple[str, ...]:
+    if prompt_version == LEGACY_PROMPT_VERSION:
+        return LEGACY_CORE_PASSES
+    if prompt_version == PROMPT_VERSION:
+        return CORE_PASSES
+    raise ValueError(f"Unsupported prompt version {prompt_version!r}")
+
+
+def passes_for(prompt_version: str, mode: str) -> tuple[str, ...]:
+    core = core_passes_for(prompt_version)
+    if mode == "core":
+        return core
+    if mode != "full":
+        raise ValueError(f"Unsupported extraction mode {mode!r}")
+    return LEGACY_FULL_PASSES if prompt_version == LEGACY_PROMPT_VERSION else FULL_PASSES
+
+
+def max_new_tokens_for(prompt_version: str, pass_name: str) -> int:
+    mapping = LEGACY_MAX_NEW_TOKENS if prompt_version == LEGACY_PROMPT_VERSION else MAX_NEW_TOKENS
+    return mapping[pass_name]
 
 
 def parse_args() -> argparse.Namespace:
@@ -40,11 +99,28 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--schema", default=Path("config/news_feature_schema.json"), type=Path)
     parser.add_argument("--model-id", default=MODEL_DEFAULT)
     parser.add_argument(
+        "--prompt-version",
+        choices=PROMPT_VERSIONS,
+        default=PROMPT_VERSION,
+        help="Versioned prompt/parser contract; v0.2 uses one field per generation.",
+    )
+    parser.add_argument(
+        "--closed-label-decoding",
+        choices=("score", "constrained", "generate"),
+        default="constrained",
+        help="Constrain generation to schema labels (recommended), score complete labels, or use ordinary generation.",
+    )
+    parser.add_argument(
         "--revision",
         required=True,
         help="Immutable Hugging Face commit hash. Branch names such as main are rejected.",
     )
-    parser.add_argument("--mode", choices=("core", "full"), default="full")
+    parser.add_argument(
+        "--mode",
+        choices=("core", "full"),
+        default="core",
+        help="Core runs the nine closed-label fields; full also runs secondary open-field extraction.",
+    )
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--max-input-tokens", type=int, default=512)
     parser.add_argument("--device", choices=("auto", "cpu", "cuda", "mps"), default="auto")
@@ -77,6 +153,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--limit must be at least 1")
     if args.resume and args.overwrite:
         parser.error("--resume and --overwrite are mutually exclusive")
+    if args.prompt_version == LEGACY_PROMPT_VERSION and args.closed_label_decoding != "generate":
+        parser.error("The legacy v0.1 prompt contract requires --closed-label-decoding generate")
     return args
 
 
@@ -134,7 +212,7 @@ def article_block(record: dict[str, Any]) -> str:
     )
 
 
-def build_prompt(
+def _build_prompt_v0_1(
     pass_name: str,
     record: dict[str, Any],
     schema: dict[str, Any],
@@ -211,6 +289,160 @@ def build_prompt(
     raise ValueError(f"Unknown pass {pass_name!r}")
 
 
+FIELD_INSTRUCTIONS = {
+    "relevance": (
+        "Classify how the article relates to the target. "
+        "direct_target means the target is directly discussed or affected; "
+        "sector_or_peer means the target sector or a sector peer is directly discussed; "
+        "macro_relevant means a broad economic or market event is directly relevant to the target sector; "
+        "irrelevant means there is no meaningful connection; insufficient means the supplied text is too limited."
+    ),
+    "event_scope": (
+        "Classify the primary scope of the shock. firm_specific concerns the target; peer_specific concerns one "
+        "non-target sector peer; sector_wide explicitly concerns several sector firms or the sector as a whole; "
+        "macro_market applies broadly; mixed has multiple material scopes; unclear cannot be determined. "
+        "Sector membership alone is not sector_wide."
+    ),
+    "affected_breadth": (
+        "Classify stated breadth. single_firm means one company; several_same_sector means multiple firms in one "
+        "sector or the sector as a whole; cross_sector means multiple sectors; broad_market means the whole market "
+        "or economy; unclear means breadth cannot be determined."
+    ),
+    "event_type": (
+        "Choose the primary event type. earnings=reported financial results; guidance=forecast or outlook; "
+        "product_technology=product or technical development; demand_customer_contract=orders, customers, contracts, "
+        "or demand; supply_chain_capacity=production, supply, or capacity; regulation_trade_policy=government or trade "
+        "policy; analyst_action=analyst rating or price target; corporate_action=M&A, partnership, financing, buyback, "
+        "dividend, management change, or restructuring; legal_governance_operations=legal, governance, compliance, "
+        "or operational event; macro_market=rates, inflation, employment, economy, or general market; other=supported "
+        "event outside the taxonomy; unclear=event type cannot be determined."
+    ),
+    "information_status": (
+        "Classify information status. confirmed means completed, officially announced, reported, filed, or enacted; "
+        "scheduled_or_expected means planned, forecast, expected, or upcoming; rumor_or_unconfirmed means rumored or "
+        "not confirmed; analysis_or_opinion means commentary or interpretation; unclear cannot be determined."
+    ),
+    "explicit_surprise": (
+        "Classify explicit surprise. Use positive, negative, or mixed only when the text explicitly compares the event "
+        "with an estimate, expectation, guidance, or prior benchmark. Use none when an event is described without such "
+        "a comparison, and unknown only when the text is insufficient."
+    ),
+    "target_direction": (
+        "Classify the stated or clearly entailed effect on the target company, not a stock forecast. Use unknown when "
+        "the target is relevant but direction is unsupported, and not_applicable when the target is not discussed or "
+        "affected."
+    ),
+    "sector_direction": (
+        "Classify the stated or clearly entailed effect on the target sector, not a market forecast. Use unknown when "
+        "the sector is relevant but direction is unsupported, and not_applicable when the article does not apply to "
+        "the sector."
+    ),
+    "peer_effect": (
+        "Classify the stated target-versus-peer relationship. same_direction means similar effects; "
+        "opposite_direction means one benefits at the other's expense; mixed means peers differ; none_stated means "
+        "peers are mentioned without a comparative effect; unknown means a relevant relationship is unclear; "
+        "not_applicable means there is no target-peer relationship."
+    ),
+}
+
+
+def semantic_context(record: dict[str, Any]) -> str:
+    target = record["target"]
+    peers = ", ".join(target["known_sector_peers"]) or "none supplied"
+    return (
+        f"Target company: {target['company']}\n"
+        f"Target ticker: {target['ticker']}\n"
+        f"Target sector: {target['sector']}\n"
+        f"Known sector peers: {peers}\n\n"
+        f"Headline: {record['headline']}\n"
+        f"Article text: {record['article_text']}"
+    )
+
+
+def source_only_context(record: dict[str, Any]) -> str:
+    return f"Headline: {record['headline']}\nArticle text: {record['article_text']}"
+
+
+def _build_prompt_v0_2(
+    pass_name: str,
+    record: dict[str, Any],
+    schema: dict[str, Any],
+    extracted_labels: dict[str, Any] | None = None,
+) -> str:
+    labels = extracted_labels or {}
+    if pass_name in CORE_PASSES:
+        allowed = schema["closed_label_fields"][pass_name]
+        choices = ", ".join(allowed)
+        return (
+            "Classify exactly one field using only the supplied article and target context. Do not use external "
+            "knowledge, later events, remembered market outcomes, or make predictions.\n"
+            f"{FIELD_INSTRUCTIONS[pass_name]}\n"
+            f"Allowed labels: {choices}\n"
+            "Return exactly one lowercase allowed label and no explanation.\n\n"
+            f"{semantic_context(record)}\n\n"
+            f"Question: What is the {pass_name} label?\n"
+            "Answer:"
+        )
+    if pass_name == "channels":
+        allowed = schema["transmission_channels"]["allowed_values"]
+        return (
+            "Use only the supplied article. Select no more than two mechanisms through which the event may affect "
+            "companies or markets. Do not infer future returns.\n"
+            f"Allowed channels: {', '.join(allowed)}\n"
+            "Return NONE, one lowercase channel, or two lowercase channels separated by comma-space. No explanation.\n\n"
+            f"{semantic_context(record)}\n\nAnswer:"
+        )
+    if pass_name in {"affected_companies", "affected_sectors"}:
+        kind = "company names" if pass_name == "affected_companies" else "sector names"
+        return (
+            f"Using only the headline and article text, list {kind} explicitly named or explicitly covered by the "
+            "event. Do not infer entities from metadata. Copy names exactly from the source.\n"
+            "Return NONE or a semicolon-separated list with no prefix or explanation.\n\n"
+            f"{source_only_context(record)}\n\nAnswer:"
+        )
+    if pass_name.startswith("evidence_"):
+        evidence_kind = pass_name.removeprefix("evidence_")
+        if evidence_kind == "scope":
+            selected = labels.get("event_scope")
+            requirement = f"Selected event_scope: {selected or 'unavailable'}"
+            instruction = "Copy the shortest exact continuous source substring supporting that scope label."
+        elif evidence_kind == "direction":
+            target_direction = labels.get("target_direction")
+            sector_direction = labels.get("sector_direction")
+            requirement = (
+                f"Selected target_direction: {target_direction or 'unavailable'}; "
+                f"selected sector_direction: {sector_direction or 'unavailable'}"
+            )
+            instruction = "Copy the shortest exact continuous source substring supporting any classified direction."
+        elif evidence_kind == "surprise":
+            selected = labels.get("explicit_surprise")
+            requirement = f"Selected explicit_surprise: {selected or 'unavailable'}"
+            instruction = "Copy the shortest exact continuous source substring supporting that surprise label."
+        else:
+            raise ValueError(f"Unknown evidence pass {pass_name!r}")
+        return (
+            "Use only the supplied headline and article text. Do not paraphrase.\n"
+            f"{requirement}\n{instruction}\n"
+            "Return the exact substring only, or NONE when no supporting substring is required or available.\n\n"
+            f"{source_only_context(record)}\n\nAnswer:"
+        )
+    raise ValueError(f"Unknown v0.2 pass {pass_name!r}")
+
+
+def build_prompt(
+    pass_name: str,
+    record: dict[str, Any],
+    schema: dict[str, Any],
+    extracted_labels: dict[str, Any] | None = None,
+    prompt_version: str = PROMPT_VERSION,
+) -> str:
+    if prompt_version == LEGACY_PROMPT_VERSION:
+        return _build_prompt_v0_1(pass_name, record, schema, extracted_labels)
+    if prompt_version == PROMPT_VERSION:
+        return _build_prompt_v0_2(pass_name, record, schema, extracted_labels)
+    raise ValueError(f"Unsupported prompt version {prompt_version!r}")
+
+
 def _clean_enum_token(piece: str, field: str) -> tuple[str, bool]:
     token = piece.strip()
     strict = True
@@ -253,6 +485,32 @@ def parse_closed_pass(
     }
 
 
+def parse_single_enum(raw_output: str, field: str, schema: dict[str, Any]) -> dict[str, Any]:
+    original = raw_output.strip()
+    text = original
+    strict = True
+    for prefix in (f"{field}:", "answer:"):
+        if text.casefold().startswith(prefix.casefold()):
+            text = text[len(prefix) :].strip()
+            strict = False
+            break
+    if len(text) >= 2 and text[0] == text[-1] and text[0] in {"`", '"', "'"}:
+        text = text[1:-1].strip()
+        strict = False
+    if text.endswith("."):
+        text = text[:-1].rstrip()
+        strict = False
+    value = text.casefold()
+    allowed = schema["closed_label_fields"][field]
+    errors = [] if value in allowed else [f"{field}: invalid value {value!r}"]
+    return {
+        "values": {field: value if not errors else None},
+        "valid": not errors,
+        "strict_format_valid": not errors and strict and original == value,
+        "errors": errors,
+    }
+
+
 def parse_channels(raw_output: str, schema: dict[str, Any]) -> dict[str, Any]:
     text = raw_output.strip()
     strict = True
@@ -267,6 +525,8 @@ def parse_channels(raw_output: str, schema: dict[str, Any]) -> dict[str, Any]:
     allowed = set(schema["transmission_channels"]["allowed_values"])
     max_items = schema["transmission_channels"]["max_items"]
     errors: list[str] = []
+    if not text:
+        errors.append("blank channel output; return literal NONE for no channels")
     if len(channels) > max_items:
         errors.append(f"more than {max_items} channels returned")
     if len(channels) != len(set(channels)):
@@ -313,6 +573,34 @@ def parse_entities(raw_output: str, source_text: str) -> dict[str, Any]:
         "values": {"affected_companies": companies, "affected_sectors": sectors},
         "valid": not errors,
         "strict_format_valid": not errors and strict,
+        "errors": errors,
+    }
+
+
+def parse_entity_field(raw_output: str, source_text: str, field: str) -> dict[str, Any]:
+    original = raw_output.strip()
+    text = original
+    strict = True
+    prefixes = ("companies:", "sectors:", "answer:")
+    for prefix in prefixes:
+        if text.casefold().startswith(prefix):
+            text = text[len(prefix) :].strip()
+            strict = False
+            break
+    values = _parse_semicolon_list(text)
+    errors: list[str] = []
+    if not text:
+        errors.append(f"blank {field} output; return literal NONE for an empty list")
+    if len(values) != len({value.casefold() for value in values}):
+        errors.append(f"duplicate {field} entity")
+    for value in values:
+        if value.casefold() not in source_text.casefold():
+            errors.append(f"{field} entity is not present in the supplied source text: {value!r}")
+    expected = "; ".join(values) if values else "NONE"
+    return {
+        "values": values if not errors else [],
+        "valid": not errors,
+        "strict_format_valid": not errors and strict and original == expected,
         "errors": errors,
     }
 
@@ -364,22 +652,84 @@ def parse_evidence(
     }
 
 
+def parse_evidence_field(
+    pass_name: str,
+    raw_output: str,
+    source_text: str,
+    extracted_labels: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    evidence_kind = pass_name.removeprefix("evidence_")
+    original = raw_output.strip()
+    text = original
+    strict = True
+    for prefix in (f"{evidence_kind}:", "answer:"):
+        if text.casefold().startswith(prefix.casefold()):
+            text = text[len(prefix) :].strip()
+            strict = False
+            break
+    if len(text) >= 2 and text[0] == text[-1] and text[0] in {'"', "'"}:
+        text = text[1:-1]
+        strict = False
+    value = "" if text.upper() == "NONE" else text
+    labels = extracted_labels or {}
+    if evidence_kind == "scope":
+        required = labels.get("event_scope") not in {None, "unclear"}
+    elif evidence_kind == "direction":
+        required = bool(
+            {labels.get("target_direction"), labels.get("sector_direction")}
+            & {"positive", "negative", "neutral", "mixed"}
+        )
+    elif evidence_kind == "surprise":
+        required = labels.get("explicit_surprise") in {"positive", "negative", "mixed"}
+    else:
+        raise ValueError(f"Unknown evidence pass {pass_name!r}")
+    errors: list[str] = []
+    if not original:
+        errors.append(f"blank {evidence_kind} evidence output; return literal NONE when no evidence is required")
+    if required and not value:
+        errors.append(f"classified {evidence_kind} requires non-empty evidence")
+    if not required and value:
+        errors.append(f"{evidence_kind} evidence must be empty when the corresponding label needs no evidence")
+    if value and value not in source_text:
+        errors.append(f"{evidence_kind} evidence is not an exact source substring")
+    expected = value or "NONE"
+    return {
+        "values": {evidence_kind: value if not errors else ""},
+        "valid": not errors,
+        "strict_format_valid": not errors and strict and original == expected,
+        "errors": errors,
+    }
+
+
 def parse_pass(
     pass_name: str,
     raw_output: str,
     record: dict[str, Any],
     schema: dict[str, Any],
     extracted_labels: dict[str, Any] | None = None,
+    prompt_version: str = PROMPT_VERSION,
 ) -> dict[str, Any]:
-    if pass_name in PASS_FIELDS:
-        return parse_closed_pass(raw_output, PASS_FIELDS[pass_name], schema)
+    if prompt_version == LEGACY_PROMPT_VERSION and pass_name in LEGACY_PASS_FIELDS:
+        return parse_closed_pass(raw_output, LEGACY_PASS_FIELDS[pass_name], schema)
+    if prompt_version == PROMPT_VERSION and pass_name in CORE_PASSES:
+        return parse_single_enum(raw_output, pass_name, schema)
     source_text = f"{record['headline']}\n{record['article_text']}"
     if pass_name == "channels":
         return parse_channels(raw_output, schema)
-    if pass_name == "entities":
+    if prompt_version == LEGACY_PROMPT_VERSION and pass_name == "entities":
         return parse_entities(raw_output, source_text)
-    if pass_name == "evidence":
+    if prompt_version == LEGACY_PROMPT_VERSION and pass_name == "evidence":
         return parse_evidence(raw_output, source_text, extracted_labels)
+    if prompt_version == PROMPT_VERSION and pass_name in {
+        "affected_companies",
+        "affected_sectors",
+    }:
+        field = "company" if pass_name == "affected_companies" else "sector"
+        return parse_entity_field(raw_output, source_text, field)
+    if prompt_version == PROMPT_VERSION and pass_name.startswith(
+        "evidence_"
+    ):
+        return parse_evidence_field(pass_name, raw_output, source_text, extracted_labels)
     raise ValueError(f"Unknown pass {pass_name!r}")
 
 
@@ -402,15 +752,31 @@ def empty_labels() -> dict[str, Any]:
     }
 
 
-def update_labels(labels: dict[str, Any], pass_name: str, parsed_values: Any) -> None:
-    if pass_name in PASS_FIELDS:
+def update_labels(
+    labels: dict[str, Any],
+    pass_name: str,
+    parsed_values: Any,
+    prompt_version: str = PROMPT_VERSION,
+) -> None:
+    if prompt_version == LEGACY_PROMPT_VERSION and pass_name in LEGACY_PASS_FIELDS:
+        labels.update(parsed_values)
+    elif prompt_version == PROMPT_VERSION and pass_name in CORE_PASSES:
         labels.update(parsed_values)
     elif pass_name == "channels":
         labels["transmission_channels"] = parsed_values
-    elif pass_name == "entities":
+    elif prompt_version == LEGACY_PROMPT_VERSION and pass_name == "entities":
         labels.update(parsed_values)
-    elif pass_name == "evidence":
+    elif prompt_version == LEGACY_PROMPT_VERSION and pass_name == "evidence":
         labels["evidence"] = parsed_values
+    elif prompt_version == PROMPT_VERSION and pass_name in {
+        "affected_companies",
+        "affected_sectors",
+    }:
+        labels[pass_name] = parsed_values
+    elif prompt_version == PROMPT_VERSION and pass_name.startswith(
+        "evidence_"
+    ):
+        labels["evidence"].update(parsed_values)
 
 
 def resolve_device_and_dtype(torch: Any, device_argument: str, precision: str) -> tuple[str, Any]:
@@ -487,31 +853,208 @@ def generate_batch(
     return [output.strip() for output in outputs], [False] * len(prompts)
 
 
+def label_token_sequences(tokenizer: Any, allowed_values: list[str]) -> dict[str, list[int]]:
+    eos_token_id = tokenizer.eos_token_id
+    if eos_token_id is None:
+        raise RuntimeError("Tokenizer has no EOS token, so constrained label decoding is unavailable")
+    sequences: dict[str, list[int]] = {}
+    seen: dict[tuple[int, ...], str] = {}
+    for value in allowed_values:
+        token_ids = tokenizer(value, add_special_tokens=False)["input_ids"]
+        if not token_ids:
+            raise RuntimeError(f"Allowed label {value!r} tokenized to an empty sequence")
+        sequence = [*token_ids, eos_token_id]
+        key = tuple(sequence)
+        if key in seen:
+            raise RuntimeError(
+                f"Allowed labels {seen[key]!r} and {value!r} have identical token sequences"
+            )
+        seen[key] = value
+        sequences[value] = sequence
+    return sequences
+
+
+def generate_constrained_label_batch(
+    prompts: list[str],
+    allowed_values: list[str],
+    tokenizer: Any,
+    model: Any,
+    torch: Any,
+    device: str,
+    max_input_tokens: int,
+) -> tuple[list[str], list[bool]]:
+    token_sequences = label_token_sequences(tokenizer, allowed_values)
+    candidates = list(token_sequences.values())
+    decoder_start_token_id = model.config.decoder_start_token_id
+    if decoder_start_token_id is None:
+        raise RuntimeError("Model has no decoder_start_token_id")
+
+    def allowed_next_tokens(_batch_id: int, generated_ids: Any) -> list[int]:
+        prefix = generated_ids.tolist()
+        if prefix and prefix[0] == decoder_start_token_id:
+            prefix = prefix[1:]
+        eos_token_id = tokenizer.eos_token_id
+        if eos_token_id in prefix:
+            # Generation continues until every row in the batch has finished. Keep an
+            # already completed row on EOS while longer labels finish decoding.
+            return [eos_token_id]
+        next_tokens = sorted(
+            {
+                candidate[len(prefix)]
+                for candidate in candidates
+                if len(prefix) < len(candidate) and candidate[: len(prefix)] == prefix
+            }
+        )
+        if not next_tokens:
+            raise RuntimeError(f"Constrained decoder left the label trie at token prefix {prefix}")
+        return next_tokens
+
+    token_lists = tokenizer(prompts, add_special_tokens=True, truncation=False)["input_ids"]
+    over_limit = [index for index, tokens in enumerate(token_lists) if len(tokens) > max_input_tokens]
+    if over_limit:
+        lengths = [len(token_lists[index]) for index in over_limit]
+        raise RuntimeError(
+            "Refusing to truncate article content or the output contract. "
+            f"{len(over_limit)} prompt(s) exceed {max_input_tokens} tokens; lengths={lengths}."
+        )
+    encoded = tokenizer(
+        prompts,
+        add_special_tokens=True,
+        padding=True,
+        truncation=False,
+        return_tensors="pt",
+    )
+    encoded = {key: value.to(device) for key, value in encoded.items()}
+    with torch.inference_mode():
+        output_ids = model.generate(
+            **encoded,
+            do_sample=False,
+            num_beams=1,
+            max_new_tokens=max(len(candidate) for candidate in candidates),
+            use_cache=True,
+            prefix_allowed_tokens_fn=allowed_next_tokens,
+        )
+    outputs = tokenizer.batch_decode(
+        output_ids,
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=False,
+    )
+    cleaned = [output.strip() for output in outputs]
+    invalid = [output for output in cleaned if output not in allowed_values]
+    if invalid:
+        raise RuntimeError(f"Constrained decoding produced outputs outside the allowed labels: {invalid[:5]}")
+    return cleaned, [False] * len(prompts)
+
+
+def score_closed_label_batch(
+    prompts: list[str],
+    allowed_values: list[str],
+    candidate_outputs: list[str],
+    tokenizer: Any,
+    model: Any,
+    torch: Any,
+    device: str,
+    max_input_tokens: int,
+) -> tuple[list[str], list[bool], list[dict[str, float]]]:
+    if len(candidate_outputs) != len(allowed_values):
+        raise ValueError("candidate_outputs must align one-to-one with allowed_values")
+    token_lists = tokenizer(prompts, add_special_tokens=True, truncation=False)["input_ids"]
+    over_limit = [index for index, tokens in enumerate(token_lists) if len(tokens) > max_input_tokens]
+    if over_limit:
+        lengths = [len(token_lists[index]) for index in over_limit]
+        raise RuntimeError(
+            "Refusing to truncate article content or the output contract. "
+            f"{len(over_limit)} prompt(s) exceed {max_input_tokens} tokens; lengths={lengths}."
+        )
+
+    selected: list[str] = []
+    score_maps: list[dict[str, float]] = []
+    for prompt in prompts:
+        encoded = tokenizer(
+            [prompt] * len(allowed_values),
+            add_special_tokens=True,
+            padding=True,
+            truncation=False,
+            return_tensors="pt",
+        )
+        targets = tokenizer(
+            candidate_outputs,
+            add_special_tokens=True,
+            padding=True,
+            truncation=False,
+            return_tensors="pt",
+        )
+        labels = targets["input_ids"]
+        labels = labels.masked_fill(targets["attention_mask"].eq(0), -100)
+        encoded = {key: value.to(device) for key, value in encoded.items()}
+        labels = labels.to(device)
+        with torch.inference_mode():
+            logits = model(**encoded, labels=labels).logits.float()
+            log_probs = torch.log_softmax(logits, dim=-1)
+            safe_labels = labels.masked_fill(labels.eq(-100), 0)
+            token_log_probs = log_probs.gather(-1, safe_labels.unsqueeze(-1)).squeeze(-1)
+            label_mask = labels.ne(-100)
+            mean_log_probs = (token_log_probs * label_mask).sum(dim=1) / label_mask.sum(dim=1)
+        scores = {
+            value: float(mean_log_probs[index].detach().cpu())
+            for index, value in enumerate(allowed_values)
+        }
+        best = max(allowed_values, key=lambda value: scores[value])
+        selected.append(best)
+        score_maps.append(scores)
+    return selected, [False] * len(prompts), score_maps
+
+
 def preflight_prompt_lengths(
     records: list[dict[str, Any]],
     passes: tuple[str, ...],
     schema: dict[str, Any],
     tokenizer: Any,
     max_input_tokens: int,
+    prompt_version: str = PROMPT_VERSION,
 ) -> dict[str, int]:
     maxima: dict[str, int] = {}
     violations: list[dict[str, Any]] = []
     for pass_name in passes:
         maximum = 0
         for record in records:
-            prompt = build_prompt(pass_name, record, schema)
-            token_count = len(
-                tokenizer(prompt, add_special_tokens=True, truncation=False)["input_ids"]
-            )
-            maximum = max(maximum, token_count)
-            if token_count > max_input_tokens:
-                violations.append(
-                    {
-                        "article_id": record["article_id"],
-                        "pass": pass_name,
-                        "token_count": token_count,
-                    }
+            label_states: list[dict[str, Any] | None] = [None]
+            if prompt_version == PROMPT_VERSION and pass_name == "evidence_scope":
+                label_states = [
+                    {"event_scope": value}
+                    for value in schema["closed_label_fields"]["event_scope"]
+                ]
+            elif prompt_version == PROMPT_VERSION and pass_name == "evidence_direction":
+                label_states = [
+                    {"target_direction": target, "sector_direction": sector}
+                    for target in schema["closed_label_fields"]["target_direction"]
+                    for sector in schema["closed_label_fields"]["sector_direction"]
+                ]
+            elif prompt_version == PROMPT_VERSION and pass_name == "evidence_surprise":
+                label_states = [
+                    {"explicit_surprise": value}
+                    for value in schema["closed_label_fields"]["explicit_surprise"]
+                ]
+            for label_state in label_states:
+                prompt = build_prompt(
+                    pass_name,
+                    record,
+                    schema,
+                    label_state,
+                    prompt_version,
                 )
+                token_count = len(
+                    tokenizer(prompt, add_special_tokens=True, truncation=False)["input_ids"]
+                )
+                maximum = max(maximum, token_count)
+                if token_count > max_input_tokens:
+                    violations.append(
+                        {
+                            "article_id": record["article_id"],
+                            "pass": pass_name,
+                            "token_count": token_count,
+                        }
+                    )
         maxima[pass_name] = maximum
     if violations:
         raise RuntimeError(
@@ -572,6 +1115,7 @@ def require_resume_compatibility(existing: dict[str, Any], current: dict[str, An
     keys = (
         "prompt_version",
         "prompt_builder_sha256",
+        "extraction_contract_sha256",
         "schema_name",
         "schema_version",
         "schema_sha256",
@@ -583,6 +1127,8 @@ def require_resume_compatibility(existing: dict[str, Any], current: dict[str, An
         "model_files_sha256",
         "mode",
         "passes",
+        "closed_label_decoding",
+        "closed_label_candidate_representation",
         "device",
         "precision",
         "batch_size",
@@ -614,11 +1160,17 @@ def main() -> int:
         raise ValueError("Input contains duplicate article_id values")
     if args.limit is not None:
         records = records[: args.limit]
-    passes = CORE_PASSES if args.mode == "core" else FULL_PASSES
+    passes = passes_for(args.prompt_version, args.mode)
+    core_passes = core_passes_for(args.prompt_version)
 
     for record in records:
         for pass_name in passes:
-            prompt = build_prompt(pass_name, record, schema)
+            prompt = build_prompt(
+                pass_name,
+                record,
+                schema,
+                prompt_version=args.prompt_version,
+            )
             if not prompt.strip() or record["headline"] not in prompt:
                 raise ValueError(f"Prompt construction failed for {record['article_id']} pass {pass_name}")
 
@@ -630,6 +1182,8 @@ def main() -> int:
                     "passes_per_record": len(passes),
                     "total_prompts": len(records) * len(passes),
                     "mode": args.mode,
+                    "prompt_version": args.prompt_version,
+                    "closed_label_decoding": args.closed_label_decoding,
                     "model_id": args.model_id,
                     "revision": args.revision,
                     "model_was_loaded": False,
@@ -685,11 +1239,28 @@ def main() -> int:
         schema,
         tokenizer,
         args.max_input_tokens,
+        args.prompt_version,
     )
+    generation_limits = {
+        pass_name: (
+            max(
+                len(sequence)
+                for sequence in label_token_sequences(
+                    tokenizer,
+                    schema["closed_label_fields"][pass_name],
+                ).values()
+            )
+            if args.prompt_version == PROMPT_VERSION
+            and args.closed_label_decoding in {"score", "constrained"}
+            and pass_name in CORE_PASSES
+            else max_new_tokens_for(args.prompt_version, pass_name)
+        )
+        for pass_name in passes
+    }
     model = AutoModelForSeq2SeqLM.from_pretrained(
         snapshot_path,
         local_files_only=True,
-        torch_dtype=dtype,
+        dtype=dtype,
         use_safetensors=True,
     )
     model.to(device)
@@ -698,15 +1269,43 @@ def main() -> int:
     prompt_code = "\n".join(
         (
             inspect.getsource(article_block),
+            inspect.getsource(semantic_context),
+            inspect.getsource(source_only_context),
+            inspect.getsource(_build_prompt_v0_1),
+            inspect.getsource(_build_prompt_v0_2),
             inspect.getsource(build_prompt),
-            json.dumps(MAX_NEW_TOKENS, sort_keys=True),
+            json.dumps(FIELD_INSTRUCTIONS, sort_keys=True),
+            json.dumps(generation_limits, sort_keys=True),
         )
     )
     prompt_code_hash = sha256_text(prompt_code)
+    extraction_contract_code = "\n".join(
+        inspect.getsource(component)
+        for component in (
+            core_passes_for,
+            passes_for,
+            max_new_tokens_for,
+            generate_batch,
+            label_token_sequences,
+            generate_constrained_label_batch,
+            score_closed_label_batch,
+            parse_closed_pass,
+            parse_single_enum,
+            parse_channels,
+            parse_entities,
+            parse_entity_field,
+            parse_evidence,
+            parse_evidence_field,
+            parse_pass,
+            empty_labels,
+            update_labels,
+        )
+    )
+    extraction_contract_hash = sha256_text(extraction_contract_code)
     base_prompt_hashes = {
         pass_name: sha256_text(
             "\n".join(
-                f"{record['article_id']}\0{build_prompt(pass_name, record, schema)}"
+                f"{record['article_id']}\0{build_prompt(pass_name, record, schema, prompt_version=args.prompt_version)}"
                 for record in records
             )
         )
@@ -725,8 +1324,9 @@ def main() -> int:
     }
     manifest: dict[str, Any] = {
         "status": "in_progress",
-        "prompt_version": PROMPT_VERSION,
+        "prompt_version": args.prompt_version,
         "prompt_builder_sha256": prompt_code_hash,
+        "extraction_contract_sha256": extraction_contract_hash,
         "schema_name": schema["schema_name"],
         "schema_version": schema["schema_version"],
         "schema_sha256": hashlib.sha256(schema_text.encode("utf-8")).hexdigest(),
@@ -740,6 +1340,8 @@ def main() -> int:
         "model_files_sha256": model_file_hashes,
         "mode": args.mode,
         "passes": list(passes),
+        "closed_label_decoding": args.closed_label_decoding,
+        "closed_label_candidate_representation": "schema_labels",
         "device": device,
         "precision": str(dtype).replace("torch.", ""),
         "batch_size": args.batch_size,
@@ -750,7 +1352,12 @@ def main() -> int:
             "num_beams": 1,
             "seed": 0,
             "use_cache": True,
-            "max_new_tokens_by_pass": {name: MAX_NEW_TOKENS[name] for name in passes},
+            "closed_label_score": (
+                "mean_token_log_probability_including_eos"
+                if args.closed_label_decoding == "score"
+                else None
+            ),
+            "max_new_tokens_by_pass": generation_limits,
             "skip_special_tokens": True,
             "clean_up_tokenization_spaces": False,
         },
@@ -795,20 +1402,62 @@ def main() -> int:
             ]
             for pass_name in passes:
                 prompts = [
-                    build_prompt(pass_name, state["record"], schema, state["labels"])
+                    build_prompt(
+                        pass_name,
+                        state["record"],
+                        schema,
+                        state["labels"],
+                        args.prompt_version,
+                    )
                     for state in states
                 ]
-                raw_outputs, truncated_flags = generate_batch(
+                if (
+                    args.prompt_version == PROMPT_VERSION
+                    and args.closed_label_decoding == "score"
+                    and pass_name in CORE_PASSES
+                ):
+                    raw_outputs, truncated_flags, selection_scores = score_closed_label_batch(
+                        prompts,
+                        schema["closed_label_fields"][pass_name],
+                        schema["closed_label_fields"][pass_name],
+                        tokenizer,
+                        model,
+                        torch,
+                        device,
+                        args.max_input_tokens,
+                    )
+                elif (
+                    args.prompt_version == PROMPT_VERSION
+                    and args.closed_label_decoding == "constrained"
+                    and pass_name in CORE_PASSES
+                ):
+                    raw_outputs, truncated_flags = generate_constrained_label_batch(
+                        prompts,
+                        schema["closed_label_fields"][pass_name],
+                        tokenizer,
+                        model,
+                        torch,
+                        device,
+                        args.max_input_tokens,
+                    )
+                    selection_scores = [None] * len(prompts)
+                else:
+                    raw_outputs, truncated_flags = generate_batch(
+                        prompts,
+                        tokenizer,
+                        model,
+                        torch,
+                        device,
+                        args.max_input_tokens,
+                        generation_limits[pass_name],
+                    )
+                    selection_scores = [None] * len(prompts)
+                for state, prompt, raw_output, input_truncated, candidate_scores in zip(
+                    states,
                     prompts,
-                    tokenizer,
-                    model,
-                    torch,
-                    device,
-                    args.max_input_tokens,
-                    MAX_NEW_TOKENS[pass_name],
-                )
-                for state, prompt, raw_output, input_truncated in zip(
-                    states, prompts, raw_outputs, truncated_flags
+                    raw_outputs,
+                    truncated_flags,
+                    selection_scores,
                 ):
                     parsed = parse_pass(
                         pass_name,
@@ -816,9 +1465,15 @@ def main() -> int:
                         state["record"],
                         schema,
                         state["labels"],
+                        args.prompt_version,
                     )
-                    update_labels(state["labels"], pass_name, parsed["values"])
-                    state["passes"][pass_name] = {
+                    update_labels(
+                        state["labels"],
+                        pass_name,
+                        parsed["values"],
+                        args.prompt_version,
+                    )
+                    pass_record = {
                         "raw_output": raw_output,
                         "prompt_sha256": sha256_text(prompt),
                         "valid": parsed["valid"],
@@ -826,6 +1481,9 @@ def main() -> int:
                         "input_truncated": input_truncated,
                         "errors": parsed["errors"],
                     }
+                    if candidate_scores is not None:
+                        pass_record["candidate_mean_log_probabilities"] = candidate_scores
+                    state["passes"][pass_name] = pass_record
                     if not parsed["valid"]:
                         state["quality_flags"].append(f"{pass_name}_invalid")
                     if parsed["valid"] and not parsed["strict_format_valid"]:
@@ -837,9 +1495,9 @@ def main() -> int:
                 labels = state["labels"]
                 if labels["relevance"] == "insufficient":
                     labels["abstain_reason"] = "FLAN-T5 classified the supplied text as insufficient."
-                primary_valid = all(state["passes"][name]["valid"] for name in CORE_PASSES)
+                primary_valid = all(state["passes"][name]["valid"] for name in core_passes)
                 strict_primary = primary_valid and all(
-                    state["passes"][name]["strict_format_valid"] for name in CORE_PASSES
+                    state["passes"][name]["strict_format_valid"] for name in core_passes
                 )
                 full_valid = all(state["passes"][name]["valid"] for name in passes)
                 result = {

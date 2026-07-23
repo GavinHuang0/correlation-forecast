@@ -1,0 +1,22 @@
+{
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "source_reference": "annotations\\chatgpt_5_6_sol_reference.jsonl",
+  "source_reference_sha256": "94ae2481611fc2a88ce3ff2a16c6c2945c4083be2ef787810c1d1bb1f50967b7",
+  "source_inputs": "outputs\\019f85b5-0b78-7bf1-8eb8-df198bfb385d\\annotation_batches\\all_inputs.jsonl",
+  "source_inputs_sha256": "7254ae0efc78e6698161f1b9a638c232c1f511a160492b77810fb8949b7842d6",
+  "coarse_schema_path": "C:\\Users\\gavin\\correlation-forecast\\config\\news_feature_schema_coarse.json",
+  "coarse_schema_version": "0.2.0",
+  "coarse_schema_sha256": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa",
+  "coarse_mapping_module_sha256": "58a9a74133ccd22a940d2891dbf2e0679b16c1c097ffe88a420d7ab3f9761675",
+  "coarse_reference_count": 300,
+  "development_count": 72,
+  "evaluation_count": 228,
+  "split_seed": "flan-t5-coarse-v0.3-development",
+  "split_method": "within-shock_scope seeded sha256 order, rounded 24 percent",
+  "warning": "This is a development benchmark derived from GPT silver labels, not new human ground truth.",
+  "outputs": {
+    "coarse_reference_sha256": "d765d236c423a7f3ccebcc1c9b3336462458b40862c69f554e01a6fa4bd97ce1",
+    "development_inputs_sha256": "44920068fa6806f2397609b9181d96e506ee0f729c8b1a42dd950e85278b4014",
+    "evaluation_inputs_sha256": "92cf5da0dcb26d186f416885528f6453fac81b26fa5b277025063b4ae070ac83"
+  }
+}

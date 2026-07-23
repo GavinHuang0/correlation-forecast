@@ -1,20 +1,26 @@
 # Article-Level News Feature Protocol
 
-Version: `0.1.0`
+Semantic schema version: `0.1.0`
+
+Current FLAN prompt/parser contract: `flan-stock-sector-news-v0.2.0`
 
 This protocol measures semantic properties of a supplied financial-news headline and summary for stock-sector coupling research. It does not ask either language model to forecast returns, volatility, correlation, beta, or trading outcomes.
 
 The machine-readable enum source of truth is [`config/news_feature_schema.json`](../config/news_feature_schema.json).
 
+The FLAN accuracy-improvement experiment also defines a reduced schema in [`config/news_feature_schema_coarse.json`](../config/news_feature_schema_coarse.json). It deterministically coarsens the original silver labels into four LLM fields—shock scope, event family, information status, and directional alignment—while moving relevance and explicit surprise into an auditable non-LLM layer. The original schema remains the annotation source of truth; the coarse schema is the small-model evaluation contract.
+
 ## Inputs
 
-Each article is annotated with only:
+Each benchmark record contains:
 
 - the headline and supplied Alpha Vantage summary;
 - the target company and ticker;
 - the target sector and sector benchmark;
 - a fixed list of known sector peers; and
 - vendor-assigned tickers, which may be used only as contemporaneous entity metadata.
+
+The v0.2 FLAN closed-label and channel prompts receive the target company, ticker, sector, known peers, headline, and article text. They intentionally omit the sector benchmark and vendor tickers because those fields encouraged copying rather than article-based classification in the legacy run. Entity and evidence prompts receive only the headline and article text so their outputs can be checked directly against the supplied source.
 
 The annotator must not use external knowledge, later events, remembered price performance, vendor sentiment, or the benchmark sampling stratum.
 
@@ -165,13 +171,21 @@ Each evidence string must be a short, exact substring of the headline or summary
 
 ## FLAN-T5 comparison fields
 
-The primary agreement test covers the nine closed-label fields in three deterministic generations:
+The primary agreement test covers the nine closed-label fields in nine independent deterministic generations, one field per prompt:
 
-1. `relevance | event_scope | affected_breadth`
-2. `event_type | information_status | explicit_surprise`
-3. `target_direction | sector_direction | peer_effect`
+1. `relevance`
+2. `event_scope`
+3. `affected_breadth`
+4. `event_type`
+5. `information_status`
+6. `explicit_surprise`
+7. `target_direction`
+8. `sector_direction`
+9. `peer_effect`
 
-The local runner also supports three additional narrow generations for transmission channels, affected entities, and exact evidence. These open-field results are secondary because they are substantially harder for FLAN-T5-Large to format and ground.
+For the current `flan-stock-sector-news-v0.2.0` contract, greedy decoding is constrained to the legal labels for the field. This prevents format failures without changing the underlying model or silently repairing invalid prose after generation.
+
+The local runner's optional `full` mode adds six secondary generations: transmission channels; companies; sectors; and separate exact-evidence spans for scope, direction, and surprise. Splitting them prevents a malformed entity or evidence output from invalidating unrelated fields. Open outputs remain subject to exact entity/source and evidence-substring validation, and they remain secondary because FLAN-T5-Large is materially less reliable at formatting and grounding free-form lists and copied spans.
 
 ## Evaluation language
 

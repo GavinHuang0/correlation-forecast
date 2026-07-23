@@ -1,0 +1,208 @@
+{
+  "title": "FLAN-T5-Large coarse extraction evaluation",
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "warning": "The coarse reference is not new human ground truth. This 300-record dataset has already informed protocol design and remains a development benchmark.",
+  "split": "fixed reserved evaluation split",
+  "record_count": 228,
+  "reference_relevant_count": 174,
+  "model": {
+    "model_id": "google/flan-t5-large",
+    "model_revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+    "device": "cuda",
+    "precision": "float16"
+  },
+  "hybrid_protocol": {
+    "prompt_version": "flan-stock-sector-news-hybrid-v0.4.0",
+    "selection_basis": "fixed 72-article development split",
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5057471264367817,
+        "macro_f1": 0.37236735153753914
+      },
+      "event_family": {
+        "accuracy": 0.4827586206896552,
+        "macro_f1": 0.4522737912262085
+      },
+      "information_status": {
+        "accuracy": 0.5287356321839081,
+        "macro_f1": 0.6232223784966401
+      },
+      "directional_alignment": {
+        "accuracy": 0.45977011494252873,
+        "macro_f1": 0.3351266957824335
+      }
+    },
+    "aggregate_comparison_vs_v0_2": {
+      "new_mean_field_accuracy": 0.4942528735632184,
+      "old_v0_2_mean_field_accuracy": 0.4224137931034483,
+      "mean_field_accuracy_delta": 0.07183908045977011,
+      "new_mean_macro_f1": 0.4457475542607053,
+      "old_v0_2_mean_macro_f1": 0.3412369766077954,
+      "mean_macro_f1_delta": 0.10451057765290989,
+      "mean_macro_f1_relative_change": 0.30626979142717675
+    },
+    "relevance_gate": {
+      "count": 228,
+      "true_positive": 173,
+      "true_negative": 31,
+      "false_positive": 23,
+      "false_negative": 1,
+      "accuracy": 0.8947368421052632,
+      "precision": 0.8826530612244898,
+      "recall": 0.9942528735632183,
+      "f1": 0.9351351351351351
+    },
+    "deterministic_explicit_surprise": {
+      "count": 228,
+      "accuracy": 0.9298245614035088,
+      "macro_precision": 0.6634551495016612,
+      "macro_recall": 0.4585586826966137,
+      "macro_f1": 0.5228767942583732,
+      "cohens_kappa": 0.5546874999999999,
+      "invalid_prediction_count": 0,
+      "reference_distribution": {
+        "mixed": 1,
+        "negative": 13,
+        "none": 203,
+        "positive": 11
+      },
+      "prediction_distribution": {
+        "mixed": 1,
+        "negative": 7,
+        "none": 215,
+        "positive": 5
+      },
+      "per_class": {
+        "positive": {
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "support": 11
+        },
+        "negative": {
+          "precision": 0.7142857142857143,
+          "recall": 0.38461538461538464,
+          "f1": 0.5,
+          "support": 13
+        },
+        "mixed": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1
+        },
+        "none": {
+          "precision": 0.9395348837209302,
+          "recall": 0.9950738916256158,
+          "f1": 0.9665071770334929,
+          "support": 203
+        },
+        "unknown": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "row_labels_reference": [
+          "positive",
+          "negative",
+          "mixed",
+          "none",
+          "unknown"
+        ],
+        "column_labels_prediction": [
+          "positive",
+          "negative",
+          "mixed",
+          "none",
+          "unknown"
+        ],
+        "values": [
+          [
+            5,
+            0,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            5,
+            1,
+            7,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            202,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "threshold_results": {
+      "relevance_gate_f1": true,
+      "shock_scope_macro_f1": false,
+      "event_family_macro_f1": false,
+      "information_status_macro_f1": false,
+      "directional_alignment_macro_f1": false
+    }
+  },
+  "pure_v0_4_protocol": {
+    "prompt_version": "flan-stock-sector-news-v0.4.0",
+    "decoding": "order_averaged_letter_score",
+    "prompt_profile": "zero_shot",
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5574712643678161,
+        "macro_f1": 0.21495956873315364
+      },
+      "event_family": {
+        "accuracy": 0.4827586206896552,
+        "macro_f1": 0.4522737912262085
+      },
+      "information_status": {
+        "accuracy": 0.5287356321839081,
+        "macro_f1": 0.6232223784966401
+      },
+      "directional_alignment": {
+        "accuracy": 0.5459770114942529,
+        "macro_f1": 0.20174545454545453
+      }
+    },
+    "aggregate_comparison_vs_v0_2": {
+      "new_mean_field_accuracy": 0.5287356321839081,
+      "old_v0_2_mean_field_accuracy": 0.4224137931034483,
+      "mean_field_accuracy_delta": 0.10632183908045978,
+      "new_mean_macro_f1": 0.3730502982503642,
+      "old_v0_2_mean_macro_f1": 0.3412369766077954,
+      "mean_macro_f1_delta": 0.03181332164256878,
+      "mean_macro_f1_relative_change": 0.09322940895451018
+    }
+  },
+  "interpretation": "The development-selected FLAN-only hybrid materially improves mean agreement over v0.2, especially for event family and information status, but no semantic field reaches its preregistered go/no-go threshold. FLAN-T5-Large remains a research baseline rather than a production extractor.",
+  "source_reports": {
+    "hybrid_path": "outputs\\019f85b5-0b78-7bf1-8eb8-df198bfb385d\\flan_t5_v0_4_evaluation_hybrid_agreement.json",
+    "hybrid_sha256": "fe767c83c33ec1554ac1d5f1b332c54be0020b8d12c0b828145f34ab2b420b26",
+    "pure_path": "outputs\\019f85b5-0b78-7bf1-8eb8-df198bfb385d\\flan_t5_v0_4_evaluation_zero_order_averaged_agreement.json",
+    "pure_sha256": "097a1b646a6f8239176169041222481fd4af738e800fb2f887beb4efaade611c"
+  }
+}

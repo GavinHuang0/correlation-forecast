@@ -25,6 +25,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--schema", default=Path("config/news_feature_schema.json"), type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--allow-subset",
+        action="store_true",
+        help="Evaluate an explicit prediction subset, such as a --limit smoke run.",
+    )
     return parser.parse_args()
 
 
@@ -194,13 +199,42 @@ def main() -> int:
     ):
         if len(mapping) != len(records):
             raise ValueError(f"Duplicate article_id values detected in {name}")
-    if set(reference_by_id) != set(prediction_by_id) or set(reference_by_id) != set(input_by_id):
+    reference_ids = set(reference_by_id)
+    prediction_ids = set(prediction_by_id)
+    input_ids = set(input_by_id)
+    if args.allow_subset:
+        if not prediction_ids or not prediction_ids <= reference_ids or not prediction_ids <= input_ids:
+            raise ValueError("Prediction article_ids must be a non-empty subset of reference and input IDs")
+    elif reference_ids != prediction_ids or reference_ids != input_ids:
         raise ValueError("Reference, prediction, and input article_id sets must match exactly")
-    ordered_ids = [record["article_id"] for record in sorted(reference, key=lambda item: item["row_number"])]
+    prediction_file_order_ids = [record["article_id"] for record in predictions]
+    selected_ids_hash = hashlib.sha256(
+        "\n".join(prediction_file_order_ids).encode("utf-8")
+    ).hexdigest()
+    if manifest.get("selected_article_ids_sha256") and manifest.get(
+        "selected_article_ids_sha256"
+    ) != selected_ids_hash:
+        raise ValueError("Prediction file order does not match the manifest's selected article hash")
+    ordered_ids = [
+        record["article_id"] for record in sorted(predictions, key=lambda item: item["row_number"])
+    ]
 
     extractor = load_extractor_module()
+    prompt_version = manifest.get("prompt_version")
+    if not isinstance(prompt_version, str):
+        raise ValueError("Extraction manifest is missing prompt_version")
     passes = tuple(manifest.get("passes", []))
-    expected_passes = extractor.CORE_PASSES if manifest.get("mode") == "core" else extractor.FULL_PASSES
+    expected_passes = extractor.passes_for(prompt_version, manifest.get("mode"))
+    core_passes = extractor.core_passes_for(prompt_version)
+    closed_label_decoding = manifest.get("closed_label_decoding", "generate")
+    if prompt_version == extractor.LEGACY_PROMPT_VERSION and closed_label_decoding != "generate":
+        raise ValueError("Legacy v0.1 predictions must use ordinary generation")
+    if prompt_version == extractor.PROMPT_VERSION and closed_label_decoding not in {
+        "score",
+        "constrained",
+        "generate",
+    }:
+        raise ValueError(f"Unsupported v0.2 closed-label decoder {closed_label_decoding!r}")
     if passes != expected_passes:
         raise ValueError(f"Manifest pass list {passes} is inconsistent with mode {manifest.get('mode')!r}")
     recomputed_validity: dict[str, dict[str, bool]] = {}
@@ -232,7 +266,13 @@ def main() -> int:
             if not isinstance(stored_pass, dict) or not isinstance(stored_pass.get("raw_output"), str):
                 validation_errors.append(f"{article_id}: missing raw output for pass {pass_name}")
                 continue
-            prompt = extractor.build_prompt(pass_name, input_record, schema, expected_labels)
+            prompt = extractor.build_prompt(
+                pass_name,
+                input_record,
+                schema,
+                expected_labels,
+                prompt_version,
+            )
             prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
             if stored_pass.get("prompt_sha256") != prompt_hash:
                 validation_errors.append(f"{article_id}: prompt hash mismatch for pass {pass_name}")
@@ -242,9 +282,33 @@ def main() -> int:
                 input_record,
                 schema,
                 expected_labels,
+                prompt_version,
             )
-            extractor.update_labels(expected_labels, pass_name, parsed["values"])
+            extractor.update_labels(
+                expected_labels,
+                pass_name,
+                parsed["values"],
+                prompt_version,
+            )
             parsed_passes[pass_name] = parsed
+            if prompt_version == extractor.PROMPT_VERSION and pass_name in core_passes:
+                candidate_scores = stored_pass.get("candidate_mean_log_probabilities")
+                if closed_label_decoding == "score":
+                    allowed = schema["closed_label_fields"][pass_name]
+                    if not isinstance(candidate_scores, dict) or set(candidate_scores) != set(allowed):
+                        validation_errors.append(
+                            f"{article_id}: incomplete candidate scores for pass {pass_name}"
+                        )
+                    elif stored_pass["raw_output"] != max(
+                        allowed, key=lambda value: candidate_scores[value]
+                    ):
+                        validation_errors.append(
+                            f"{article_id}: scored output is not the recorded candidate argmax for pass {pass_name}"
+                        )
+                elif candidate_scores is not None:
+                    validation_errors.append(
+                        f"{article_id}: unexpected candidate scores for decoder {closed_label_decoding} pass {pass_name}"
+                    )
             if bool(stored_pass.get("valid")) != bool(parsed["valid"]):
                 validation_errors.append(f"{article_id}: stored validity mismatch for pass {pass_name}")
             if bool(stored_pass.get("strict_format_valid")) != bool(parsed["strict_format_valid"]):
@@ -256,10 +320,10 @@ def main() -> int:
         if prediction.get("labels") != expected_labels:
             validation_errors.append(f"{article_id}: stored labels do not reproduce from raw pass outputs")
 
-        primary_valid = all(parsed_passes.get(name, {}).get("valid", False) for name in extractor.CORE_PASSES)
+        primary_valid = all(parsed_passes.get(name, {}).get("valid", False) for name in core_passes)
         strict_primary = primary_valid and all(
             parsed_passes.get(name, {}).get("strict_format_valid", False)
-            for name in extractor.CORE_PASSES
+            for name in core_passes
         )
         all_requested = all(parsed_passes.get(name, {}).get("valid", False) for name in passes)
         recomputed = {
@@ -344,7 +408,7 @@ def main() -> int:
                 evidence_nonempty += 1
                 evidence_exact += int(snippet in source)
         required_fields = []
-        if labels.get("event_scope") != "unclear":
+        if labels.get("event_scope") not in {None, "unclear"}:
             required_fields.append("scope")
         if {labels.get("target_direction"), labels.get("sector_direction")} & {
             "positive",
@@ -371,6 +435,8 @@ def main() -> int:
             "model_id": manifest.get("model_id"),
             "model_revision": manifest.get("model_revision"),
             "model_files_sha256": manifest.get("model_files_sha256"),
+            "prompt_version": prompt_version,
+            "closed_label_decoding": closed_label_decoding,
             "mode": manifest.get("mode"),
             "device": manifest.get("device"),
             "precision": manifest.get("precision"),
@@ -378,6 +444,7 @@ def main() -> int:
         "transmission_channel_metrics": channel_metrics,
         "entity_metrics": entity_metrics,
         "output_validity": {
+            "format_validity_enforced_by_decoder": closed_label_decoding in {"score", "constrained"},
             "primary_closed_labels_valid_rate": safe_divide(valid_primary, total),
             "primary_strict_format_rate": safe_divide(strict_primary, total),
             "all_requested_passes_valid_rate": safe_divide(valid_full, total),
@@ -412,6 +479,15 @@ def main() -> int:
         "sector_direction_macro_f1": closed_metrics["sector_direction"]["macro_f1"] >= 0.75,
         "peer_effect_macro_f1": closed_metrics["peer_effect"]["macro_f1"] >= 0.70,
         "event_type_macro_f1": closed_metrics["event_type"]["macro_f1"] >= 0.70,
+    }
+    report["threshold_notes"] = {
+        "primary_valid_output_rate": (
+            "Schema validity is enforced by the configured closed-label decoder and is not an independent "
+            "measure of instruction following."
+            if closed_label_decoding in {"score", "constrained"}
+            else "Schema validity is observed from unconstrained model generation."
+        ),
+        "semantic_thresholds": "Semantic agreement thresholds remain applicable under every decoder.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

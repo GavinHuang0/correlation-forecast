@@ -83,10 +83,28 @@ class EndToEndIntegrityTests(unittest.TestCase):
         }
         labels = EXTRACTOR.empty_labels()
         pass_records = {}
-        for pass_name in EXTRACTOR.CORE_PASSES:
-            prompt = EXTRACTOR.build_prompt(pass_name, input_record, schema, labels)
-            parsed = EXTRACTOR.parse_pass(pass_name, raw_by_pass[pass_name], input_record, schema, labels)
-            EXTRACTOR.update_labels(labels, pass_name, parsed["values"])
+        for pass_name in EXTRACTOR.LEGACY_CORE_PASSES:
+            prompt = EXTRACTOR.build_prompt(
+                pass_name,
+                input_record,
+                schema,
+                labels,
+                EXTRACTOR.LEGACY_PROMPT_VERSION,
+            )
+            parsed = EXTRACTOR.parse_pass(
+                pass_name,
+                raw_by_pass[pass_name],
+                input_record,
+                schema,
+                labels,
+                EXTRACTOR.LEGACY_PROMPT_VERSION,
+            )
+            EXTRACTOR.update_labels(
+                labels,
+                pass_name,
+                parsed["values"],
+                EXTRACTOR.LEGACY_PROMPT_VERSION,
+            )
             pass_records[pass_name] = {
                 "raw_output": raw_by_pass[pass_name],
                 "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
@@ -144,8 +162,10 @@ class EndToEndIntegrityTests(unittest.TestCase):
                 "total_prediction_count": 1,
                 "model_id": "google/flan-t5-large",
                 "model_revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+                "prompt_version": EXTRACTOR.LEGACY_PROMPT_VERSION,
                 "mode": "core",
-                "passes": list(EXTRACTOR.CORE_PASSES),
+                "passes": list(EXTRACTOR.LEGACY_CORE_PASSES),
+                "closed_label_decoding": "generate",
                 "model_files_sha256": {"model.safetensors": "test"},
                 "device": "cpu",
                 "precision": "float32",
@@ -176,6 +196,145 @@ class EndToEndIntegrityTests(unittest.TestCase):
             report = json.loads(report_path.read_text(encoding="utf-8"))
             self.assertEqual(report["closed_label_metrics"]["relevance"]["macro_f1"], 1.0)
             self.assertFalse(report["transmission_channel_metrics"]["available"])
+
+    def test_v0_2_fieldwise_core_prediction_replays(self) -> None:
+        schema_path = REPOSITORY_ROOT / "config" / "news_feature_schema.json"
+        schema_text = schema_path.read_text(encoding="utf-8")
+        schema = json.loads(schema_text)
+        input_record = {
+            "row_number": 1,
+            "article_id": "fieldwise-example",
+            "time_published_utc": "2024-01-01T12:00:00Z",
+            "source": "Example Wire",
+            "headline": "AMD raises guidance above expectations",
+            "article_text": "Advanced Micro Devices raised guidance above expectations.",
+            "vendor_tickers": ["AMD"],
+            "target": {
+                "company": "Advanced Micro Devices",
+                "ticker": "AMD",
+                "sector": "Semiconductors",
+                "sector_benchmark": "SOXX",
+                "known_sector_peers": ["NVDA", "INTC"],
+            },
+        }
+        raw_by_pass = {
+            "relevance": "direct_target",
+            "event_scope": "firm_specific",
+            "affected_breadth": "single_firm",
+            "event_type": "guidance",
+            "information_status": "confirmed",
+            "explicit_surprise": "positive",
+            "target_direction": "positive",
+            "sector_direction": "not_applicable",
+            "peer_effect": "not_applicable",
+        }
+        labels = EXTRACTOR.empty_labels()
+        pass_records = {}
+        for pass_name in EXTRACTOR.CORE_PASSES:
+            prompt = EXTRACTOR.build_prompt(
+                pass_name,
+                input_record,
+                schema,
+                labels,
+                EXTRACTOR.PROMPT_VERSION,
+            )
+            parsed = EXTRACTOR.parse_pass(
+                pass_name,
+                raw_by_pass[pass_name],
+                input_record,
+                schema,
+                labels,
+                EXTRACTOR.PROMPT_VERSION,
+            )
+            EXTRACTOR.update_labels(
+                labels,
+                pass_name,
+                parsed["values"],
+                EXTRACTOR.PROMPT_VERSION,
+            )
+            pass_records[pass_name] = {
+                "raw_output": raw_by_pass[pass_name],
+                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "valid": True,
+                "strict_format_valid": True,
+                "input_truncated": False,
+                "errors": [],
+            }
+        prediction = {
+            "row_number": 1,
+            "article_id": input_record["article_id"],
+            "target_ticker": "AMD",
+            "extractor": "google/flan-t5-large",
+            "model_revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+            "protocol_version": schema["schema_version"],
+            "labels": labels,
+            "quality_flags": [],
+            "validity": {
+                "primary_closed_labels_valid": True,
+                "primary_strict_format_valid": True,
+                "all_requested_passes_valid": True,
+            },
+            "passes": pass_records,
+        }
+        reference = {
+            "row_number": 1,
+            "article_id": input_record["article_id"],
+            "target_ticker": "AMD",
+            "annotator": "gpt-5.6-sol",
+            "protocol_version": schema["schema_version"],
+            "labels": labels,
+            "quality_flags": [],
+        }
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            input_path = root / "inputs.jsonl"
+            reference_path = root / "reference.jsonl"
+            prediction_path = root / "predictions.jsonl"
+            report_path = root / "report.json"
+            input_path.write_text(json.dumps(input_record) + "\n", encoding="utf-8")
+            reference_path.write_text(json.dumps(reference) + "\n", encoding="utf-8")
+            prediction_path.write_text(json.dumps(prediction) + "\n", encoding="utf-8")
+            manifest = {
+                "status": "complete",
+                "output_sha256": hashlib.sha256(prediction_path.read_bytes()).hexdigest(),
+                "schema_sha256": hashlib.sha256(schema_text.encode("utf-8")).hexdigest(),
+                "total_prediction_count": 1,
+                "model_id": "google/flan-t5-large",
+                "model_revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+                "prompt_version": EXTRACTOR.PROMPT_VERSION,
+                "mode": "core",
+                "passes": list(EXTRACTOR.CORE_PASSES),
+                "closed_label_decoding": "constrained",
+                "model_files_sha256": {"model.safetensors": "test"},
+                "device": "cpu",
+                "precision": "float32",
+            }
+            prediction_path.with_suffix(".jsonl.manifest.json").write_text(
+                json.dumps(manifest), encoding="utf-8"
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPT_PATH),
+                    "--reference",
+                    str(reference_path),
+                    "--predictions",
+                    str(prediction_path),
+                    "--inputs",
+                    str(input_path),
+                    "--schema",
+                    str(schema_path),
+                    "--output",
+                    str(report_path),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            self.assertEqual(report["output_validity"]["primary_closed_labels_valid_rate"], 1.0)
+            self.assertEqual(report["extraction_manifest"]["prompt_version"], EXTRACTOR.PROMPT_VERSION)
 
 
 if __name__ == "__main__":

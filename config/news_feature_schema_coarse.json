@@ -1,0 +1,129 @@
+{
+  "schema_name": "stock_sector_news_semantics_coarse",
+  "schema_version": "0.2.0",
+  "description": "Coarse, auditable article-level labels for the FLAN-T5-Large v0.3 development benchmark. These labels are deterministic coarsenings of the v0.1 GPT-5.6 silver annotations, not new human ground truth.",
+  "closed_label_fields": {
+    "shock_scope": [
+      "idiosyncratic",
+      "common",
+      "mixed",
+      "unclear"
+    ],
+    "event_family": [
+      "earnings_guidance",
+      "product_demand",
+      "supply_capacity",
+      "regulation_legal",
+      "corporate_analyst",
+      "macro_market",
+      "other_or_unclear"
+    ],
+    "information_status": [
+      "confirmed",
+      "anticipated",
+      "rumor_or_opinion",
+      "unclear"
+    ],
+    "directional_alignment": [
+      "single_firm_only",
+      "same_direction",
+      "opposite_direction",
+      "common_direction_unclear",
+      "unclear"
+    ]
+  },
+  "field_definitions": {
+    "shock_scope": {
+      "idiosyncratic": "The primary shock concerns one firm, whether the target or one sector peer.",
+      "common": "The shock explicitly affects several sector firms, the sector, or the broad market.",
+      "mixed": "Material firm-specific and common components coexist.",
+      "unclear": "The supplied text is irrelevant, insufficient, or does not establish scope."
+    },
+    "event_family": {
+      "earnings_guidance": "Reported results, forecasts, outlook, or guidance.",
+      "product_demand": "Products, technology, customers, contracts, or demand.",
+      "supply_capacity": "Supply chains, production capacity, manufacturing constraints, or inventory availability.",
+      "regulation_legal": "Regulation, trade policy, litigation, governance, or operational/legal matters.",
+      "corporate_analyst": "Analyst actions or corporate actions such as M&A, financing, restructuring, or management changes.",
+      "macro_market": "Macroeconomic or broad-market developments.",
+      "other_or_unclear": "No listed family is supported or the family is unclear."
+    },
+    "information_status": {
+      "confirmed": "Completed, officially announced, filed, reported, or enacted.",
+      "anticipated": "Scheduled, planned, forecast, expected, or upcoming.",
+      "rumor_or_opinion": "Rumored, unconfirmed, analytical, or opinion-based.",
+      "unclear": "The status is not established by the supplied text."
+    },
+    "directional_alignment": {
+      "single_firm_only": "The shock is idiosyncratic and no explicit same/opposite peer effect is stated.",
+      "same_direction": "The target and sector/peers are explicitly affected in the same direction.",
+      "opposite_direction": "The target benefits at peers' expense, or vice versa.",
+      "common_direction_unclear": "A common or mixed shock exists, but its directional alignment is not established.",
+      "unclear": "The article is inapplicable or its shock scope is unclear."
+    }
+  },
+  "fine_to_coarse_mapping": {
+    "semantic_applicability": {
+      "applicable": [
+        "direct_target",
+        "sector_or_peer",
+        "macro_relevant"
+      ],
+      "inapplicable": [
+        "irrelevant",
+        "insufficient"
+      ]
+    },
+    "shock_scope": {
+      "firm_specific": "idiosyncratic",
+      "peer_specific": "idiosyncratic",
+      "sector_wide": "common",
+      "macro_market": "common",
+      "mixed": "mixed",
+      "unclear": "unclear"
+    },
+    "event_family": {
+      "earnings": "earnings_guidance",
+      "guidance": "earnings_guidance",
+      "product_technology": "product_demand",
+      "demand_customer_contract": "product_demand",
+      "supply_chain_capacity": "supply_capacity",
+      "regulation_trade_policy": "regulation_legal",
+      "legal_governance_operations": "regulation_legal",
+      "analyst_action": "corporate_analyst",
+      "corporate_action": "corporate_analyst",
+      "macro_market": "macro_market",
+      "other": "other_or_unclear",
+      "unclear": "other_or_unclear"
+    },
+    "information_status": {
+      "confirmed": "confirmed",
+      "scheduled_or_expected": "anticipated",
+      "rumor_or_unconfirmed": "rumor_or_opinion",
+      "analysis_or_opinion": "rumor_or_opinion",
+      "unclear": "unclear"
+    }
+  },
+  "mapping_notes": {
+    "shock_scope": "Fine relevance labels irrelevant and insufficient override fine event_scope and map to unclear.",
+    "directional_alignment": "Inapplicable or unclear-scope records map to unclear. For idiosyncratic scope, an explicit same_direction or opposite_direction peer_effect takes priority; otherwise the label is single_firm_only. For common or mixed scope, explicit peer_effect takes priority, followed by an explicit target/sector direction comparison; remaining cases map to common_direction_unclear.",
+    "evaluation_claim": "Report agreement with a deterministically coarsened GPT-5.6 silver reference. Do not call these labels human ground truth."
+  },
+  "flan_core_fields": [
+    "shock_scope",
+    "event_family",
+    "information_status",
+    "directional_alignment"
+  ],
+  "development_split": {
+    "stratify_field": "shock_scope",
+    "development_fraction": 0.24,
+    "seed": "flan-t5-coarse-v0.3-development"
+  },
+  "suggested_go_no_go_thresholds": {
+    "shock_scope_macro_f1": 0.7,
+    "event_family_macro_f1": 0.65,
+    "information_status_macro_f1": 0.7,
+    "directional_alignment_macro_f1": 0.65
+  }
+}
