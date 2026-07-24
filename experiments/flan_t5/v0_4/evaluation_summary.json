@@ -200,9 +200,9 @@
   },
   "interpretation": "The development-selected FLAN-only hybrid materially improves mean agreement over v0.2, especially for event family and information status, but no semantic field reaches its preregistered go/no-go threshold. FLAN-T5-Large remains a research baseline rather than a production extractor.",
   "source_reports": {
-    "hybrid_path": "outputs\\019f85b5-0b78-7bf1-8eb8-df198bfb385d\\flan_t5_v0_4_evaluation_hybrid_agreement.json",
+    "hybrid_path": "outputs\\flan_t5\\v0_4\\flan_t5_v0_4_evaluation_hybrid_agreement.json",
     "hybrid_sha256": "fe767c83c33ec1554ac1d5f1b332c54be0020b8d12c0b828145f34ab2b420b26",
-    "pure_path": "outputs\\019f85b5-0b78-7bf1-8eb8-df198bfb385d\\flan_t5_v0_4_evaluation_zero_order_averaged_agreement.json",
+    "pure_path": "outputs\\flan_t5\\v0_4\\flan_t5_v0_4_evaluation_zero_order_averaged_agreement.json",
     "pure_sha256": "097a1b646a6f8239176169041222481fd4af738e800fb2f887beb4efaade611c"
   }
 }

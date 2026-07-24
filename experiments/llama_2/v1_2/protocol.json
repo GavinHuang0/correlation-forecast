@@ -1,0 +1,28 @@
+{
+  "experiment": "llama-2-7b-chat-v1.2-fieldwise-hybrid",
+  "status": "completed_posthoc_research_candidate",
+  "selection_split": {
+    "name": "fixed 72-document development split",
+    "reference_relevant_count": 56
+  },
+  "field_source": {
+    "shock_scope": "v1.0 order-averaged immediate-letter decoder",
+    "event_family": "v1.1 exact Answer: cue with all cyclic rotations",
+    "information_status": "v1.1 exact Answer: cue with all cyclic rotations",
+    "directional_alignment": "v1.0 order-averaged immediate-letter decoder"
+  },
+  "selection_reason": {
+    "event_family": "v1.1 macro-F1 0.5478 versus v1.0 0.0594 and accuracy 0.6071 versus 0.0893",
+    "information_status": "v1.1 macro-F1 0.2908 versus v1.0 0.2326 with identical 0.5357 accuracy",
+    "shock_scope": "retain v1.0 because v1.1 macro-F1 and accuracy both declined",
+    "directional_alignment": "retain v1.0 because v1.1 macro-F1 and accuracy both declined"
+  },
+  "frozen_before_posthoc_228_run": true,
+  "source_manifest_limitation": "The shared v1.1 extractor records development_only=true for every input path. For the 228-document invocation, this generic runner flag is inaccurate; v1.2 records and reports that invocation only as post-hoc evaluation, identified by the evaluation input hash and 228-row count.",
+  "claim_limit": {
+    "development_selection": true,
+    "existing_228_document_evaluation_already_inspected_for_v1_0": true,
+    "evaluation_use": "post-hoc engineering comparison only",
+    "fresh_external_holdout_required": true
+  }
+}

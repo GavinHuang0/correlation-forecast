@@ -1,0 +1,23 @@
+{
+  "run_role": "posthoc_evaluation",
+  "confirmatory": false,
+  "input": {
+    "path": "outputs/llama_2/shared/benchmark_300/evaluation_inputs.jsonl",
+    "count": 228,
+    "sha256": "92cf5da0dcb26d186f416885528f6453fac81b26fa5b277025063b4ae070ac83"
+  },
+  "corrected_decoder_output": {
+    "path": "outputs/llama_2/v1_1/evaluation_predictions.jsonl",
+    "sha256": "5363b0d08b25c182b1528c7a4d8ebcefb3d841a784c416e00ee96d13bd6a397c",
+    "manifest_path": "outputs/llama_2/v1_1/evaluation_predictions.jsonl.manifest.json",
+    "manifest_sha256": "704d63eeb1fee9775ce9b5682697c13953b041251e52ccbb1c5c9d652de1e550",
+    "manifest_caveat": "The shared runner's generic development_only=true field is inaccurate for this invocation; this role record and the input hash control interpretation."
+  },
+  "hybrid_output": {
+    "path": "outputs/llama_2/v1_2/evaluation_predictions.jsonl",
+    "sha256": "767dfa917b77c95e0ab4e70130695e127450bc535a756deb644a1e0b749b1be6",
+    "manifest_path": "outputs/llama_2/v1_2/evaluation_predictions.jsonl.manifest.json",
+    "manifest_sha256": "d52bbd2745bf64663f26c0573e12d9a0969715fffff83ba4a0259f8d63def9b9"
+  },
+  "interpretation": "The 228 records were previously inspected for Llama v1.0. This invocation is an engineering generalization check, not a fresh holdout."
+}

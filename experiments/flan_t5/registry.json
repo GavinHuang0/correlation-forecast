@@ -1,0 +1,62 @@
+{
+  "schema_version": "flan-t5-experiment-registry-v1",
+  "model": {
+    "id": "google/flan-t5-large",
+    "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a"
+  },
+  "active_frozen_version": null,
+  "active_baseline_version": "v0_4",
+  "best_historical_version": "v0_4",
+  "versions": [
+    {
+      "version": "v0_1",
+      "status": "archived",
+      "protocol_path": "experiments/flan_t5/archive/v0_1_v0_2/protocol_and_null_fix.md",
+      "evaluation_summary_path": null,
+      "local_artifact_namespace": "outputs/flan_t5/archive/v0_1",
+      "promotion_decision": null,
+      "supersedes": null,
+      "notes": "Grouped generation failed the output contract."
+    },
+    {
+      "version": "v0_2",
+      "status": "archived",
+      "protocol_path": "experiments/flan_t5/archive/v0_1_v0_2/protocol_and_null_fix.md",
+      "evaluation_summary_path": null,
+      "local_artifact_namespace": "outputs/flan_t5/archive/v0_2",
+      "promotion_decision": null,
+      "supersedes": "v0_1",
+      "notes": "One-field constrained decoding fixed null outputs but semantic agreement remained poor."
+    },
+    {
+      "version": "v0_3",
+      "status": "archived",
+      "protocol_path": "experiments/flan_t5/archive/v0_3/README.md",
+      "evaluation_summary_path": null,
+      "local_artifact_namespace": "outputs/flan_t5/archive/v0_3",
+      "promotion_decision": null,
+      "supersedes": "v0_2",
+      "notes": "Development and sanity experiments leading to v0.4."
+    },
+    {
+      "version": "v0_4",
+      "status": "active_research_baseline",
+      "protocol_path": "experiments/flan_t5/v0_4/README.md",
+      "evaluation_summary_path": "experiments/flan_t5/v0_4/evaluation_summary.json",
+      "local_artifact_namespace": "outputs/flan_t5/v0_4",
+      "promotion_decision": null,
+      "supersedes": "v0_3",
+      "notes": "Active FLAN research baseline for exploratory use and model comparisons; frozen, but below production go/no-go thresholds."
+    },
+    {
+      "version": "v0_5",
+      "status": "archived_rejected",
+      "protocol_path": "experiments/flan_t5/archive/v0_5/PROTOCOL.md",
+      "evaluation_summary_path": "experiments/flan_t5/archive/v0_5/evaluation_summary.json",
+      "local_artifact_namespace": "outputs/flan_t5/archive/v0_5",
+      "promotion_decision": false,
+      "supersedes": null,
+      "notes": "Archived final binary-component experiment; failed the preregistered promotion rule and is not used."
+    }
+  ]
+}

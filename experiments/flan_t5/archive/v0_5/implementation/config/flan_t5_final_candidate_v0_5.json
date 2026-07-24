@@ -1,0 +1,80 @@
+{
+  "protocol_name": "flan_t5_large_binary_component_candidate",
+  "protocol_version": "0.5.0",
+  "prompt_version": "flan-stock-sector-news-binary-v0.5.0",
+  "description": "Frozen FLAN-T5-Large candidate protocol. It records raw, order-averaged binary component evidence and does not itself promote components into final coarse labels.",
+  "binary_semantics": [
+    "yes",
+    "no"
+  ],
+  "candidate_component_order": [
+    "scope_firm",
+    "scope_common",
+    "event_earnings_guidance",
+    "event_product_demand",
+    "event_supply_capacity",
+    "event_regulation_legal",
+    "event_corporate_analyst",
+    "event_macro_market",
+    "alignment_same",
+    "alignment_opposite"
+  ],
+  "components": {
+    "scope_firm": {
+      "group": "scope",
+      "definition": "The article describes a material information-shock component that primarily concerns exactly one firm, either the target company or one sector peer.",
+      "decision_rule": "Answer yes for a one-firm component even when a separate common component also exists. Company membership in a sector is not by itself evidence of a common component."
+    },
+    "scope_common": {
+      "group": "scope",
+      "definition": "The article explicitly describes a material information-shock component that applies to several firms, the target sector as a whole, or the broad market or economy.",
+      "decision_rule": "Answer no when the article concerns only one firm. Answer yes for a common component even when a separate one-firm component also exists."
+    },
+    "event_earnings_guidance": {
+      "group": "event",
+      "definition": "The article describes reported financial results, forecasts, outlook, or company guidance.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "event_product_demand": {
+      "group": "event",
+      "definition": "The article describes products, technology, customers, contracts, sales demand, or end-market demand.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "event_supply_capacity": {
+      "group": "event",
+      "definition": "The article describes supply chains, production or manufacturing capacity, production constraints, or inventory availability.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "event_regulation_legal": {
+      "group": "event",
+      "definition": "The article describes regulation, trade policy, litigation, governance, or legal or operational compliance matters.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "event_corporate_analyst": {
+      "group": "event",
+      "definition": "The article describes an analyst action or a corporate action such as a merger, acquisition, financing, restructuring, buyback, dividend, or management change.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "event_macro_market": {
+      "group": "event",
+      "definition": "The article describes a macroeconomic or broad-market development.",
+      "decision_rule": "Answer yes only when this event family is explicitly present in the article."
+    },
+    "alignment_same": {
+      "group": "alignment",
+      "definition": "The article explicitly states that the target company and its sector or one or more sector peers are affected in the same direction.",
+      "decision_rule": "Answer no when the relationship is not explicit. Do not predict returns or infer a relationship from sector membership alone."
+    },
+    "alignment_opposite": {
+      "group": "alignment",
+      "definition": "The article explicitly states that the target company benefits at the expense of its sector peers, or that peers benefit at the target company's expense.",
+      "decision_rule": "Answer no when the relationship is not explicit. Do not predict returns or infer competitive effects from external knowledge."
+    }
+  },
+  "prompt_contract": {
+    "source_rule": "Use only the supplied article and target metadata. Do not use external facts, later events, remembered outcomes, historical prices, or predictions.",
+    "positive_rule": "Answer yes only when the component definition is supported by explicit article text.",
+    "negative_rule": "Answer no when the component is absent, merely possible, or unsupported by the supplied text.",
+    "output_rule": "Answer with exactly one option letter and nothing else."
+  }
+}

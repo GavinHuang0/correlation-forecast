@@ -1,0 +1,42 @@
+{
+  "title": "Llama 2 v1.2 fieldwise-hybrid development result",
+  "split": "fixed 72-document development split",
+  "reference_relevant_count": 56,
+  "field_source": {
+    "shock_scope": "v1.0",
+    "event_family": "v1.1",
+    "information_status": "v1.1",
+    "directional_alignment": "v1.0"
+  },
+  "metrics": {
+    "mean_field_accuracy": 0.5535714285714285,
+    "mean_macro_f1": 0.3096530230717564,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.17857142857142858
+      },
+      "event_family": {
+        "accuracy": 0.6071428571428571,
+        "macro_f1": 0.54781245831666
+      },
+      "information_status": {
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.2907647907647908
+      },
+      "directional_alignment": {
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.22146341463414637
+      }
+    }
+  },
+  "delta_vs_llama_v1_0": {
+    "mean_field_accuracy": 0.1294642857142857,
+    "mean_macro_f1": 0.13666718090604324
+  },
+  "selection": "best Llama 2 development candidate; requires a fresh external holdout",
+  "generated_report": {
+    "path": "outputs/llama_2/v1_2/development_agreement.json",
+    "sha256": "3f3710995c43fd60641e3d812e0614a16ea0d815d08b6be51e2b6c21683663e2"
+  }
+}

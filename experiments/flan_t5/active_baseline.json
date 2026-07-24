@@ -1,0 +1,41 @@
+{
+  "schema_version": "flan-t5-active-research-baseline-v1",
+  "version": "v0_4",
+  "status": "active_research_baseline",
+  "production_ready": false,
+  "approved_uses": [
+    "exploratory feature extraction",
+    "model-comparison baseline",
+    "pipeline integration testing"
+  ],
+  "disallowed_claims": [
+    "human-validated ground-truth accuracy",
+    "production-grade semantic extraction",
+    "autonomous trading readiness"
+  ],
+  "model": {
+    "id": "google/flan-t5-large",
+    "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a"
+  },
+  "protocol": {
+    "schema_path": "config/news_feature_schema_coarse.json",
+    "schema_version": "0.2.0",
+    "pure_prompt_version": "flan-stock-sector-news-v0.4.0",
+    "hybrid_prompt_version": "flan-stock-sector-news-hybrid-v0.4.0",
+    "selection_basis": "fixed 72-article development split"
+  },
+  "evaluation": {
+    "summary_path": "experiments/flan_t5/v0_4/evaluation_summary.json",
+    "fixed_evaluation_records": 228,
+    "reference_relevant_records": 174,
+    "mean_field_accuracy": 0.4942528735632184,
+    "mean_macro_f1": 0.4457475542607053,
+    "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations"
+  },
+  "local_artifacts": {
+    "namespace": "outputs/flan_t5/v0_4",
+    "evaluation_predictions": "outputs/flan_t5/v0_4/flan_t5_v0_4_evaluation_hybrid.jsonl",
+    "fine_compatibility_dependency": "outputs/flan_t5/v0_4/dependencies/v0_2_fine/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl"
+  },
+  "warning": "v0.4 is the active research baseline because it is the best tested FLAN configuration, not because it passed production thresholds."
+}

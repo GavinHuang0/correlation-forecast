@@ -1,0 +1,67 @@
+{
+  "protocol_version": "llama-2-stock-sector-news-v1.0.0",
+  "status": "completed_rejected_decoder_collapse",
+  "model": {
+    "id": "meta-llama/Llama-2-7b-chat-hf",
+    "revision": "f5db02db724555f92da89c216ac04704f23d4590",
+    "documented_pretraining_cutoff": "2022-09",
+    "documented_latest_tuning_data": "2023-07",
+    "conservative_data_cutoff": "2023-07-31",
+    "training_period": "2023-01 through 2023-07",
+    "static_offline_model": true,
+    "license": "Llama 2 Community License",
+    "gated_access_required": true
+  },
+  "runtime": {
+    "device": "cuda",
+    "quantization": "nf4",
+    "compute_dtype": "float16",
+    "double_quantization": true,
+    "attention_implementation": "eager",
+    "batch_size": 1,
+    "model_context_window": 4096,
+    "max_input_tokens": 4096,
+    "network_during_extraction": "disabled",
+    "cpu_or_disk_offload": "forbidden"
+  },
+  "task": {
+    "schema_path": "config/news_feature_schema_coarse.json",
+    "schema_version": "0.2.0",
+    "semantic_fields": [
+      "shock_scope",
+      "event_family",
+      "information_status",
+      "directional_alignment"
+    ],
+    "deterministic_layer": "scripts/coarse_news_features.py",
+    "prompt_profile": "zero_shot",
+    "article_position": "before task and options",
+    "chat_template": "frozen official Llama 2 single-turn BOS + [INST] user-content [/INST] format",
+    "decoder": "canonical-and-reversed option-letter next-token log-probability average",
+    "tie_break": "schema order",
+    "external_knowledge_instruction": "forbidden",
+    "free_form_generation": false,
+    "extraction_manifest_version": "llama-2-extraction-v1"
+  },
+  "benchmark": {
+    "manifest_path": "experiments/llama_2/benchmark_manifest.json",
+    "development_records": 72,
+    "evaluation_records": 228,
+    "evaluation_reference_relevant_records": 174,
+    "article_date_min_utc": "2024-01-02T18:34:09.000Z",
+    "article_date_max_utc": "2024-12-27T17:55:58.000Z",
+    "all_records_after_conservative_cutoff": true,
+    "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+    "new_gpt_labeling_required": false
+  },
+  "comparison": {
+    "active_baseline": "flan-t5-large-v0.4",
+    "baseline_pointer": "experiments/flan_t5/active_baseline.json",
+    "evaluation_summary": "experiments/llama_2/evaluation_summary.json",
+    "primary_metric": "mean semantic macro-F1",
+    "secondary_metric": "mean semantic field accuracy",
+    "promotion_result": "rejected"
+  },
+  "freeze_rule": "Do not change the model revision, quantization, prompt, schema, decoder, chat template, context limit, or deterministic routing after inspecting evaluation results. Any change creates a new protocol version and requires a new holdout.",
+  "warning": "This benchmark measures agreement with GPT silver labels and has already informed FLAN development; it is an engineering comparison, not an untouched human-labeled test."
+}

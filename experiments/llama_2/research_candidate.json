@@ -1,0 +1,19 @@
+{
+  "model_id": "meta-llama/Llama-2-7b-chat-hf",
+  "model_revision": "f5db02db724555f92da89c216ac04704f23d4590",
+  "candidate_version": "v1.2",
+  "status": "development-selected research candidate",
+  "recommended_scope": "event_family specialist",
+  "not_recommended_as": "all-field production extractor",
+  "field_source": {
+    "shock_scope": "v1.0",
+    "event_family": "v1.1",
+    "information_status": "v1.1",
+    "directional_alignment": "v1.0"
+  },
+  "protocol": "experiments/llama_2/v1_2/protocol.json",
+  "development_summary": "experiments/llama_2/v1_2/development_summary.json",
+  "posthoc_summary": "experiments/llama_2/v1_2/posthoc_evaluation_summary.json",
+  "posthoc_run_metadata": "experiments/llama_2/v1_2/posthoc_run_metadata.json",
+  "fresh_holdout_required": true
+}

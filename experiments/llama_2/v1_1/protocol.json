@@ -1,0 +1,64 @@
+{
+  "experiment": "llama-2-7b-chat-v1.1-answer-cue-development",
+  "status": "completed_rejected_as_full_replacement",
+  "post_run_amendment": {
+    "date": "2026-07-24",
+    "change": "The descriptive v1.0 baseline values were reconciled to the evaluator's exact reference-relevant population. The collapse diagnostic was also corrected to inspect model-origin predictions, so deterministic-gate rows cannot hide a model collapse.",
+    "unchanged": [
+      "decoder contract",
+      "development split",
+      "promotion thresholds",
+      "final rejection (the independent scope and accuracy checks already failed)"
+    ]
+  },
+  "split": {
+    "name": "fixed 72-document development split",
+    "path": "outputs/llama_2/shared/benchmark_300/development_inputs.jsonl",
+    "count": 72,
+    "reference_use": "decoder selection is permitted",
+    "evaluation_split_use": "prohibited during v1.1 development"
+  },
+  "unchanged_components": [
+    "meta-llama/Llama-2-7b-chat-hf",
+    "model revision f5db02db724555f92da89c216ac04704f23d4590",
+    "NF4 double quantization on CUDA",
+    "coarse schema 0.2.0",
+    "deterministic relevance gate",
+    "hierarchical directional-alignment routing",
+    "source article and target metadata"
+  ],
+  "experimental_change": {
+    "problem": "v1.0 scored option letters at the user/assistant boundary, where the pinned chat model first emits a shared assistant whitespace/preamble token rather than an answer letter",
+    "assistant_reply_contract": "Answer: X",
+    "prefix_derivation": "render every complete candidate reply with the pinned tokenizer and retain only the exact shared partial-assistant prefix",
+    "candidate_score": "one candidate-specific option-letter token after the derived Answer: prefix",
+    "order_control": "average semantic log probabilities across every cyclic label order so each semantic class occupies each letter position once",
+    "generation": false
+  },
+  "v1_0_development_baseline": {
+    "reference_relevant_count": 56,
+    "mean_field_accuracy": 0.4241071428571428,
+    "mean_macro_f1": 0.17298584216571317,
+    "field_macro_f1": {
+      "shock_scope": 0.17857142857142858,
+      "event_family": 0.05935038592239404,
+      "information_status": 0.23255813953488372,
+      "directional_alignment": 0.22146341463414637
+    }
+  },
+  "promotion_rule_frozen_before_run": {
+    "minimum_mean_macro_f1_improvement": 0.05,
+    "maximum_mean_accuracy_decline": 0.02,
+    "shock_scope_macro_f1_must_improve": true,
+    "event_family_macro_f1_must_improve": true,
+    "no_new_single_class_collapse": true,
+    "primary_metric": "mean macro-F1",
+    "tie_break": "mean accuracy, then simpler decoder"
+  },
+  "interpretation": {
+    "reference": "deterministically coarsened GPT-5.6 Sol silver labels",
+    "claim_limit": "development agreement, not human-ground-truth accuracy or confirmatory out-of-sample performance",
+    "fresh_holdout_required_for_confirmation": true,
+    "old_228_document_evaluation_is_already_inspected": true
+  }
+}

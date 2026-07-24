@@ -1,0 +1,31 @@
+{
+  "rule_version": "flan-t5-final-promotion-v1",
+  "primary_metric": "mean_macro_f1_across_four_semantic_fields",
+  "baseline": {
+    "protocol": "flan-stock-sector-news-hybrid-v0.4.0",
+    "mean_macro_f1": 0.4457475542607053,
+    "mean_accuracy": 0.4942528735632184
+  },
+  "requirements": {
+    "minimum_mean_macro_f1": 0.4657475542607053,
+    "minimum_mean_accuracy": 0.5042528735632184,
+    "maximum_individual_field_macro_f1_loss": 0.02,
+    "minimum_mixed_scope_f1_exclusive": 0.0,
+    "minimum_gain_in_one_target_field": 0.05,
+    "target_fields": [
+      "shock_scope",
+      "event_family",
+      "directional_alignment"
+    ],
+    "required_valid_output_rate": 1.0,
+    "required_non_truncation_rate": 1.0,
+    "bootstrap_samples": 10000,
+    "minimum_positive_mean_macro_f1_delta_fraction": 0.95,
+    "bootstrap_seed": 20260723
+  },
+  "interpretation": {
+    "pass": "freeze as the final FLAN research extractor",
+    "fail": "archive as a rejected candidate and retain v0.4 as the best historical FLAN baseline",
+    "production_ready": false
+  }
+}

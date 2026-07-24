@@ -1,0 +1,103 @@
+{
+  "created_at_utc": "2026-07-23T08:06:35.377570+00:00",
+  "data_sources": {
+    "development_coarse_v0_4": {
+      "bytes": 386590,
+      "path": "outputs/019f85b5-0b78-7bf1-8eb8-df198bfb385d/flan_t5_v0_3_1_development_order_averaged.jsonl",
+      "sha256": "c59eefb9c711ad2d9da81375f3c00884daadc2d4cac3ed992a62167a3db3582d"
+    },
+    "development_fine_v0_2": {
+      "bytes": 786360,
+      "path": "outputs/019f85b5-0b78-7bf1-8eb8-df198bfb385d/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl",
+      "sha256": "758b14c285f61d9d621ee5321b6114acb862ade4515268687664b8f44bbe197a"
+    },
+    "development_input": {
+      "article_id_set_sha256": "c846893d5a03a2d7974f0b244dfdcb0bdd39d8e4bb0857ea2cdd45692d74738e",
+      "bytes": 64724,
+      "ordered_article_ids_sha256": "195e844af9e1955eec6ca1d64355572439f726a39679f7bae016b2d6ce0439ae",
+      "path": "outputs/019f85b5-0b78-7bf1-8eb8-df198bfb385d/annotation_batches/coarse_v0_3_development_inputs.jsonl",
+      "record_count": 72,
+      "sha256": "44920068fa6806f2397609b9181d96e506ee0f729c8b1a42dd950e85278b4014"
+    },
+    "evaluation_input": {
+      "article_id_set_sha256": "7bb66b43ba61ac96bb3ad704955e4fc54f14bd4ceed8933ced606b607607c4c5",
+      "bytes": 206824,
+      "ordered_article_ids_sha256": "e8125fe21a9f16f2aebe444d5c39bc99f164632cd20bc73e2a24e6c6a13839f3",
+      "path": "outputs/019f85b5-0b78-7bf1-8eb8-df198bfb385d/annotation_batches/coarse_v0_3_evaluation_inputs.jsonl",
+      "record_count": 228,
+      "sha256": "92cf5da0dcb26d186f416885528f6453fac81b26fa5b277025063b4ae070ac83"
+    },
+    "evaluation_v0_4_hybrid": {
+      "bytes": 1066220,
+      "path": "outputs/019f85b5-0b78-7bf1-8eb8-df198bfb385d/flan_t5_v0_4_evaluation_hybrid.jsonl",
+      "sha256": "03c69229424caf6dfcd602ff6ed91b7670f222075176888a2d258d13046daa38"
+    },
+    "reference": {
+      "article_id_set_sha256": "cb80b31ba2ffba848d820945b8ae458a3536533c57771d6f01c838eae0290ddb",
+      "bytes": 225201,
+      "ordered_article_ids_sha256": "804dad810912cf3fc0ff8f21ccd2d6fb406aab6a75ec5035e6a3b46ffbbe98fd",
+      "path": "annotations/chatgpt_5_6_sol_reference.jsonl",
+      "record_count": 300,
+      "sha256": "94ae2481611fc2a88ce3ff2a16c6c2945c4083be2ef787810c1d1bb1f50967b7"
+    }
+  },
+  "experiment": {
+    "calibration_policy": "development_only_then_hash_lock",
+    "candidate_protocol_version": "0.5.0",
+    "evaluation_policy": "one_materialization_after_calibration_lock",
+    "interpretation": "engineering comparison because the existing evaluation set informed diagnosis; not a pristine scientific holdout",
+    "promotion_rule_version": "flan-t5-final-promotion-v1",
+    "prompt_version": "flan-stock-sector-news-binary-v0.5.0"
+  },
+  "model": {
+    "id": "google/flan-t5-large",
+    "local_files_only": true,
+    "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+    "runtime_target": "cuda_float16"
+  },
+  "split_invariants": {
+    "assignments_partition_reference": true,
+    "development_count": 72,
+    "development_evaluation_overlap_count": 0,
+    "evaluation_count": 228,
+    "reference_count": 300
+  },
+  "status": "locked_before_v0_5_model_scoring",
+  "tracked_sources": {
+    "deterministic_module": {
+      "bytes": 25164,
+      "path": "scripts/coarse_news_features.py",
+      "sha256": "58a9a74133ccd22a940d2891dbf2e0679b16c1c097ffe88a420d7ab3f9761675"
+    },
+    "extractor": {
+      "bytes": 27028,
+      "path": "scripts/extract_flan_t5_final_candidate.py",
+      "sha256": "b6577242d6ccabd82b76636e14ba481078699cb8618c26d4f0bccf8521bafa19"
+    },
+    "promotion_rule": {
+      "bytes": 1061,
+      "path": "experiments/flan_t5/candidates/v0_5/promotion_rule.json",
+      "sha256": "ab8c8796ad88808a1111f61f9f21246a99a50be832c26aff5d16b8f0b1ce4357"
+    },
+    "protocol": {
+      "bytes": 3591,
+      "path": "experiments/flan_t5/candidates/v0_5/PROTOCOL.md",
+      "sha256": "83ed4d6bbb9154350555a8d5dadbc7f16a205266e01be787041229abe62d75ad"
+    },
+    "protocol_config": {
+      "bytes": 4572,
+      "path": "config/flan_t5_final_candidate_v0_5.json",
+      "sha256": "a0deddf02be836aa71b7f5a78757f35b5235a03cba12ebbe1198b889f2a2d094"
+    },
+    "schema": {
+      "bytes": 5374,
+      "path": "config/news_feature_schema_coarse.json",
+      "sha256": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa"
+    },
+    "selector": {
+      "bytes": 54709,
+      "path": "scripts/select_flan_t5_final_candidate.py",
+      "sha256": "22fc76b4f33dfc82741e2ea117e26922e0eed82bf400d7f2edc56d0093433775"
+    }
+  }
+}

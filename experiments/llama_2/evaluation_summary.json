@@ -1,0 +1,95 @@
+{
+  "title": "Llama 2 7B Chat v1.0 coarse extraction evaluation",
+  "status": "completed_rejected_decoder_collapse",
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "warning": "These are engineering agreement scores, not objective human-ground-truth accuracy.",
+  "coverage": {
+    "development_predictions": 72,
+    "evaluation_predictions": 228,
+    "total_predictions": 300,
+    "evaluation_reference_relevant": 174,
+    "headline_metrics_use_evaluation_only": true
+  },
+  "model": {
+    "id": "meta-llama/Llama-2-7b-chat-hf",
+    "revision": "f5db02db724555f92da89c216ac04704f23d4590",
+    "prompt_version": "llama-2-stock-sector-news-v1.0.0",
+    "quantization": "NF4 with double quantization",
+    "compute_dtype": "float16",
+    "decoder": "canonical-and-reversed option-letter next-token score average"
+  },
+  "field_metrics": {
+    "shock_scope": {
+      "accuracy": 0.5459770114942529,
+      "macro_f1": 0.19527168234064787,
+      "flan_v0_4_macro_f1": 0.37236735153753914
+    },
+    "event_family": {
+      "accuracy": 0.13793103448275862,
+      "macro_f1": 0.10177501807071228,
+      "flan_v0_4_macro_f1": 0.4522737912262085
+    },
+    "information_status": {
+      "accuracy": 0.5517241379310345,
+      "macro_f1": 0.2379182156133829,
+      "flan_v0_4_macro_f1": 0.6232223784966401
+    },
+    "directional_alignment": {
+      "accuracy": 0.5459770114942529,
+      "macro_f1": 0.21875,
+      "flan_v0_4_macro_f1": 0.3351266957824335
+    }
+  },
+  "aggregate_comparison_vs_flan_t5_v0_4": {
+    "llama_2_mean_field_accuracy": 0.4454022988505747,
+    "flan_t5_v0_4_mean_field_accuracy": 0.49425287356321845,
+    "mean_field_accuracy_delta": -0.04885057471264376,
+    "llama_2_mean_macro_f1": 0.18842872900618576,
+    "flan_t5_v0_4_mean_macro_f1": 0.4457475542607053,
+    "mean_macro_f1_delta": -0.25731882525451955,
+    "mean_macro_f1_relative_change": -0.577274788823678,
+    "promotion_result": "rejected"
+  },
+  "post_hoc_paired_article_bootstrap": {
+    "seed": 20260724,
+    "replicates": 20000,
+    "sampling_unit": "reference-relevant article",
+    "mean_field_accuracy_delta_ci_95": [
+      -0.10201149425287348,
+      0.004310344827586243
+    ],
+    "mean_macro_f1_delta_ci_95": [
+      -0.3035476571379738,
+      -0.20484413045466676
+    ]
+  },
+  "failure_diagnosis": {
+    "input_truncation_count": 0,
+    "maximum_prompt_tokens": 468,
+    "context_limit_tokens": 4096,
+    "canonical_reversed_agreement": {
+      "shock_scope": "0/196",
+      "event_family": "3/196",
+      "information_status": "0/196",
+      "directional_alignment": "0/21"
+    },
+    "probe": {
+      "input_split": "development",
+      "row": 1,
+      "field": "shock_scope",
+      "immediate_top_token_id": 29871,
+      "immediate_top_token_description": "leading whitespace",
+      "immediate_top_token_log_probability": -0.0000019073468138230965,
+      "greedy_prefix": " Based on the provided article and target",
+      "candidate_token_ids_match_rendered_assistant_continuations": true
+    },
+    "conclusion": "The v1.0 decoder scores option letters before the chat model's near-deterministic leading whitespace/explanatory response, so letter and option-position priors overwhelm semantic evidence. This is not a parsing or truncation failure."
+  },
+  "local_artifacts": {
+    "development_predictions": "outputs/llama_2/v1_0/development_predictions.jsonl",
+    "evaluation_predictions": "outputs/llama_2/v1_0/evaluation_predictions.jsonl",
+    "evaluation_report": "outputs/llama_2/v1_0/evaluation_agreement.json",
+    "failure_diagnostics": "outputs/llama_2/v1_0/failure_diagnostics.json",
+    "next_token_probe": "outputs/llama_2/v1_0/next_token_probe_dev_row1_scope.json"
+  }
+}

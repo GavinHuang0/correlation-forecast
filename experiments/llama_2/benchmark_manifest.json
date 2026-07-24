@@ -1,0 +1,73 @@
+{
+  "manifest_version": "llama-2-static-benchmark-contract-v1",
+  "dataset_id": "shared-alpha-vantage-summary-benchmark-300",
+  "purpose": "Paired engineering comparison against the active FLAN-T5-Large v0.4 research baseline.",
+  "model_eligibility": {
+    "model_id": "meta-llama/Llama-2-7b-chat-hf",
+    "model_revision": "f5db02db724555f92da89c216ac04704f23d4590",
+    "documented_pretraining_cutoff": "2022-09",
+    "documented_latest_tuning_data": "2023-07",
+    "conservative_data_cutoff": "2023-07-31",
+    "article_date_min_utc": "2024-01-02T18:34:09.000Z",
+    "article_date_max_utc": "2024-12-27T17:55:58.000Z",
+    "all_records_after_conservative_cutoff": true,
+    "records_on_or_before_cutoff": 0,
+    "eligibility_rule": "Every source article must be strictly later than the latest documented tuning-data month, represented conservatively as 2023-07-31."
+  },
+  "full_input": {
+    "path": "outputs/flan_t5/shared/benchmark_300/annotation_batches/all_inputs.jsonl",
+    "count": 300,
+    "sha256": "7254ae0efc78e6698161f1b9a638c232c1f511a160492b77810fb8949b7842d6"
+  },
+  "development": {
+    "source_path": "outputs/flan_t5/shared/benchmark_300/annotation_batches/coarse_v0_3_development_inputs.jsonl",
+    "llama_local_path": "outputs/llama_2/shared/benchmark_300/development_inputs.jsonl",
+    "count": 72,
+    "ordered_ids_sha256": "195e844af9e1955eec6ca1d64355572439f726a39679f7bae016b2d6ce0439ae",
+    "sha256": "44920068fa6806f2397609b9181d96e506ee0f729c8b1a42dd950e85278b4014"
+  },
+  "evaluation": {
+    "source_path": "outputs/flan_t5/shared/benchmark_300/annotation_batches/coarse_v0_3_evaluation_inputs.jsonl",
+    "llama_local_path": "outputs/llama_2/shared/benchmark_300/evaluation_inputs.jsonl",
+    "count": 228,
+    "reference_relevant_count": 174,
+    "ordered_ids_sha256": "e8125fe21a9f16f2aebe444d5c39bc99f164632cd20bc73e2a24e6c6a13839f3",
+    "sha256": "92cf5da0dcb26d186f416885528f6453fac81b26fa5b277025063b4ae070ac83"
+  },
+  "reference": {
+    "type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+    "path": "annotations/chatgpt_5_6_sol_reference_coarse_v0_2.jsonl",
+    "fine_provenance_path": "annotations/chatgpt_5_6_sol_reference.jsonl",
+    "count": 300,
+    "sha256": "d765d236c423a7f3ccebcc1c9b3336462458b40862c69f554e01a6fa4bd97ce1",
+    "fine_provenance_sha256": "94ae2481611fc2a88ce3ff2a16c6c2945c4083be2ef787810c1d1bb1f50967b7",
+    "exposed_to_extractor": false,
+    "new_gpt_labeling_required": false
+  },
+  "schema": {
+    "path": "config/news_feature_schema_coarse.json",
+    "version": "0.2.0",
+    "sha256": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa"
+  },
+  "active_baseline": {
+    "name": "flan-t5-large-v0.4",
+    "registry_path": "experiments/flan_t5/active_baseline.json",
+    "prediction_path": "outputs/flan_t5/v0_4/flan_t5_v0_4_evaluation_hybrid.jsonl",
+    "prediction_sha256": "03c69229424caf6dfcd602ff6ed91b7670f222075176888a2d258d13046daa38",
+    "summary_path": "experiments/flan_t5/v0_4/evaluation_summary.json"
+  },
+  "split_policy": {
+    "development_use": "Environment and prompt-contract checks only; do not tune on evaluation labels.",
+    "evaluation_use": "Run once after model revision, quantization, prompt, schema, chat template, and decoder are frozen.",
+    "split_overlap_count": 0,
+    "split_union_count": 300,
+    "recompute_split": false
+  },
+  "limitations": [
+    "This is an engineering benchmark already used during FLAN protocol development, not a pristine external holdout.",
+    "The references are GPT-5.6 Sol silver labels, not human ground truth.",
+    "The inputs are Alpha Vantage headlines plus summaries, not reliably versioned full articles.",
+    "The summaries lack first-seen and revision timestamps, so the benchmark tests extraction rather than historical trading availability.",
+    "Some evaluation classes are rare."
+  ]
+}

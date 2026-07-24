@@ -1,0 +1,65 @@
+{
+  "manifest_version": "flan-t5-organization-v2",
+  "created_date": "2026-07-23",
+  "purpose": "Expose only the active v0.4 baseline and shared benchmark at the FLAN output top level while retaining prior experiments under archive.",
+  "tree_hash_method": "SHA-256 of UTF-8 lines sorted by absolute file name, each line formatted as relative/path<TAB>size_bytes<TAB>file_sha256; relative paths use forward slashes.",
+  "namespaces": [
+    {
+      "path": "outputs/flan_t5/v0_4",
+      "status": "active",
+      "file_count": 11,
+      "total_size_bytes": 3279007,
+      "tree_sha256": "23343a5b8940b04e7af28780fae1830c108285e99e6cb217c103560714457f29"
+    },
+    {
+      "path": "outputs/flan_t5/shared",
+      "status": "active_shared_dataset",
+      "file_count": 14,
+      "total_size_bytes": 6441574,
+      "tree_sha256": "eda33452e9b9f4ad3c7888a6770e23f0df15f47e3c9c71eb2c81734ed4fc521a"
+    },
+    {
+      "path": "outputs/flan_t5/archive/v0_1",
+      "status": "archived",
+      "file_count": 7,
+      "total_size_bytes": 937200,
+      "tree_sha256": "cb9e62bed9739ee7753a02d179ee9bf73ddf7e59669c26f439c86d5f93fcd639"
+    },
+    {
+      "path": "outputs/flan_t5/archive/v0_2",
+      "status": "archived",
+      "file_count": 16,
+      "total_size_bytes": 1277308,
+      "tree_sha256": "a298c80890e48809e1f28d004b06c3d16afa1b87ca193be413bec0ce1618455e"
+    },
+    {
+      "path": "outputs/flan_t5/archive/v0_3",
+      "status": "archived",
+      "file_count": 18,
+      "total_size_bytes": 1019491,
+      "tree_sha256": "997ea3dc0ecb96dd03952f4c3ef838c6d9e20b7478ca4c9484e1c0c2453a8423"
+    },
+    {
+      "path": "outputs/flan_t5/archive/v0_5",
+      "status": "archived_rejected",
+      "file_count": 15,
+      "total_size_bytes": 3339742,
+      "tree_sha256": "87710b20fe5430fa646712681a5c7167daba15eaab0321175f502f86215228ac"
+    }
+  ],
+  "active_v0_4_compatibility_copies": [
+    {
+      "source": "outputs/flan_t5/archive/v0_2/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl",
+      "destination": "outputs/flan_t5/v0_4/dependencies/v0_2_fine/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl",
+      "size_bytes": 786360,
+      "sha256": "758b14c285f61d9d621ee5321b6114acb862ade4515268687664b8f44bbe197a"
+    },
+    {
+      "source": "outputs/flan_t5/archive/v0_2/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl.manifest.json",
+      "destination": "outputs/flan_t5/v0_4/dependencies/v0_2_fine/flan_t5_v0_2_core_predictions_cuda_fp16.jsonl.manifest.json",
+      "size_bytes": 4883,
+      "sha256": "9a34fa3d993d2bf18ac51885a2a4da10b6a54c055c54a7fb554c6cfce12206ac"
+    }
+  ],
+  "historical_lock_policy": "Completed run manifests and the v0.5 protocol lock are not rewritten; their original paths remain historical evidence."
+}

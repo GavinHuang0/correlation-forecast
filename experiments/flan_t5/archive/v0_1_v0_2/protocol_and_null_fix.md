@@ -2,7 +2,7 @@
 
 This benchmark measures agreement between frozen `google/flan-t5-large` predictions and 300 GPT-5.6 Sol silver-reference annotations. It does not treat GPT-5.6 Sol as objective ground truth.
 
-The null-output fix described below is the v0.2 baseline. The subsequent accuracy-improvement implementation, fixed-split results, and complete reproduction commands are documented in [`flan_t5_v0_4_results.md`](flan_t5_v0_4_results.md).
+The null-output fix described below is the v0.2 baseline. The subsequent accuracy-improvement implementation, fixed-split results, and complete reproduction commands are documented in the active [`v0.4 README`](../../v0_4/README.md).
 
 ## Why the first run returned null labels
 
@@ -93,8 +93,8 @@ This validates all 300 records and constructs the 2,700 primary prompts without 
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\extract_flan_t5.py `
-  --input outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_predictions.jsonl `
+  --input outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
+  --output outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_predictions.jsonl `
   --revision 0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a `
   --prompt-version flan-stock-sector-news-v0.2.0 `
   --closed-label-decoding constrained `
@@ -109,8 +109,8 @@ Use a new output path; do not overwrite the archived v0.1 predictions.
 ```powershell
 $env:HF_HUB_OFFLINE = "1"
 .\.venv\Scripts\python.exe scripts\extract_flan_t5.py `
-  --input outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_smoke20.jsonl `
+  --input outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
+  --output outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_smoke20.jsonl `
   --revision 0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a `
   --prompt-version flan-stock-sector-news-v0.2.0 `
   --closed-label-decoding constrained `
@@ -128,9 +128,9 @@ Evaluate the subset with:
 ```powershell
 .\.venv\Scripts\python.exe scripts\evaluate_flan_agreement.py `
   --reference annotations\chatgpt_5_6_sol_reference.jsonl `
-  --predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_smoke20.jsonl `
-  --inputs outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_smoke20_agreement.json `
+  --predictions outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_smoke20.jsonl `
+  --inputs outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
+  --output outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_smoke20_agreement.json `
   --allow-subset
 ```
 
@@ -141,8 +141,8 @@ Do not start the 300-record run unless the smoke report has a 100% primary valid
 ```powershell
 $env:HF_HUB_OFFLINE = "1"
 .\.venv\Scripts\python.exe scripts\extract_flan_t5.py `
-  --input outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_predictions.jsonl `
+  --input outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
+  --output outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_predictions.jsonl `
   --revision 0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a `
   --prompt-version flan-stock-sector-news-v0.2.0 `
   --closed-label-decoding constrained `
@@ -167,9 +167,9 @@ The primary run performs 2,700 field-level generations. `--mode full` performs 4
 ```powershell
 .\.venv\Scripts\python.exe scripts\evaluate_flan_agreement.py `
   --reference annotations\chatgpt_5_6_sol_reference.jsonl `
-  --predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_predictions.jsonl `
-  --inputs outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_agreement.json
+  --predictions outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_predictions.jsonl `
+  --inputs outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
+  --output outputs\flan_t5\archive\v0_2\flan_t5_v0_2_core_agreement.json
 ```
 
 The report includes macro-F1, Cohen's kappa, per-class metrics, confusion matrices, and output-format validity. Channel, entity, and evidence metrics are reported only for a `full` extraction.

@@ -1,0 +1,99 @@
+{
+  "summary_version": "flan-t5-v0.5-rejected-summary-v1",
+  "status": "rejected",
+  "promoted": false,
+  "model": {
+    "id": "google/flan-t5-large",
+    "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+    "device": "cuda",
+    "precision": "float16"
+  },
+  "protocol": {
+    "version": "0.5.0",
+    "prompt_version": "flan-stock-sector-news-binary-v0.5.0",
+    "selector_version": "flan-stock-sector-news-selector-v0.5.0",
+    "promotion_rule": "flan-t5-final-promotion-v1"
+  },
+  "sample": {
+    "development_records": 72,
+    "evaluation_records": 228,
+    "evaluation_reference_relevant_records": 174
+  },
+  "aggregate_metrics": {
+    "candidate_mean_macro_f1": 0.3479970569179391,
+    "baseline_v0_4_mean_macro_f1": 0.4457475542607053,
+    "mean_macro_f1_delta": -0.0977504973427662,
+    "candidate_mean_accuracy": 0.4209770114942529,
+    "baseline_v0_4_mean_accuracy": 0.4942528735632184,
+    "mean_accuracy_delta": -0.07327586206896552
+  },
+  "candidate_field_metrics": {
+    "shock_scope": {
+      "accuracy": 0.41379310344827586,
+      "macro_f1": 0.26339127305169463,
+      "cohens_kappa": 0.06505820997734804
+    },
+    "event_family": {
+      "accuracy": 0.3505747126436782,
+      "macro_f1": 0.3212285979477363,
+      "cohens_kappa": 0.24411809933876671
+    },
+    "information_status": {
+      "accuracy": 0.5287356321839081,
+      "macro_f1": 0.6232223784966401,
+      "cohens_kappa": 0.3675531914893617
+    },
+    "directional_alignment": {
+      "accuracy": 0.39080459770114945,
+      "macro_f1": 0.1841459781756853,
+      "cohens_kappa": 0.018988351683421
+    }
+  },
+  "baseline_v0_4_field_metrics": {
+    "shock_scope": {
+      "accuracy": 0.5057471264367817,
+      "macro_f1": 0.37236735153753914
+    },
+    "event_family": {
+      "accuracy": 0.4827586206896552,
+      "macro_f1": 0.4522737912262085
+    },
+    "information_status": {
+      "accuracy": 0.5287356321839081,
+      "macro_f1": 0.6232223784966401
+    },
+    "directional_alignment": {
+      "accuracy": 0.45977011494252873,
+      "macro_f1": 0.3351266957824335
+    }
+  },
+  "bootstrap": {
+    "samples": 10000,
+    "seed": 20260723,
+    "positive_delta_fraction": 0.0,
+    "mean_delta": -0.09507003917915965,
+    "percentile_2_5": -0.13881377521595228,
+    "percentile_97_5": -0.05387698545422104
+  },
+  "promotion_checks": {
+    "mean_macro_f1_delta_at_least_0_02": false,
+    "mean_accuracy_delta_at_least_0_01": false,
+    "no_field_macro_f1_drop_exceeds_0_02": false,
+    "mixed_scope_f1_is_nonzero": true,
+    "one_target_field_macro_f1_gain_at_least_0_05": false,
+    "valid_and_nontruncated_rate_is_100_percent": true,
+    "paired_bootstrap_positive_delta_fraction_at_least_0_95": false
+  },
+  "integrity": {
+    "protocol_lock_sha256": "d167cb3c19d41bb1568cd4e5c864d2381539aaa8e15fd6e5db127c0f62b1f5df",
+    "calibration_sha256": "c272c7a9265c12c73e7255c179aad93851c692f9d7d68d4ec9b3c3af40bae3a9",
+    "evaluation_raw_scores_sha256": "88f728b01ccf89484a8910dd7eba9bf8bcac2ab7ccf40f9f3b1dad6de1f93b68",
+    "evaluation_predictions_sha256": "9da75de081cec66ed502a39068de527e7ab091a861958cec61c3516b6d65241d",
+    "evaluation_report_sha256": "7435753a41dabbc738b53ea32881df3e9380e28542f674f1be70d37754047ef7",
+    "local_artifact_manifest_sha256": "5db31df601a0fa8fe4c96a49a7aeeda437af17683bc91f879137e6678820f7e1"
+  },
+  "historical_local_artifact_namespace": "outputs/flan_t5/legacy/v0_5",
+  "current_archive_namespace": "outputs/flan_t5/archive/v0_5",
+  "active_frozen_version": null,
+  "warning": "The existing evaluation split informed protocol diagnosis and is an engineering comparison, not a pristine scientific holdout."
+}

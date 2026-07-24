@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "description": "Fixed liquid-stock universe for stock-sector coupling research.",
+  "timeframe": "15Min",
+  "feed": "sip",
+  "adjustment": "all",
+  "regular_session_only": true,
+  "controls": ["SPY"],
+  "sectors": [
+    {
+      "name": "Semiconductors",
+      "benchmark": "SOXX",
+      "stocks": ["AMD", "NVDA", "INTC", "MU", "AVGO", "QCOM"]
+    },
+    {
+      "name": "Financials",
+      "benchmark": "XLF",
+      "stocks": ["JPM", "BAC", "WFC", "C", "GS", "MS"]
+    },
+    {
+      "name": "Energy",
+      "benchmark": "XLE",
+      "stocks": ["XOM", "CVX", "COP", "EOG", "SLB", "MPC"]
+    },
+    {
+      "name": "Health Care",
+      "benchmark": "XLV",
+      "stocks": ["JNJ", "MRK", "PFE", "ABBV", "AMGN", "GILD"]
+    },
+    {
+      "name": "Industrials",
+      "benchmark": "XLI",
+      "stocks": ["CAT", "DE", "UNP", "BA", "UPS", "LMT"]
+    }
+  ]
+}

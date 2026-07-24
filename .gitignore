@@ -7,6 +7,8 @@
 
 # Python environments and caches
 .venv/
+.venv-llama2/
+.venv-flan-t5-xl/
 venv/
 node_modules/
 __pycache__/

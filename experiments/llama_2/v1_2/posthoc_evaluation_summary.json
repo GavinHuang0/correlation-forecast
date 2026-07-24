@@ -1,0 +1,48 @@
+{
+  "title": "Llama 2 v1.2 fieldwise-hybrid post-hoc 228-document result",
+  "split": "previously inspected 228-document evaluation split",
+  "confirmatory": false,
+  "reference_relevant_count": 174,
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "metrics": {
+    "mean_field_accuracy": 0.5373563218390804,
+    "mean_macro_f1": 0.2801100549510289,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5459770114942529,
+        "macro_f1": 0.19527168234064787,
+        "model_origin_dominant_prediction_share": 0.976878612716763
+      },
+      "event_family": {
+        "accuracy": 0.5172413793103449,
+        "macro_f1": 0.4491717162524616,
+        "model_origin_dominant_prediction_share": 0.26011560693641617
+      },
+      "information_status": {
+        "accuracy": 0.5402298850574713,
+        "macro_f1": 0.25724682121100617,
+        "model_origin_dominant_prediction_share": 0.9595375722543352
+      },
+      "directional_alignment": {
+        "accuracy": 0.5459770114942529,
+        "macro_f1": 0.21875,
+        "model_origin_dominant_prediction_share": 0.631578947368421
+      }
+    }
+  },
+  "comparison_vs_llama_v1_0": {
+    "mean_field_accuracy_delta": 0.09195402298850575,
+    "mean_macro_f1_delta": 0.09168132594484316
+  },
+  "comparison_vs_flan_t5_v0_4": {
+    "mean_field_accuracy_delta": 0.04310344827586199,
+    "mean_macro_f1_delta": -0.16563749930967636
+  },
+  "conclusion": "The answer-boundary fix makes Llama 2 competitive for event_family, but v1.2 is not an all-field replacement for FLAN v0.4 because scope and status remain heavily majority-dominated.",
+  "recommended_use": "event-family specialist and research candidate only",
+  "generated_report": {
+    "path": "outputs/llama_2/v1_2/evaluation_agreement.json",
+    "sha256": "6ec13f534c9e5199db1daa415cd2eacb3519a79c08c594a99b195951865b0ad6"
+  },
+  "claim_limit": "Observed post-hoc agreement improvement; no confirmatory significance claim. A fresh external holdout is required."
+}

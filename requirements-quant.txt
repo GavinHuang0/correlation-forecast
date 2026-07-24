@@ -1,0 +1,4 @@
+# Core correlation, additional-feature, and rolling factor construction.
+numpy>=2.0,<3
+pandas>=2.2,<4
+pyarrow>=16,<24

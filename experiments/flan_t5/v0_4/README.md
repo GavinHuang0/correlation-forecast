@@ -1,6 +1,12 @@
-# FLAN-T5-Large v0.4 Accuracy-Improvement Experiment
+# FLAN-T5-Large v0.4 Active Research Baseline
 
 ## Outcome
+
+v0.4 is the repository's **active research baseline**. It may be used for
+exploratory feature extraction, integration tests, and paired model
+comparisons. It is not production-ready: none of its four semantic fields
+passed the preregistered macro-F1 thresholds. The machine-readable pointer is
+[`../active_baseline.json`](../active_baseline.json).
 
 The repository now implements the recommended FLAN-T5-Large improvements without changing the model:
 
@@ -34,13 +40,13 @@ The model, tokenizer, schema, inputs, deterministic-rule module, prompt-building
 
 | File | Role |
 |---|---|
-| [`scripts/coarse_news_features.py`](../scripts/coarse_news_features.py) | Fine-to-coarse mapping, deterministic relevance gate, explicit-surprise rules, and stable stratified split |
-| [`scripts/prepare_flan_coarse_benchmark.py`](../scripts/prepare_flan_coarse_benchmark.py) | Recreate the coarsened silver reference and 72/228 input split |
-| [`scripts/extract_flan_t5_coarse.py`](../scripts/extract_flan_t5_coarse.py) | Run hierarchical FLAN inference and all supported decoding ablations |
-| [`scripts/evaluate_flan_coarse_sanity.py`](../scripts/evaluate_flan_coarse_sanity.py) | Evaluate the checked-in synthetic sanity set and enforce its optional failure gate |
-| [`scripts/evaluate_flan_coarse.py`](../scripts/evaluate_flan_coarse.py) | Compute gate, surprise, semantic, majority-baseline, and mapped-v0.2 comparisons |
-| [`scripts/combine_flan_coarse_hybrid.py`](../scripts/combine_flan_coarse_hybrid.py) | Apply the field choice frozen on the 72-record development split |
-| [`scripts/summarize_flan_coarse_report.py`](../scripts/summarize_flan_coarse_report.py) | Produce the compact checked-in result from the locked pure and hybrid reports |
+| [`scripts/coarse_news_features.py`](../../../scripts/coarse_news_features.py) | Fine-to-coarse mapping, deterministic relevance gate, explicit-surprise rules, and stable stratified split |
+| [`scripts/prepare_flan_coarse_benchmark.py`](../../../scripts/prepare_flan_coarse_benchmark.py) | Recreate the coarsened silver reference and 72/228 input split |
+| [`scripts/extract_flan_t5_coarse.py`](../../../scripts/extract_flan_t5_coarse.py) | Run hierarchical FLAN inference and all supported decoding ablations |
+| [`scripts/evaluate_flan_coarse_sanity.py`](../../../scripts/evaluate_flan_coarse_sanity.py) | Evaluate the checked-in synthetic sanity set and enforce its optional failure gate |
+| [`scripts/evaluate_flan_coarse.py`](../../../scripts/evaluate_flan_coarse.py) | Compute gate, surprise, semantic, majority-baseline, and mapped-v0.2 comparisons |
+| [`scripts/combine_flan_coarse_hybrid.py`](../../../scripts/combine_flan_coarse_hybrid.py) | Apply the field choice frozen on the 72-record development split |
+| [`scripts/summarize_flan_coarse_report.py`](../../../scripts/summarize_flan_coarse_report.py) | Produce the compact checked-in result from the locked pure and hybrid reports |
 
 Version numbers refer to different artifacts: the original fine schema is v0.1.0, the coarse schema is v0.2.0, the fixed split retains the internal `coarse_v0_3` filename/seed, and the final FLAN prompt contract is v0.4.0.
 
@@ -55,7 +61,7 @@ The LLM now predicts only:
 | `information_status` | `confirmed`, `anticipated`, `rumor_or_opinion`, `unclear` |
 | `directional_alignment` | `single_firm_only`, `same_direction`, `opposite_direction`, `common_direction_unclear`, `unclear` |
 
-The complete definitions and deterministic mapping from the original fine labels are in [`config/news_feature_schema_coarse.json`](../config/news_feature_schema_coarse.json).
+The complete definitions and deterministic mapping from the original fine labels are in [`config/news_feature_schema_coarse.json`](../../../config/news_feature_schema_coarse.json).
 
 The non-LLM layer records:
 
@@ -144,10 +150,10 @@ The synthetic sanity set also failed its near-perfect acceptance gate. The best 
 ```powershell
 .\.venv\Scripts\python.exe scripts\prepare_flan_coarse_benchmark.py `
   --reference annotations\chatgpt_5_6_sol_reference.jsonl `
-  --inputs outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
+  --inputs outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
   --coarse-reference-output annotations\chatgpt_5_6_sol_reference_coarse_v0_2.jsonl `
-  --development-input-output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\coarse_v0_3_development_inputs.jsonl `
-  --evaluation-input-output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\coarse_v0_3_evaluation_inputs.jsonl
+  --development-input-output outputs\flan_t5\shared\benchmark_300\annotation_batches\coarse_v0_3_development_inputs.jsonl `
+  --evaluation-input-output outputs\flan_t5\shared\benchmark_300\annotation_batches\coarse_v0_3_evaluation_inputs.jsonl
 ```
 
 ### 2. Run the pure v0.4 evaluation extraction
@@ -155,8 +161,8 @@ The synthetic sanity set also failed its near-perfect acceptance gate. The best 
 ```powershell
 $env:HF_HUB_OFFLINE = "1"
 .\.venv\Scripts\python.exe scripts\extract_flan_t5_coarse.py `
-  --input outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\coarse_v0_3_evaluation_inputs.jsonl `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_zero_order_averaged.jsonl `
+  --input outputs\flan_t5\shared\benchmark_300\annotation_batches\coarse_v0_3_evaluation_inputs.jsonl `
+  --output outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_zero_order_averaged.jsonl `
   --schema config\news_feature_schema_coarse.json `
   --revision 0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a `
   --decoding order_averaged_letter_score `
@@ -174,10 +180,10 @@ Use `--validate-only` first to validate all records and rendered prompts without
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\combine_flan_coarse_hybrid.py `
-  --coarse-predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_zero_order_averaged.jsonl `
-  --fine-v0-2-predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_predictions_cuda_fp16.jsonl `
+  --coarse-predictions outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_zero_order_averaged.jsonl `
+  --fine-v0-2-predictions outputs\flan_t5\v0_4\dependencies\v0_2_fine\flan_t5_v0_2_core_predictions_cuda_fp16.jsonl `
   --schema config\news_feature_schema_coarse.json `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_hybrid.jsonl `
+  --output outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_hybrid.jsonl `
   --overwrite
 ```
 
@@ -186,17 +192,17 @@ Use `--validate-only` first to validate all records and rendered prompts without
 ```powershell
 .\.venv\Scripts\python.exe scripts\evaluate_flan_coarse.py `
   --reference annotations\chatgpt_5_6_sol_reference.jsonl `
-  --predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_hybrid.jsonl `
-  --inputs outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\annotation_batches\all_inputs.jsonl `
+  --predictions outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_hybrid.jsonl `
+  --inputs outputs\flan_t5\shared\benchmark_300\annotation_batches\all_inputs.jsonl `
   --schema config\news_feature_schema_coarse.json `
-  --old-fine-predictions outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_2_core_predictions_cuda_fp16.jsonl `
+  --old-fine-predictions outputs\flan_t5\v0_4\dependencies\v0_2_fine\flan_t5_v0_2_core_predictions_cuda_fp16.jsonl `
   --split evaluation `
-  --output outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_hybrid_agreement.json
+  --output outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_hybrid_agreement.json
 
 .\.venv\Scripts\python.exe scripts\summarize_flan_coarse_report.py `
-  --hybrid-report outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_hybrid_agreement.json `
-  --pure-report outputs\019f85b5-0b78-7bf1-8eb8-df198bfb385d\flan_t5_v0_4_evaluation_zero_order_averaged_agreement.json `
-  --output reports\flan_t5_v0_4_evaluation_summary.json
+  --hybrid-report outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_hybrid_agreement.json `
+  --pure-report outputs\flan_t5\v0_4\flan_t5_v0_4_evaluation_zero_order_averaged_agreement.json `
+  --output experiments\flan_t5\v0_4\evaluation_summary.json
 ```
 
 All generated model outputs remain Git-ignored. The compact result and source-code/configuration needed to reproduce it are checked in.

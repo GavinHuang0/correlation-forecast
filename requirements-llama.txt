@@ -1,0 +1,6 @@
+-r requirements-llm.txt
+
+# Install the hardware-appropriate PyTorch build separately before this file.
+# Llama 2 7B Chat uses frozen NF4 loading on the 8 GiB local NVIDIA GPU.
+transformers>=4.56,<5
+bitsandbytes>=0.45,<1

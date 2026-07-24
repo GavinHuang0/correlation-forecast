@@ -1,0 +1,48 @@
+{
+  "title": "Llama 2 v1.1 answer-boundary development result",
+  "split": "fixed 72-document development split",
+  "reference_relevant_count": 56,
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "decoder": "exact Answer: assistant cue with all cyclic option rotations",
+  "v1_0": {
+    "mean_field_accuracy": 0.4241071428571428,
+    "mean_macro_f1": 0.17298584216571317
+  },
+  "v1_1_full_replacement": {
+    "mean_field_accuracy": 0.38839285714285715,
+    "mean_macro_f1": 0.2630271640234599,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.17857142857142858,
+        "macro_f1": 0.10732323232323232
+      },
+      "event_family": {
+        "accuracy": 0.6071428571428571,
+        "macro_f1": 0.54781245831666
+      },
+      "information_status": {
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.2907647907647908
+      },
+      "directional_alignment": {
+        "accuracy": 0.23214285714285715,
+        "macro_f1": 0.1062081744205507
+      }
+    }
+  },
+  "delta_vs_v1_0": {
+    "mean_field_accuracy": -0.03571428571428564,
+    "mean_macro_f1": 0.09004132185774671
+  },
+  "promotion_decision": "rejected_as_full_replacement",
+  "failed_checks": [
+    "mean accuracy declined by more than 0.02",
+    "shock-scope macro-F1 did not improve"
+  ],
+  "important_positive_result": "Event-family macro-F1 rose from 0.0594 to 0.5478.",
+  "generated_report": {
+    "path": "outputs/llama_2/v1_1/development_agreement.json",
+    "sha256": "16faee1a6b0d44a1b2c7cf65f6d660f55bc6693181e6f75c136127a36e0e78cc"
+  },
+  "claim_limit": "Development agreement only; not human-ground-truth accuracy."
+}
