@@ -1,0 +1,12 @@
+{
+  "expected_models_present": true,
+  "expected_targets_present": true,
+  "feature_name_leakage_scan_passed": true,
+  "feature_timing_audit_passed": true,
+  "fold_fit_records": 60,
+  "generated_at_utc": "2026-07-25T05:55:08.497183Z",
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "status": "passed"
+}

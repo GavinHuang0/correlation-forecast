@@ -1,0 +1,19 @@
+{
+  "all_dcc_persistence_stationary": true,
+  "all_fitted_parameters_converged": true,
+  "dcc_fits_above_0_995_persistence": 59,
+  "etf_loo_stock_history_identical": true,
+  "expected_fit_count": 180,
+  "failure_count": 0,
+  "failure_free": true,
+  "fit_count": 180,
+  "fit_count_complete": true,
+  "generated_at_utc": "2026-07-25T06:06:08.747685Z",
+  "parameter_information_set": "the first actual test-session row supplies only the preceding official session's lagged RTH return; states then update sequentially",
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "status": "passed",
+  "systems_with_marginal_above_0_995_persistence": 10,
+  "t2_forecast": "sum five recursively forecast covariance/variance matrices, then normalize"
+}

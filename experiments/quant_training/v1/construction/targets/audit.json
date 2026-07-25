@@ -1,0 +1,83 @@
+{
+  "status": "complete",
+  "aligned_return_count_distribution": {
+    "14": 630,
+    "26": 78210
+  },
+  "contracts": {
+    "common_interval_set": true,
+    "complete_official_schedule_required": true,
+    "correlation": "non-demeaned realized correlation",
+    "loo": "equal-weight five-peer simple-return factor per interval",
+    "t1": "current official RTH session",
+    "t2": "component sum over current plus next four sessions"
+  },
+  "date_count": 2637,
+  "expected_normal_rth_return_count": 26,
+  "generated_at_utc": "2026-07-25T04:42:00.090609Z",
+  "input_snapshot": {
+    "actual_hashes_verified": true,
+    "combined_path_and_manifest_hash": "75fb34986677e8d3de4dfcfe5cf98595b949319d3a15840e5852dfb0fe0427ca"
+  },
+  "loo_pair_feature_coverage": {
+    "loo_exp_rc_d": 62808,
+    "loo_exp_rc_m": 57063,
+    "loo_exp_rc_negative_d": 62808,
+    "loo_exp_rc_negative_m": 57063,
+    "loo_exp_rc_negative_q": 54317,
+    "loo_exp_rc_negative_w": 60765,
+    "loo_exp_rc_q": 54317,
+    "loo_exp_rc_w": 60765,
+    "loo_rc_d": 78781,
+    "loo_rc_m": 74123,
+    "loo_rc_negative_d": 78781,
+    "loo_rc_negative_m": 74123,
+    "loo_rc_negative_w": 77795,
+    "loo_rc_w": 77795
+  },
+  "output": {
+    "path": "data\\features\\quant\\training_v1\\correlation_targets_and_loo_features.parquet",
+    "sha256": "b807c704e935ed7422d09cf7f9ff67ed224c96a54071fc49e71f9ef205b63337"
+  },
+  "row_count": 79110,
+  "schema_version": 1,
+  "stock_count": 30,
+  "target_summaries": {
+    "t1_etf": {
+      "first_date": "2016-01-04",
+      "last_date": "2026-06-30",
+      "maximum": 0.9928702688801766,
+      "mean": 0.6839262497651425,
+      "minimum": -0.733131053261702,
+      "std": 0.21966827665891064,
+      "valid_rows": 78840
+    },
+    "t1_loo": {
+      "first_date": "2016-01-04",
+      "last_date": "2026-06-30",
+      "maximum": 0.9891603712739172,
+      "mean": 0.6281662415334108,
+      "minimum": -0.9377484527724811,
+      "std": 0.2534022855253964,
+      "valid_rows": 78840
+    },
+    "t2_etf": {
+      "first_date": "2016-01-04",
+      "last_date": "2026-06-24",
+      "maximum": 0.9844840796611865,
+      "mean": 0.690025329138918,
+      "minimum": -0.2476132611793609,
+      "std": 0.15970252735355117,
+      "valid_rows": 77760
+    },
+    "t2_loo": {
+      "first_date": "2016-01-04",
+      "last_date": "2026-06-24",
+      "maximum": 0.9737769881115494,
+      "mean": 0.6344486904959158,
+      "minimum": -0.7711801689183433,
+      "std": 0.19167488045826223,
+      "valid_rows": 77760
+    }
+  }
+}

@@ -3,7 +3,47 @@
 This directory documents the separate FLAN-T5-XL experiment. It does not
 replace or modify the active FLAN-T5-Large v0.4 baseline.
 
-## Frozen candidate
+## Development outcome
+
+The frozen configuration completed all 72 development documents and produced
+valid, untruncated records. It is **rejected as a production feature
+extractor**. Only the deterministic relevance gate passed its preregistered
+threshold; all four model-produced semantic fields failed.
+
+The development split contains 56 reference-relevant articles:
+
+| Field | Accuracy | Macro-F1 | Required macro-F1 |
+|---|---:|---:|---:|
+| Shock scope | 0.571 | 0.343 | 0.70 |
+| Event family | 0.518 | 0.424 | 0.65 |
+| Information status | 0.643 | 0.612 | 0.70 |
+| Directional alignment | 0.518 | 0.266 | 0.65 |
+| **Mean** | **0.563** | **0.411** | — |
+
+The relevance gate achieved F1 0.932 and semantic coverage 55/56, but those
+are produced by deterministic rules rather than FLAN-T5-XL. The model itself
+showed serious class collapse:
+
+- `mixed` scope recall was zero across 13 reference examples;
+- `supply_capacity` and `other_or_unclear` event recall were both zero;
+- `rumor_or_opinion` recall was 1/15;
+- `same_direction` and `common_direction_unclear` recall were both zero; and
+- canonical/reversed option-order agreement was only 53.2% for scope and
+  43.5% for information status.
+
+On the identical development protocol, XL improved mean macro-F1 only from
+0.388 for the pure FLAN-T5-Large order-averaged run to 0.411. The gain was
+concentrated in scope and alignment; XL was worse on event family and
+information status. It remains a useful scaling experiment, not a reliable
+source of hard labels for forecast training. The 228-document evaluation split
+should remain unrun unless it is needed solely as a locked, documented model
+comparison.
+
+The checked-in machine-readable result is
+[`development_summary.json`](development_summary.json). Generated predictions
+and the full agreement report remain under `outputs/flan_t5_xl/v1_0/`.
+
+## Frozen tested configuration
 
 ```text
 model:          google/flan-t5-xl
@@ -88,7 +128,6 @@ desired, run:
 
 ```powershell
 $env:HF_HUB_OFFLINE = "1"
-$env:PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True"
 .\.venv-flan-t5-xl\Scripts\python.exe scripts\run_flan_t5_xl_coarse.py `
   --input outputs\flan_t5\shared\benchmark_300\annotation_batches\coarse_v0_3_development_inputs.jsonl `
   --output outputs\flan_t5_xl\v1_0\development_smoke_12.jsonl `
@@ -129,10 +168,9 @@ quantized weights.
   --output outputs\flan_t5_xl\v1_0\development_agreement.json
 ```
 
-Do not run the 228 evaluation records yet. First inspect the smoke run, complete
-the 72-record development run, and decide whether the frozen configuration is
-worth evaluating. This preserves the remaining split from another avoidable
-round of post-hoc tuning.
+Do not run the 228 evaluation records for promotion: the development result
+already failed the frozen acceptance thresholds. Preserve that split for a
+future locked comparison or a different extractor.
 
 If CUDA reports out of memory even with candidate and record batch sizes of
 one, stop rather than silently changing precision. The next controlled

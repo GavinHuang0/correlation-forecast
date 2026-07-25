@@ -1,0 +1,113 @@
+{
+  "title": "FLAN-T5-XL v1.0 development evaluation",
+  "status": "rejected_as_production_feature_extractor",
+  "split": "fixed 72-document development split",
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "reference_relevant_count": 56,
+  "semantic_coverage": {
+    "count": 55,
+    "denominator": 56,
+    "rate": 0.9821428571428571
+  },
+  "run_integrity": {
+    "prediction_count": 72,
+    "model_field_call_count": 201,
+    "all_rows_valid": true,
+    "input_truncation_count": 0,
+    "model_id": "google/flan-t5-xl",
+    "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+    "device": "cuda",
+    "precision": "float16",
+    "decoding": "order_averaged_letter_score",
+    "prompt_profile": "zero_shot"
+  },
+  "metrics": {
+    "mean_field_accuracy": 0.5625,
+    "mean_macro_f1": 0.411114178786473,
+    "relevance_gate_f1": 0.9322033898305085,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5714285714285714,
+        "macro_f1": 0.34291666666666665,
+        "cohens_kappa": 0.21265377855887535
+      },
+      "event_family": {
+        "accuracy": 0.5178571428571429,
+        "macro_f1": 0.42377754520611666,
+        "cohens_kappa": 0.3549488054607509
+      },
+      "information_status": {
+        "accuracy": 0.6428571428571429,
+        "macro_f1": 0.611842105263158,
+        "cohens_kappa": 0.4850574712643678
+      },
+      "directional_alignment": {
+        "accuracy": 0.5178571428571429,
+        "macro_f1": 0.26592039800995027,
+        "cohens_kappa": 0.23404255319148937
+      }
+    }
+  },
+  "comparison_on_same_development_protocol": {
+    "flan_t5_large_pure_order_averaged": {
+      "mean_field_accuracy": 0.53125,
+      "mean_macro_f1": 0.387741753957991
+    },
+    "xl_delta": {
+      "mean_field_accuracy": 0.03125,
+      "mean_macro_f1": 0.023372424828482
+    },
+    "llama_2_v1_2_development_selected_hybrid": {
+      "mean_field_accuracy": 0.5535714285714285,
+      "mean_macro_f1": 0.3096530230717564
+    }
+  },
+  "critical_failures": {
+    "zero_recall_classes": {
+      "shock_scope": {
+        "mixed": 13
+      },
+      "event_family": {
+        "supply_capacity": 4,
+        "other_or_unclear": 7
+      },
+      "directional_alignment": {
+        "same_direction": 1,
+        "common_direction_unclear": 18
+      }
+    },
+    "rumor_or_opinion_recall": {
+      "correct": 1,
+      "support": 15,
+      "rate": 0.06666666666666667
+    },
+    "canonical_reversed_agreement": {
+      "shock_scope": 0.532258064516129,
+      "event_family": 0.8225806451612904,
+      "information_status": 0.43548387096774194,
+      "directional_alignment": 1.0
+    }
+  },
+  "threshold_results": {
+    "relevance_gate_f1": true,
+    "shock_scope_macro_f1": false,
+    "event_family_macro_f1": false,
+    "information_status_macro_f1": false,
+    "directional_alignment_macro_f1": false
+  },
+  "decision": {
+    "production_hard_labels": "no_go",
+    "forecast_training_features": "do_not_use_as_general_categorical_inputs",
+    "retention": "documented experimental scaling baseline",
+    "evaluation_split": "preserve_unrun_unless_needed_for_a_locked_comparison"
+  },
+  "generated_artifacts": {
+    "prediction_path": "outputs/flan_t5_xl/v1_0/development_predictions.jsonl",
+    "prediction_sha256": "4fc0442f5bf9357c9dd70437b1594efd8022b3d7330324460468fa87f60c8e6d",
+    "prediction_manifest_path": "outputs/flan_t5_xl/v1_0/development_predictions.jsonl.manifest.json",
+    "prediction_manifest_sha256": "402c80146652cd2a17d7c8841b670e85abc6986ed934fe21f4b90d04b5f6d6f2",
+    "agreement_report_path": "outputs/flan_t5_xl/v1_0/development_agreement.json",
+    "agreement_report_sha256": "aa787a73c44d8c01f0df51c48df0ec9fbc2a1b1af0b049132cdf8765a2b408a6"
+  },
+  "claim_limit": "Agreement with GPT-5.6 silver labels on a development benchmark, not objective human-ground-truth accuracy."
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "fisher_z_mae": 0.2910053203444604,
+    "fisher_z_rmse": 0.36856945697203924,
+    "model": "elastic_xgboost_ensemble",
+    "oos_r2_vs_persistence": 0.4154288283127682,
+    "raw_correlation_mae": 0.14503128414799546,
+    "raw_correlation_rmse": 0.20729352398496226,
+    "rows": 11190,
+    "target": "t1_etf"
+  },
+  {
+    "fisher_z_mae": 0.29228432060270004,
+    "fisher_z_rmse": 0.36995071379269123,
+    "model": "xgboost",
+    "oos_r2_vs_persistence": 0.4110391215924992,
+    "raw_correlation_mae": 0.14563728376152366,
+    "raw_correlation_rmse": 0.20769938197599414,
+    "rows": 11190,
+    "target": "t1_etf"
+  }
+]

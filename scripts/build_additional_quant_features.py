@@ -17,13 +17,14 @@ backfill is complete. Tests use isolated synthetic inputs.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import sys
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Iterable, Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -33,6 +34,9 @@ DEFAULT_CONFIG = Path("config/price_universe.json")
 DEFAULT_REGULAR_DIR = Path("data/prices/alpaca/15min/sip/all")
 DEFAULT_EXTENDED_DIR = Path("data/prices/alpaca-extended/15min/sip/all")
 DEFAULT_OFFICIAL_DIR = Path("data/external/official-quant")
+DEFAULT_CALENDAR = Path(
+    "data/prices/alpaca/calendar/2016-01-01_2026-06-30.json"
+)
 DEFAULT_OUTPUT = Path("data/features/quant/additional_quant_features.parquet")
 
 
@@ -58,7 +62,17 @@ def load_pairs(path: Path) -> list[Pair]:
     return pairs
 
 
-def completed_csv_paths(base: Path) -> list[Path]:
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def completed_csv_paths(
+    base: Path, *, verify_hashes: bool = False
+) -> list[Path]:
     """Return only files with a complete sibling manifest.
 
     The hash is not rechecked here because the source downloader already
@@ -75,8 +89,31 @@ def completed_csv_paths(base: Path) -> list[Path]:
         except (OSError, json.JSONDecodeError):
             continue
         if manifest.get("status") == "complete":
+            expected_hash = str(manifest.get("csv_sha256", ""))
+            if verify_hashes:
+                if not expected_hash:
+                    raise ValueError(
+                        f"Complete input manifest lacks csv_sha256: "
+                        f"{manifest_path}"
+                    )
+                if sha256_file(path) != expected_hash:
+                    raise ValueError(f"Input hash mismatch: {path}")
             paths.append(path)
     return sorted(paths)
+
+
+def snapshot_digest(paths: Sequence[Path]) -> str:
+    """Hash the ordered input paths and their manifest-declared hashes."""
+
+    digest = hashlib.sha256()
+    for path in sorted(paths):
+        manifest_path = path.with_suffix("").with_suffix(".manifest.json")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        digest.update(str(path).replace("\\", "/").encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(str(manifest.get("csv_sha256", "")).encode("ascii"))
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def read_bar_files(paths: Iterable[Path]) -> pd.DataFrame:
@@ -116,42 +153,172 @@ def read_bar_files(paths: Iterable[Path]) -> pd.DataFrame:
     return output
 
 
-def aggregate_regular_bars(bars: pd.DataFrame) -> pd.DataFrame:
+def load_official_sessions(path: Path) -> pd.DatetimeIndex:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("status") != "complete":
+        raise ValueError(f"Calendar is not complete: {path}")
+    sessions = pd.DatetimeIndex(
+        pd.to_datetime([item["date"] for item in payload["sessions"]])
+    ).normalize()
+    if sessions.has_duplicates or not sessions.is_monotonic_increasing:
+        raise ValueError("Official calendar sessions must be unique and sorted")
+    return sessions
+
+
+def load_expected_regular_interval_keys(
+    path: Path,
+) -> dict[pd.Timestamp, frozenset[str]]:
+    """Return the exact official 15-minute bar starts for every session."""
+
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("status") != "complete":
+        raise ValueError(f"Calendar is not complete: {path}")
+    output: dict[pd.Timestamp, frozenset[str]] = {}
+    for item in payload["sessions"]:
+        session = pd.Timestamp(item["date"]).normalize()
+        start = pd.Timestamp(f"{item['date']} {item['open']}")
+        close = pd.Timestamp(f"{item['date']} {item['close']}")
+        if start >= close:
+            raise ValueError(f"Calendar open must precede close: {path}")
+        keys = frozenset(
+            timestamp.strftime("%H:%M:%S")
+            for timestamp in pd.date_range(
+                start, close, freq="15min", inclusive="left"
+            )
+        )
+        if not keys:
+            raise ValueError(f"Calendar session has no 15-minute bars: {session}")
+        output[session] = keys
+    if len(output) != len(payload["sessions"]):
+        raise ValueError("Official calendar sessions must be unique")
+    return output
+
+
+def aggregate_regular_bars(
+    bars: pd.DataFrame,
+    official_sessions: pd.DatetimeIndex | None = None,
+    expected_interval_keys: Mapping[pd.Timestamp, frozenset[str]] | None = None,
+) -> pd.DataFrame:
+    """Build schedule-aware daily regular-session features.
+
+    The opening bar contributes ``log(close/open)``. Later returns are used
+    only across exact 15-minute timestamp gaps, so a missing bar is never
+    compressed into a spurious longer-horizon return.  Reindexing to the
+    official session calendar also prevents lags and close returns from
+    jumping across an entirely missing trading session.
+    """
+
     if bars.empty:
         return pd.DataFrame()
-    ordered = bars.sort_values(["symbol", "timestamp_utc"]).copy()
-    ordered["log_close"] = np.log(ordered["close"].astype(float))
-    ordered["intraday_log_return"] = ordered.groupby(
-        ["symbol", "trade_date"], sort=False
-    )["log_close"].diff()
-    ordered["squared_intraday_return"] = ordered["intraday_log_return"].pow(2)
-    daily = (
-        ordered.groupby(["symbol", "trade_date"], as_index=False)
-        .agg(
-            rth_open=("open", "first"),
-            rth_close=("close", "last"),
-            daily_volume=("volume", "sum"),
-            realized_variance=("squared_intraday_return", "sum"),
-            bar_count=("close", "size"),
+    ordered = bars.sort_values(
+        ["symbol", "trade_date", "timestamp_utc"]
+    ).copy()
+    prices = ordered[["open", "close"]].to_numpy(dtype=float)
+    if not np.isfinite(prices).all() or (prices <= 0).any():
+        raise ValueError("Regular bars contain nonpositive or nonfinite prices")
+    rows: list[dict[str, object]] = []
+    for (symbol, trade_date), group in ordered.groupby(
+        ["symbol", "trade_date"], sort=True
+    ):
+        group = group.sort_values("timestamp_utc")
+        opens = group["open"].to_numpy(dtype=float)
+        closes = group["close"].to_numpy(dtype=float)
+        timestamps = pd.DatetimeIndex(group["timestamp_utc"])
+        observed_keys = frozenset(group["bar_start_et"].astype(str))
+        normalized_date = pd.Timestamp(trade_date).normalize()
+        expected_keys = (
+            expected_interval_keys.get(normalized_date)
+            if expected_interval_keys is not None
+            else None
         )
-        .sort_values(["symbol", "trade_date"])
+        complete_schedule = (
+            expected_keys is None or observed_keys == expected_keys
+        )
+        interval_returns = [math.log(closes[0] / opens[0])]
+        if len(group) > 1:
+            gaps = np.asarray(
+                (timestamps[1:] - timestamps[:-1])
+                / pd.Timedelta(minutes=1),
+                dtype=float,
+            )
+            close_returns = np.diff(np.log(closes))
+            interval_returns.extend(
+                float(value)
+                for gap, value in zip(gaps, close_returns, strict=True)
+                if np.isclose(gap, 15)
+            )
+        if expected_keys is not None:
+            complete_schedule &= len(interval_returns) == len(expected_keys)
+        row = {
+            "symbol": str(symbol),
+            "trade_date": normalized_date,
+            "regular_session_complete": bool(complete_schedule),
+            "expected_return_count": len(expected_keys or observed_keys),
+            "valid_return_count": len(interval_returns),
+            "bar_count": len(group),
+        }
+        if complete_schedule:
+            row.update(
+                {
+                    "rth_open": float(opens[0]),
+                    "rth_close": float(closes[-1]),
+                    "rth_simple_return": float(closes[-1] / opens[0] - 1),
+                    "rth_log_return": float(math.log(closes[-1] / opens[0])),
+                    "daily_volume": float(group["volume"].sum()),
+                    "realized_variance": float(
+                        np.square(interval_returns).sum()
+                    ),
+                }
+            )
+        else:
+            row.update(
+                {
+                    "rth_open": np.nan,
+                    "rth_close": np.nan,
+                    "rth_simple_return": np.nan,
+                    "rth_log_return": np.nan,
+                    "daily_volume": np.nan,
+                    "realized_variance": np.nan,
+                }
+            )
+        rows.append(row)
+    observed = pd.DataFrame(rows)
+    sessions = (
+        pd.DatetimeIndex(official_sessions).normalize()
+        if official_sessions is not None
+        else pd.DatetimeIndex(
+            sorted(observed["trade_date"].unique())
+        ).normalize()
     )
-    daily["realized_volatility"] = np.sqrt(daily["realized_variance"])
-    grouped = daily.groupby("symbol", sort=False)
-    daily["daily_close_return"] = grouped["rth_close"].pct_change(fill_method=None)
-    daily["lagged_realized_volatility"] = grouped["realized_volatility"].shift(1)
-    daily["lagged_daily_volume"] = grouped["daily_volume"].shift(1)
-    trailing_volume = grouped["daily_volume"].transform(
-        lambda values: values.shift(2).rolling(20, min_periods=10).mean()
+    frames: list[pd.DataFrame] = []
+    for symbol, frame in observed.groupby("symbol", sort=True):
+        frame = frame.set_index("trade_date").reindex(sessions)
+        frame.index.name = "trade_date"
+        frame["symbol"] = str(symbol)
+        frame["realized_volatility"] = np.sqrt(frame["realized_variance"])
+        frame["daily_close_return"] = (
+            frame["rth_close"] / frame["rth_close"].shift(1) - 1
+        )
+        frame["lagged_realized_volatility"] = frame[
+            "realized_volatility"
+        ].shift(1)
+        frame["lagged_daily_volume"] = frame["daily_volume"].shift(1)
+        trailing_volume = frame["daily_volume"].shift(2).rolling(
+            20, min_periods=10
+        ).mean()
+        frame["lagged_relative_daily_volume_20d"] = (
+            frame["lagged_daily_volume"] / trailing_volume
+        )
+        frames.append(frame.reset_index())
+    return pd.concat(frames, ignore_index=True).sort_values(
+        ["symbol", "trade_date"]
     )
-    daily["lagged_relative_daily_volume_20d"] = (
-        daily["lagged_daily_volume"] / trailing_volume
-    )
-    return daily
 
 
 def aggregate_extended_bars(
-    bars: pd.DataFrame, session_name: str
+    bars: pd.DataFrame,
+    session_name: str,
+    official_sessions: pd.DatetimeIndex | None = None,
 ) -> pd.DataFrame:
     if bars.empty:
         return pd.DataFrame()
@@ -166,11 +333,26 @@ def aggregate_extended_bars(
         )
         .sort_values(["symbol", "trade_date"])
     )
-    daily[f"{session_name}_return"] = daily["last_close"] / daily["first_open"] - 1
+    if official_sessions is not None:
+        sessions = pd.DatetimeIndex(official_sessions).normalize()
+        frames: list[pd.DataFrame] = []
+        for symbol, frame in daily.groupby("symbol", sort=True):
+            frame = frame.set_index("trade_date").reindex(sessions)
+            frame.index.name = "trade_date"
+            frame["symbol"] = str(symbol)
+            frames.append(frame.reset_index())
+        daily = pd.concat(frames, ignore_index=True).sort_values(
+            ["symbol", "trade_date"]
+        )
+    daily[f"{session_name}_return"] = (
+        daily["last_close"] / daily["first_open"] - 1
+    )
     trailing = daily.groupby("symbol", sort=False)["session_volume"].transform(
         lambda values: values.shift(1).rolling(20, min_periods=10).mean()
     )
-    daily[f"relative_{session_name}_volume_20d"] = daily["session_volume"] / trailing
+    daily[f"relative_{session_name}_volume_20d"] = (
+        daily["session_volume"] / trailing
+    )
     return daily.rename(
         columns={
             "first_open": f"{session_name}_first_open",
@@ -186,14 +368,19 @@ def sector_dispersion(daily: pd.DataFrame, pairs: Sequence[Pair]) -> pd.DataFram
         [{"symbol": pair.stock, "sector": pair.sector} for pair in pairs]
     )
     frame = daily.merge(stock_sector, on="symbol", how="inner")
-    dispersion = (
-        frame.groupby(["sector", "trade_date"], as_index=False)[
-            "daily_close_return"
-        ]
-        .std(ddof=1)
-        .rename(columns={"daily_close_return": "sector_return_dispersion"})
-        .sort_values(["sector", "trade_date"])
+    required = stock_sector.groupby("sector")["symbol"].nunique()
+    dispersion = frame.groupby(["sector", "trade_date"], as_index=False).agg(
+        sector_return_dispersion=("daily_close_return", "std"),
+        observed_stock_count=("daily_close_return", "count"),
     )
+    dispersion["required_stock_count"] = dispersion["sector"].map(required)
+    dispersion.loc[
+        dispersion["observed_stock_count"].ne(
+            dispersion["required_stock_count"]
+        ),
+        "sector_return_dispersion",
+    ] = np.nan
+    dispersion = dispersion.sort_values(["sector", "trade_date"])
     dispersion["lagged_sector_return_dispersion"] = dispersion.groupby(
         "sector", sort=False
     )["sector_return_dispersion"].shift(1)
@@ -360,12 +547,24 @@ def build_panel(
     pairs: Sequence[Pair],
     official_dir: Path,
     include_factor_feature: bool,
+    official_sessions: pd.DatetimeIndex | None = None,
+    expected_regular_interval_keys: (
+        Mapping[pd.Timestamp, frozenset[str]] | None
+    ) = None,
 ) -> pd.DataFrame:
-    daily = aggregate_regular_bars(regular_bars)
+    daily = aggregate_regular_bars(
+        regular_bars,
+        official_sessions,
+        expected_regular_interval_keys,
+    )
     if daily.empty:
         raise ValueError("No completed regular-session bars were found")
-    premarket = aggregate_extended_bars(premarket_bars, "premarket")
-    aftermarket = aggregate_extended_bars(aftermarket_bars, "aftermarket")
+    premarket = aggregate_extended_bars(
+        premarket_bars, "premarket", official_sessions
+    )
+    aftermarket = aggregate_extended_bars(
+        aftermarket_bars, "aftermarket", official_sessions
+    )
     dispersion = sector_dispersion(daily, pairs)
 
     stock_rows = pd.DataFrame(
@@ -378,9 +577,12 @@ def build_panel(
             for pair in pairs
         ]
     )
-    dates = pd.DataFrame(
-        {"forecast_date": sorted(daily["trade_date"].unique())}
+    panel_dates = (
+        pd.DatetimeIndex(official_sessions).normalize()
+        if official_sessions is not None
+        else pd.DatetimeIndex(sorted(daily["trade_date"].unique())).normalize()
     )
+    dates = pd.DataFrame({"forecast_date": panel_dates})
     stock_rows["_key"] = 1
     dates["_key"] = 1
     panel = stock_rows.merge(dates, on="_key").drop(columns="_key")
@@ -423,34 +625,18 @@ def build_panel(
     )
 
     if not premarket.empty:
-        prior_close = daily[
+        previous_close = daily[
             ["symbol", "trade_date", "rth_close"]
         ].sort_values(["symbol", "trade_date"])
-        prior_close = prior_close.rename(
-            columns={
-                "trade_date": "prior_trade_date",
-                "rth_close": "prior_rth_close",
-            }
+        previous_close["prior_rth_close"] = previous_close.groupby(
+            "symbol", sort=False
+        )["rth_close"].shift(1)
+        premarket = premarket.merge(
+            previous_close[["symbol", "trade_date", "prior_rth_close"]],
+            on=["symbol", "trade_date"],
+            how="left",
+            validate="one_to_one",
         )
-        matched_premarket = []
-        for symbol, symbol_premarket in premarket.groupby("symbol", sort=False):
-            symbol_prior = prior_close[prior_close["symbol"] == symbol]
-            if symbol_prior.empty:
-                matched_premarket.append(symbol_premarket)
-                continue
-            matched_premarket.append(
-                pd.merge_asof(
-                    symbol_premarket.sort_values("trade_date"),
-                    symbol_prior.drop(columns="symbol").sort_values(
-                        "prior_trade_date"
-                    ),
-                    left_on="trade_date",
-                    right_on="prior_trade_date",
-                    direction="backward",
-                    allow_exact_matches=False,
-                )
-            )
-        premarket = pd.concat(matched_premarket, ignore_index=True)
         premarket["overnight_return"] = (
             premarket["premarket_last_close"] / premarket["prior_rth_close"] - 1
         )
@@ -485,6 +671,7 @@ def build_panel(
                     "premarket_return",
                     "premarket_volume",
                     "relative_premarket_volume_20d",
+                    "premarket_bar_count",
                 ]
             ].rename(
                 columns={
@@ -494,6 +681,7 @@ def build_panel(
                     "relative_premarket_volume_20d": (
                         "sector_relative_premarket_volume_20d"
                     ),
+                    "premarket_bar_count": "sector_premarket_bar_count",
                 }
             ),
             on=["benchmark", "forecast_date"],
@@ -505,7 +693,7 @@ def build_panel(
 
     if not aftermarket.empty:
         after = aftermarket.sort_values(["symbol", "trade_date"])
-        trading_dates = sorted(daily["trade_date"].unique())
+        trading_dates = list(panel_dates)
         next_session = {
             trading_dates[index]: trading_dates[index + 1]
             for index in range(len(trading_dates) - 1)
@@ -534,6 +722,18 @@ def build_panel(
             how="left",
         )
 
+    availability_sources = {
+        "stock_premarket_available": "premarket_bar_count",
+        "sector_premarket_available": "sector_premarket_bar_count",
+        "stock_prior_aftermarket_available": "prior_aftermarket_return",
+    }
+    for indicator, source in availability_sources.items():
+        panel[indicator] = (
+            panel[source].notna().astype("int8")
+            if source in panel
+            else np.int8(0)
+        )
+
     panel = attach_market_context(panel, official_dir)
     if include_factor_feature:
         factor_feature = rolling_factor_implied_correlations(
@@ -551,8 +751,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--regular-dir", type=Path, default=DEFAULT_REGULAR_DIR)
     parser.add_argument("--extended-dir", type=Path, default=DEFAULT_EXTENDED_DIR)
     parser.add_argument("--official-dir", type=Path, default=DEFAULT_OFFICIAL_DIR)
+    parser.add_argument("--calendar", type=Path, default=DEFAULT_CALENDAR)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--skip-factor-feature", action="store_true")
+    parser.add_argument("--verify-input-hashes", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     return parser
 
@@ -560,9 +762,17 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     pairs = load_pairs(args.config)
-    regular_paths = completed_csv_paths(args.regular_dir)
-    premarket_paths = completed_csv_paths(args.extended_dir / "premarket")
-    aftermarket_paths = completed_csv_paths(args.extended_dir / "aftermarket")
+    regular_paths = completed_csv_paths(
+        args.regular_dir, verify_hashes=args.verify_input_hashes
+    )
+    premarket_paths = completed_csv_paths(
+        args.extended_dir / "premarket",
+        verify_hashes=args.verify_input_hashes,
+    )
+    aftermarket_paths = completed_csv_paths(
+        args.extended_dir / "aftermarket",
+        verify_hashes=args.verify_input_hashes,
+    )
     plan = {
         "mode": "dry-run" if args.dry_run else "build",
         "pair_count": len(pairs),
@@ -573,11 +783,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         "regular_input_access": "read-only",
         "output": str(args.output),
         "factor_implied_correlation": not args.skip_factor_feature,
+        "input_hashes_verified": bool(args.verify_input_hashes),
     }
     print(json.dumps(plan, indent=2))
     if args.dry_run:
         return 0
 
+    official_sessions = load_official_sessions(args.calendar)
+    expected_regular_keys = load_expected_regular_interval_keys(args.calendar)
     panel = build_panel(
         read_bar_files(regular_paths),
         read_bar_files(premarket_paths),
@@ -585,6 +798,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         pairs=pairs,
         official_dir=args.official_dir,
         include_factor_feature=not args.skip_factor_feature,
+        official_sessions=official_sessions,
+        expected_regular_interval_keys=expected_regular_keys,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temp_path = args.output.with_suffix(args.output.suffix + ".tmp")
@@ -604,7 +819,29 @@ def main(argv: Sequence[str] | None = None) -> int:
         "regular_files_snapshotted": [str(path) for path in regular_paths],
         "premarket_files_snapshotted": [str(path) for path in premarket_paths],
         "aftermarket_files_snapshotted": [str(path) for path in aftermarket_paths],
-        "output": str(args.output),
+        "input_snapshot": {
+            "actual_hashes_verified": bool(args.verify_input_hashes),
+            "regular_digest": snapshot_digest(regular_paths),
+            "premarket_digest": snapshot_digest(premarket_paths),
+            "aftermarket_digest": snapshot_digest(aftermarket_paths),
+            "calendar_path": str(args.calendar),
+            "calendar_sha256": sha256_file(args.calendar),
+        },
+        "parameters": {
+            "official_session_reindex": True,
+            "complete_regular_schedule_required": True,
+            "extended_volume_window": "20 official sessions",
+            "include_factor_feature": not args.skip_factor_feature,
+        },
+        "coverage": {
+            column: int(panel[column].notna().sum())
+            for column in panel.columns
+            if column not in {"sector", "stock", "benchmark", "forecast_date"}
+        },
+        "output": {
+            "path": str(args.output),
+            "sha256": sha256_file(args.output),
+        },
     }
     args.output.with_suffix(args.output.suffix + ".manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"

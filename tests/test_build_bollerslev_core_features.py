@@ -430,6 +430,22 @@ class BollerslevCoreFeatureTests(unittest.TestCase):
         self.assertAlmostEqual(components.iloc[0]["alignment_ratio"], 10 / 27)
         self.assertTrue(np.isnan(components.iloc[0]["realized_covariance"]))
 
+    def test_official_schedule_is_alignment_denominator(self) -> None:
+        day = pd.Timestamp("2024-01-02")
+        left = interval_frame("A", pd.DatetimeIndex([day]), [[0.01] * 20])
+        right = interval_frame("B", pd.DatetimeIndex([day]), [[0.01] * 20])
+        expected = {day: frozenset(f"i{index}" for index in range(27))}
+        components = MODULE.pair_daily_components(
+            left,
+            right,
+            min_aligned_returns=15,
+            min_alignment_ratio=0.8,
+            require_overnight=False,
+            expected_keys=expected,
+        )
+        self.assertAlmostEqual(components.iloc[0]["alignment_ratio"], 20 / 27)
+        self.assertTrue(np.isnan(components.iloc[0]["realized_covariance"]))
+
     def test_relaxed_count_still_requires_recent_exponential_weight(self) -> None:
         recent_missing = np.ones(500)
         recent_missing[-2] = np.nan

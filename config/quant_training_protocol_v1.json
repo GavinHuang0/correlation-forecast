@@ -1,0 +1,93 @@
+{
+  "protocol_version": "1.1",
+  "initial_model_families_folds_and_feature_blocks_locked_before_outer_test_results": true,
+  "outer_test_blocks_used_for_cross_rung_development_ranking": true,
+  "untouched_confirmatory_holdout_remaining": false,
+  "amendments": [
+    {
+      "version": "1.1",
+      "reason": "The pre-specified validation-only boundary expansion rule was omitted from the first JSON transcription. It was restored after the rung-2 review found boundary selections. No outer-test loss is used by the rule.",
+      "changes_model_family_or_feature_block": false
+    }
+  ],
+  "matched_period_start": "2022-11-01",
+  "matched_period_end": "2026-06-30",
+  "target_contract": {
+    "t1": "same-day strict regular-session realized correlation",
+    "t2": "current plus next four official sessions; sum components then normalize",
+    "targets": ["etf", "loo"],
+    "response": "Fisher-z transformed correlation",
+    "common_etf_loo_observations": true
+  },
+  "folds": [
+    {
+      "name": "fold_1",
+      "train_start": "2022-11-01",
+      "train_end": "2024-06-30",
+      "validation_start": "2024-07-01",
+      "validation_end": "2024-12-31",
+      "test_start": "2025-01-01",
+      "test_end": "2025-06-30"
+    },
+    {
+      "name": "fold_2",
+      "train_start": "2022-11-01",
+      "train_end": "2024-12-31",
+      "validation_start": "2025-01-01",
+      "validation_end": "2025-06-30",
+      "test_start": "2025-07-01",
+      "test_end": "2025-12-31"
+    },
+    {
+      "name": "fold_3",
+      "train_start": "2022-11-01",
+      "train_end": "2025-06-30",
+      "validation_start": "2025-07-01",
+      "validation_end": "2025-12-31",
+      "test_start": "2026-01-01",
+      "test_end": "2026-06-30"
+    }
+  ],
+  "linear_alpha_grid": [0.0001, 0.0003, 0.001, 0.003, 0.01, 0.03, 0.1],
+  "linear_alpha_boundary_rule": {
+    "if_minimum_selected": [0.00001, 0.000033333333333333335],
+    "if_maximum_selected": [0.3, 1.0],
+    "selection_information": "validation only"
+  },
+  "elastic_net_l1_ratio_grid": [0.1, 0.5, 0.9, 1.0],
+  "rung_1": {
+    "models": ["persistence", "har_ols", "shar_ols", "core22_ols", "core22_lasso"]
+  },
+  "rung_2": {
+    "models": ["lasso", "elastic_net"],
+    "blocks": ["core_dense", "core_dense_volatility", "core_dense_volatility_extended"],
+    "exclude": ["factor_implied_correlation", "bea_release_day"]
+  },
+  "rung_3": {
+    "models": ["xgboost", "validation_weighted_elastic_xgboost"],
+    "device_preference": "cuda",
+    "candidate_configs": [
+      {"max_depth": 2, "learning_rate": 0.05, "min_child_weight": 20, "subsample": 0.8, "colsample_bytree": 0.8, "reg_lambda": 10},
+      {"max_depth": 3, "learning_rate": 0.05, "min_child_weight": 50, "subsample": 0.8, "colsample_bytree": 1.0, "reg_lambda": 10},
+      {"max_depth": 4, "learning_rate": 0.02, "min_child_weight": 50, "subsample": 1.0, "colsample_bytree": 0.8, "reg_lambda": 10},
+      {"max_depth": 3, "learning_rate": 0.02, "min_child_weight": 20, "subsample": 1.0, "colsample_bytree": 1.0, "reg_lambda": 1}
+    ],
+    "n_estimators": 2000,
+    "early_stopping_rounds": 75,
+    "ensemble_weights_on_xgboost": [0.0, 0.25, 0.5, 0.75, 1.0]
+  },
+  "rung_4": {
+    "model": "bivariate_gaussian_dcc_garch_1_1",
+    "marginal": "gaussian_garch_1_1",
+    "refit": "once before each outer test block",
+    "t2": "five-step covariance and variance sum",
+    "maximum_dcc_persistence": 0.999
+  },
+  "primary_metrics": [
+    "fisher_z_rmse",
+    "fisher_z_mae",
+    "raw_correlation_rmse",
+    "raw_correlation_mae",
+    "oos_r2_vs_persistence"
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "fisher_z_mae": 0.20245469435677216,
+    "fisher_z_rmse": 0.26142898413613297,
+    "model": "core22_lasso",
+    "oos_r2_vs_persistence": 0.22361538639682166,
+    "raw_correlation_mae": 0.11003295518480631,
+    "raw_correlation_rmse": 0.1492957071647567,
+    "rows": 10830,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.20185133931972654,
+    "fisher_z_rmse": 0.26032655372573377,
+    "model": "core22_ols",
+    "oos_r2_vs_persistence": 0.23014951535222294,
+    "raw_correlation_mae": 0.11025250716840937,
+    "raw_correlation_rmse": 0.15035851736132838,
+    "rows": 10830,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.20968305580319377,
+    "fisher_z_rmse": 0.26752290988981114,
+    "model": "har_ols",
+    "oos_r2_vs_persistence": 0.18699838433575844,
+    "raw_correlation_mae": 0.1139505829472552,
+    "raw_correlation_rmse": 0.15382310166786062,
+    "rows": 10830,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.23301540180622604,
+    "fisher_z_rmse": 0.29669844852848615,
+    "model": "persistence",
+    "oos_r2_vs_persistence": 0.0,
+    "raw_correlation_mae": 0.12774186969714965,
+    "raw_correlation_rmse": 0.1724625430583551,
+    "rows": 10830,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.20858671344575713,
+    "fisher_z_rmse": 0.26571470242143785,
+    "model": "shar_ols",
+    "oos_r2_vs_persistence": 0.19795152040995434,
+    "raw_correlation_mae": 0.11335275530927574,
+    "raw_correlation_rmse": 0.1527189793872482,
+    "rows": 10830,
+    "target": "t2_loo"
+  }
+]

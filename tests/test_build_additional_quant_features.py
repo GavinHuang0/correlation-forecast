@@ -71,6 +71,76 @@ class AdditionalQuantFeatureTests(unittest.TestCase):
             daily.iloc[-1]["lagged_relative_daily_volume_20d"] > 0
         )
 
+    def test_regular_aggregation_includes_opening_bar_and_drops_gap(self) -> None:
+        frame = pd.DataFrame(
+            [
+                {
+                    "symbol": "AMD",
+                    "timestamp_utc": "2024-01-02T14:30:00Z",
+                    "trade_date": "2024-01-02",
+                    "bar_start_et": "09:30:00",
+                    "open": 100.0,
+                    "close": 110.0,
+                    "volume": 1,
+                },
+                {
+                    "symbol": "AMD",
+                    "timestamp_utc": "2024-01-02T15:00:00Z",
+                    "trade_date": "2024-01-02",
+                    "bar_start_et": "10:00:00",
+                    "open": 110.0,
+                    "close": 220.0,
+                    "volume": 1,
+                },
+            ]
+        )
+        frame["trade_date"] = pd.to_datetime(frame["trade_date"])
+        frame["timestamp_utc"] = pd.to_datetime(frame["timestamp_utc"], utc=True)
+        result = MODULE.aggregate_regular_bars(frame)
+        self.assertAlmostEqual(
+            result.iloc[0]["realized_variance"], np.log(1.1) ** 2
+        )
+        self.assertEqual(result.iloc[0]["valid_return_count"], 1)
+
+    def test_incomplete_official_schedule_invalidates_daily_quantities(self) -> None:
+        frame = bars(
+            "AMD",
+            ["2024-01-02"],
+            [(100.0, 102.0)],
+        )
+        expected = {
+            pd.Timestamp("2024-01-02"): frozenset(
+                {"09:30:00", "09:45:00", "10:00:00"}
+            )
+        }
+        result = MODULE.aggregate_regular_bars(
+            frame,
+            pd.DatetimeIndex(["2024-01-02"]),
+            expected,
+        ).iloc[0]
+
+        self.assertFalse(result["regular_session_complete"])
+        self.assertTrue(np.isnan(result["realized_variance"]))
+        self.assertTrue(np.isnan(result["rth_log_return"]))
+        self.assertTrue(np.isnan(result["daily_volume"]))
+
+    def test_missing_official_session_breaks_close_return_and_lag(self) -> None:
+        observed = bars(
+            "AMD",
+            ["2024-01-02", "2024-01-04"],
+            [(100, 101), (102, 103)],
+        )
+        sessions = pd.DatetimeIndex(
+            pd.to_datetime(["2024-01-02", "2024-01-03", "2024-01-04"])
+        )
+        result = MODULE.aggregate_regular_bars(observed, sessions).set_index(
+            "trade_date"
+        )
+        self.assertTrue(np.isnan(result.loc[sessions[2], "daily_close_return"]))
+        self.assertTrue(
+            np.isnan(result.loc[sessions[2], "lagged_realized_volatility"])
+        )
+
     def test_premarket_aggregation_uses_current_cutoff_window(self) -> None:
         frame = bars(
             "AMD",
@@ -83,6 +153,27 @@ class AdditionalQuantFeatureTests(unittest.TestCase):
         self.assertAlmostEqual(daily.iloc[0]["premarket_return"], 0.02)
         self.assertEqual(daily.iloc[0]["premarket_volume"], 100)
         self.assertEqual(daily.iloc[0]["premarket_bar_count"], 2)
+
+    def test_extended_volume_window_advances_over_official_sessions(self) -> None:
+        sessions = pd.bdate_range("2024-01-02", periods=31)
+        active = [*sessions[:10], sessions[-1]]
+        frame = bars(
+            "AMD",
+            [value.date().isoformat() for value in active],
+            [(100.0, 101.0)] * len(active),
+            volume=50,
+        )
+        daily = MODULE.aggregate_extended_bars(
+            frame, "premarket", sessions
+        ).set_index("trade_date")
+
+        self.assertTrue(
+            np.isnan(
+                daily.loc[
+                    sessions[-1], "relative_premarket_volume_20d"
+                ]
+            )
+        )
 
     def test_factor_implied_correlation_recovers_common_factor_signal(self) -> None:
         rng = np.random.default_rng(7)

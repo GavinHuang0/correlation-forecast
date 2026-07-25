@@ -69,16 +69,106 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def safetensors_payload_size(path: Path) -> int:
+SAFETENSORS_DTYPE_BYTES = {
+    "BOOL": 1,
+    "U8": 1,
+    "I8": 1,
+    "F8_E4M3": 1,
+    "F8_E5M2": 1,
+    "I16": 2,
+    "U16": 2,
+    "F16": 2,
+    "BF16": 2,
+    "I32": 4,
+    "U32": 4,
+    "F32": 4,
+    "F64": 8,
+    "I64": 8,
+    "U64": 8,
+}
+
+
+def tensor_nbytes(metadata: dict[str, Any]) -> int:
+    dtype = metadata.get("dtype")
+    shape = metadata.get("shape")
+    if dtype not in SAFETENSORS_DTYPE_BYTES:
+        raise RuntimeError(f"Unsupported safetensors dtype: {dtype!r}")
+    if not isinstance(shape, list) or not all(
+        isinstance(dimension, int) and dimension >= 0 for dimension in shape
+    ):
+        raise RuntimeError(f"Invalid safetensors shape: {shape!r}")
+    elements = 1
+    for dimension in shape:
+        elements *= dimension
+    return elements * SAFETENSORS_DTYPE_BYTES[dtype]
+
+
+def safetensors_layout(path: Path) -> tuple[dict[str, dict[str, Any]], int]:
     with path.open("rb") as handle:
         header_size_bytes = handle.read(8)
-    if len(header_size_bytes) != 8:
-        raise RuntimeError(f"Safetensors shard has no complete header: {path.name}")
-    header_size = int.from_bytes(header_size_bytes, byteorder="little", signed=False)
+        if len(header_size_bytes) != 8:
+            raise RuntimeError(f"Safetensors shard has no complete header: {path.name}")
+        header_size = int.from_bytes(
+            header_size_bytes, byteorder="little", signed=False
+        )
+        header_bytes = handle.read(header_size)
+    if header_size <= 0 or len(header_bytes) != header_size:
+        raise RuntimeError(f"Safetensors shard has a truncated header: {path.name}")
+    try:
+        raw_header = json.loads(header_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Safetensors shard has an invalid JSON header: {path.name}") from exc
+    if not isinstance(raw_header, dict):
+        raise RuntimeError(f"Safetensors shard header is not an object: {path.name}")
+    tensors = {
+        name: metadata
+        for name, metadata in raw_header.items()
+        if name != "__metadata__"
+    }
+    if not tensors:
+        raise RuntimeError(f"Safetensors shard contains no tensors: {path.name}")
+
     payload_size = path.stat().st_size - 8 - header_size
-    if header_size <= 0 or payload_size < 0:
+    if payload_size < 0:
         raise RuntimeError(f"Safetensors shard has an invalid header: {path.name}")
-    return payload_size
+    ranges: list[tuple[int, int, str]] = []
+    tensor_bytes = 0
+    for name, metadata in tensors.items():
+        if not isinstance(metadata, dict):
+            raise RuntimeError(f"Invalid metadata for tensor {name!r} in {path.name}")
+        offsets = metadata.get("data_offsets")
+        if (
+            not isinstance(offsets, list)
+            or len(offsets) != 2
+            or not all(isinstance(offset, int) for offset in offsets)
+        ):
+            raise RuntimeError(f"Invalid offsets for tensor {name!r} in {path.name}")
+        start, end = offsets
+        if start < 0 or end < start or end > payload_size:
+            raise RuntimeError(
+                f"Out-of-range offsets for tensor {name!r} in {path.name}"
+            )
+        expected_bytes = tensor_nbytes(metadata)
+        if end - start != expected_bytes:
+            raise RuntimeError(
+                f"Tensor byte count differs from shape/dtype for {name!r} in {path.name}"
+            )
+        ranges.append((start, end, name))
+        tensor_bytes += expected_bytes
+
+    ranges.sort()
+    cursor = 0
+    for start, end, name in ranges:
+        if start != cursor:
+            raise RuntimeError(
+                f"Safetensors payload has a gap or overlap before {name!r} in {path.name}"
+            )
+        cursor = end
+    if cursor != payload_size:
+        raise RuntimeError(
+            f"Safetensors payload is truncated or has trailing bytes: {path.name}"
+        )
+    return tensors, tensor_bytes
 
 
 def snapshot_file_manifest(snapshot_path: Path) -> dict[str, dict[str, Any]]:
@@ -117,13 +207,62 @@ def snapshot_file_manifest(snapshot_path: Path) -> dict[str, dict[str, Any]]:
     declared_total = index.get("metadata", {}).get("total_size")
     if not isinstance(declared_total, int) or declared_total <= 0:
         raise RuntimeError("Cached safetensors index has no valid metadata.total_size")
-    actual_payload_total = sum(
-        safetensors_payload_size(snapshot_path / name) for name in expected_shards
-    )
-    if actual_payload_total != declared_total:
+
+    stored_tensors: dict[str, tuple[str, dict[str, Any]]] = {}
+    actual_tensor_total = 0
+    for shard_name in expected_shards:
+        tensors, shard_tensor_bytes = safetensors_layout(snapshot_path / shard_name)
+        actual_tensor_total += shard_tensor_bytes
+        for tensor_name, metadata in tensors.items():
+            if tensor_name in stored_tensors:
+                raise RuntimeError(
+                    f"Tensor {tensor_name!r} is duplicated across safetensors shards"
+                )
+            stored_tensors[tensor_name] = (shard_name, metadata)
+
+    indexed_names = set(weight_map)
+    unexpected_stored = set(stored_tensors) - indexed_names
+    if unexpected_stored:
         raise RuntimeError(
-            "Cached safetensors payload bytes do not match the index: "
-            f"expected {declared_total}, found {actual_payload_total}"
+            "Safetensors shards contain tensors absent from the index: "
+            f"{sorted(unexpected_stored)}"
+        )
+    for tensor_name, (shard_name, _metadata) in stored_tensors.items():
+        if weight_map[tensor_name] != shard_name:
+            raise RuntimeError(
+                f"Index assigns {tensor_name!r} to a different shard"
+            )
+
+    # This pinned FLAN-T5-XL checkpoint represents the encoder and decoder
+    # embedding parameters as aliases of shared.weight. Safetensors deliberately
+    # stores the underlying bytes only once, while metadata.total_size counts the
+    # two logical aliases. Validate that exact, documented discrepancy rather
+    # than mistaking it for a truncated download.
+    expected_omitted_aliases = {
+        "encoder.embed_tokens.weight",
+        "decoder.embed_tokens.weight",
+    }
+    omitted_indexed_names = indexed_names - set(stored_tensors)
+    if omitted_indexed_names != expected_omitted_aliases:
+        raise RuntimeError(
+            "Unexpected indexed tensors are absent from safetensors storage: "
+            f"{sorted(omitted_indexed_names)}"
+        )
+    if "shared.weight" not in stored_tensors:
+        raise RuntimeError("Safetensors shards do not contain shared.weight")
+    shared_shard, shared_metadata = stored_tensors["shared.weight"]
+    for alias in expected_omitted_aliases:
+        if weight_map[alias] != shared_shard:
+            raise RuntimeError(f"Embedding alias {alias!r} is not mapped with shared.weight")
+    omitted_alias_bytes = len(expected_omitted_aliases) * tensor_nbytes(
+        shared_metadata
+    )
+    logical_total = actual_tensor_total + omitted_alias_bytes
+    if logical_total != declared_total:
+        raise RuntimeError(
+            "Cached safetensors logical bytes do not match the index after "
+            "accounting for the two shared embedding aliases: "
+            f"expected {declared_total}, found {logical_total}"
         )
 
     required = {

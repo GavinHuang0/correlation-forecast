@@ -23,9 +23,11 @@ Only two extractor paths are current:
 | FLAN-T5-Large v0.4 | Active research baseline; usable for exploratory comparisons, below production thresholds | [`experiments/flan_t5/v0_4/README.md`](experiments/flan_t5/v0_4/README.md) |
 | Llama 2 7B Chat v1.2 | Development-selected research candidate; useful as an event-family specialist, not an all-field replacement | [`experiments/llama_2/README.md`](experiments/llama_2/README.md) |
 
-A separate, not-yet-evaluated FLAN-T5-XL comparison is prepared under
+A completed FLAN-T5-XL development comparison is documented under
 [`experiments/flan_t5_xl/README.md`](experiments/flan_t5_xl/README.md). It
-reuses the fixed development benchmark and v0.4 protocol without modifying the
+improved mean macro-F1 only from 0.388 to 0.411 on the same development
+protocol, failed all semantic acceptance thresholds, and was rejected as a
+production extractor. It remains a scaling baseline and does not modify the
 active FLAN-T5-Large implementation.
 
 Machine-readable contracts:
@@ -35,6 +37,8 @@ Machine-readable contracts:
 - [`experiments/llama_2/protocol.json`](experiments/llama_2/protocol.json)
 - [`experiments/llama_2/benchmark_manifest.json`](experiments/llama_2/benchmark_manifest.json)
 - [`experiments/llama_2/research_candidate.json`](experiments/llama_2/research_candidate.json)
+- [`config/quant_training_protocol_v1.json`](config/quant_training_protocol_v1.json)
+- [`experiments/quant_training/v1/README.md`](experiments/quant_training/v1/README.md)
 
 The previous FLAN experiments, rejected v0.5 candidate, historical scripts,
 tests, and reorganization records are kept separately in
@@ -53,6 +57,10 @@ outputs/
     v1_0/         # frozen failed baseline and diagnostics
     v1_1/         # corrected answer-boundary decoder
     v1_2/         # development-selected fieldwise hybrid
+  quant_training/
+    v1/
+      rung_01/ ... rung_04/
+      comparisons/
 ```
 
 `outputs/`, licensed/raw news, model weights, and secrets remain Git-ignored.
@@ -177,8 +185,8 @@ auditable rules.
 
 1. Measure realized stock-sector correlation from intraday returns.
 2. Use a pooled panel of liquid stocks and sector benchmarks.
-3. Establish lagged-correlation, HAR, exponential, and regularized
-   quantitative baselines. DCC-GARCH remains planned and is not implemented.
+3. Establish lagged-correlation, HAR, exponential, regularized-linear,
+   shallow-tree, and causal DCC-GARCH quantitative baselines.
 4. Add frozen point-in-time news features.
 5. Keep every stock observed on the same date in the same chronological fold.
 6. Compare against news counts and conventional sentiment.
@@ -257,7 +265,9 @@ It provides:
 The extended-hours downloader writes only to
 `data/prices/alpaca-extended/`. The feature builder reads the regular bar
 directory without modifying it and writes a separate Parquet panel under
-`data/features/quant/`.
+`data/features/quant/`. The locked training artifact includes corrected
+first-bar realized volatility, exact official-session lagging, and explicit
+extended-hours availability indicators.
 
 ## Bollerslev core features
 
@@ -283,21 +293,47 @@ for formulas, commands, the exact 22-column schema, verification, and the
 documented differences between the published monthly stock-pair design and
 this daily stock-sector adaptation.
 
-## Training readiness
+## Quant training
 
-The current repository is **feature-ready, not end-to-end training-ready**:
+The first locked quant experiment is complete through rung 4. It skips the T0
+proxy and trains the following four targets in parallel:
 
-- all 22 non-factor Bollerslev-Li-Tang columns are materialized and complete
-  for the matched 2022-11-01 through 2026-06-30 panel;
-- a dense block of additional quant features is also materialized;
-- extended-hours features need an explicit missingness contract;
-- the lagged realized-volatility extras need a first-bar correction; and
-- target construction, joined modeling-table assembly, chronological splits,
-  estimators, and forecast evaluation are not yet implemented.
+```text
+T1 ETF: same-day regular-session stock-ETF correlation
+T1 LOO: same-day correlation with an equal-weight five-peer basket
+T2 ETF: current-plus-next-four-session stock-ETF correlation
+T2 LOO: current-plus-next-four-session five-peer correlation
+```
 
-The audited readiness matrix, explicit list of missing items, target ladder,
-and model/feature ladder are in
-[`docs/training_readiness.md`](docs/training_readiness.md).
+ETF is the tradable **hedge-coupling** target; LOO removes mechanical ETF
+self-inclusion and is the cleaner research target. Both use the same strict
+official interval set. T2 sums covariance and variance components over five
+sessions rather than averaging daily correlations.
+
+The matched modeling panel contains 27,510 stock-date rows from 2022-11-01
+through 2026-06-30. Three chronological folds, training-only preprocessing,
+and target-end purging are locked in
+[`config/quant_training_protocol_v1.json`](config/quant_training_protocol_v1.json).
+
+The best development models are the rung-3 shallow XGBoost challenger or, for
+T1 ETF, its validation-qualified `elastic_xgboost_ensemble`:
+
+| Target | Best model | Fisher-z RMSE | OOS R² vs persistence |
+|---|---|---:|---:|
+| T1 ETF | `elastic_xgboost_ensemble` | 0.3686 | 0.4154 |
+| T1 LOO | XGBoost | 0.3814 | 0.3964 |
+| T2 ETF | XGBoost | 0.2348 | 0.2885 |
+| T2 LOO | XGBoost | 0.2567 | 0.2517 |
+
+Because these outer blocks were used to rank the rungs, the winning metrics
+are development estimates, not unbiased final-holdout estimates. A future
+period must remain untouched for confirmation.
+
+The audited construction, exact feature and target equations, model
+objectives, evaluation formulas, completed ladder, remaining limitations, and
+links to all per-rung results are in
+[`docs/training_readiness.md`](docs/training_readiness.md) and
+[`experiments/quant_training/v1/README.md`](experiments/quant_training/v1/README.md).
 
 ## Reproducibility principles
 

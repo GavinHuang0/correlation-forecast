@@ -169,6 +169,37 @@ def load_calendar_records(
     return records
 
 
+def expected_interval_keys(
+    records: Sequence[tuple[str, str, str]],
+    *,
+    include_overnight: bool,
+    expected_minutes: int = 15,
+) -> dict[pd.Timestamp, frozenset[str]]:
+    """Return the official return-interval keys for every market session.
+
+    Bar labels denote interval starts.  The first regular-session return is
+    open-to-first-close and later returns are close-to-close.  When requested,
+    ``overnight`` is an additional close-to-open interval.
+    """
+
+    if expected_minutes <= 0:
+        raise ValueError("expected_minutes must be positive")
+    output: dict[pd.Timestamp, frozenset[str]] = {}
+    for session_date, open_time, close_time in records:
+        start = pd.Timestamp(f"{session_date} {open_time}")
+        close = pd.Timestamp(f"{session_date} {close_time}")
+        labels = {
+            timestamp.strftime("%H:%M:%S")
+            for timestamp in pd.date_range(
+                start, close, freq=f"{expected_minutes}min", inclusive="left"
+            )
+        }
+        if include_overnight:
+            labels.add("overnight")
+        output[pd.Timestamp(session_date).normalize()] = frozenset(labels)
+    return output
+
+
 def calendar_records_in_range(
     records: Sequence[tuple[str, str, str]],
     start: str,
@@ -458,6 +489,8 @@ def pair_daily_components(
     min_aligned_returns: int = 15,
     min_alignment_ratio: float = 0.8,
     require_overnight: bool = True,
+    expected_keys: Mapping[pd.Timestamp, frozenset[str]] | None = None,
+    require_complete_schedule: bool = False,
 ) -> pd.DataFrame:
     """Calculate pairwise daily covariance and (negative) variance components."""
 
@@ -503,30 +536,50 @@ def pair_daily_components(
         )
         .sort_values("trade_date")
     )
-    left_count = left.groupby("trade_date")["log_return"].size()
-    right_count = right.groupby("trade_date")["log_return"].size()
-    available = pd.concat(
-        [left_count.rename("left_count"), right_count.rename("right_count")],
-        axis=1,
-        sort=False,
-    )
-    available["maximum_available_count"] = available[
-        ["left_count", "right_count"]
-    ].max(axis=1)
-    components = components.merge(
-        available[["maximum_available_count"]],
-        left_on="trade_date",
-        right_index=True,
-        how="left",
-    )
+    if expected_keys is None:
+        left_count = left.groupby("trade_date")["log_return"].size()
+        right_count = right.groupby("trade_date")["log_return"].size()
+        available = pd.concat(
+            [left_count.rename("left_count"), right_count.rename("right_count")],
+            axis=1,
+            sort=False,
+        )
+        available["expected_return_count"] = available[
+            ["left_count", "right_count"]
+        ].max(axis=1)
+        components = components.merge(
+            available[["expected_return_count"]],
+            left_on="trade_date",
+            right_index=True,
+            how="left",
+        )
+    else:
+        components["expected_return_count"] = components["trade_date"].map(
+            lambda value: len(expected_keys.get(pd.Timestamp(value), ()))
+        )
+        aligned_key_sets = aligned.groupby("trade_date")["interval_key"].agg(
+            lambda values: frozenset(values)
+        )
+        components["complete_official_schedule"] = components["trade_date"].map(
+            lambda value: aligned_key_sets.get(
+                pd.Timestamp(value), frozenset()
+            )
+            == expected_keys.get(pd.Timestamp(value), frozenset())
+        )
     components["alignment_ratio"] = (
         components["aligned_return_count"]
-        / components["maximum_available_count"].replace(0, np.nan)
+        / components["expected_return_count"].replace(0, np.nan)
     )
     invalid = (
         components["aligned_return_count"].lt(min_aligned_returns)
         | components["alignment_ratio"].lt(min_alignment_ratio)
     )
+    if require_complete_schedule:
+        if expected_keys is None:
+            raise ValueError(
+                "require_complete_schedule requires official expected_keys"
+            )
+        invalid |= ~components["complete_official_schedule"]
     if require_overnight:
         invalid |= components["aligned_overnight_count"].ne(1)
     components.loc[invalid, PAIR_COMPONENT_COLUMNS] = np.nan
@@ -689,6 +742,7 @@ def build_pair_features(
     exponential_window: int = DEFAULT_EXPONENTIAL_WINDOW,
     min_exponential_valid: int | None = None,
     min_exponential_weight_fraction: float = 1.0,
+    expected_keys: Mapping[pd.Timestamp, frozenset[str]] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     daily = pair_daily_components(
         left,
@@ -696,6 +750,7 @@ def build_pair_features(
         min_aligned_returns=min_aligned_returns,
         min_alignment_ratio=min_alignment_ratio,
         require_overnight=require_overnight,
+        expected_keys=expected_keys,
     )
     daily = reindex_components(daily, sessions)
     features = pd.concat(
@@ -774,6 +829,7 @@ def build_core_panel(
     min_exponential_weight_fraction: float = 1.0,
     minimum_sector_pair_fraction: float = 1.0,
     require_complete: bool = True,
+    expected_keys: Mapping[pd.Timestamp, frozenset[str]] | None = None,
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     all_configured_stocks = {
         stock for sector in sectors for stock in sector.stocks
@@ -811,6 +867,7 @@ def build_core_panel(
                 exponential_window=exponential_window,
                 min_exponential_valid=min_exponential_valid,
                 min_exponential_weight_fraction=min_exponential_weight_fraction,
+                expected_keys=expected_keys,
             )
         return pair_cache[key]
 
@@ -1053,7 +1110,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.dry_run:
         return 0
 
+    calendar_records = load_calendar_records(args.calendar)
     sessions = load_official_sessions(args.calendar)
+    official_expected_keys = expected_interval_keys(
+        calendar_records,
+        include_overnight=not args.exclude_overnight,
+    )
     returns: dict[str, pd.DataFrame] = {}
     for index, symbol in enumerate(sorted(required_symbols), start=1):
         bars = read_symbol_bars(snapshot[symbol], symbol, end=args.end)
@@ -1082,6 +1144,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ),
         minimum_sector_pair_fraction=args.minimum_sector_pair_fraction,
         require_complete=not args.keep_incomplete,
+        expected_keys=official_expected_keys,
     )
     if args.start is not None:
         panel = panel[panel["forecast_date"] >= pd.Timestamp(args.start)]
@@ -1135,6 +1198,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             ),
             "min_aligned_returns": args.min_aligned_returns,
             "min_alignment_ratio": args.min_alignment_ratio,
+            "alignment_denominator": "official expected interval count",
             "minimum_sector_pair_fraction": args.minimum_sector_pair_fraction,
             "include_overnight": not args.exclude_overnight,
             "require_complete_rows": not args.keep_incomplete,

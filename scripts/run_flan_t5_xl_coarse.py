@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import extract_flan_t5 as base
@@ -109,7 +109,7 @@ def low_memory_score_closed_label_batch(
     return selected, [False] * len(prompts), score_maps
 
 
-def validate_snapshot_manifest() -> None:
+def validate_snapshot_manifest() -> dict[str, Any]:
     if not SNAPSHOT_MANIFEST.is_file():
         raise FileNotFoundError(
             f"{SNAPSHOT_MANIFEST} is missing. Run scripts/cache_flan_t5_xl.py first."
@@ -119,6 +119,56 @@ def validate_snapshot_manifest() -> None:
         raise ValueError("FLAN-T5-XL snapshot manifest has the wrong model_id")
     if manifest.get("model_revision") != MODEL_REVISION:
         raise ValueError("FLAN-T5-XL snapshot manifest has the wrong revision")
+    if manifest.get("manifest_version") != "flan-t5-xl-local-snapshot-v1":
+        raise ValueError("FLAN-T5-XL snapshot manifest has an unsupported version")
+    files = manifest.get("files")
+    if not isinstance(files, dict) or not files:
+        raise ValueError("FLAN-T5-XL snapshot manifest contains no file records")
+    return manifest
+
+
+def sharded_snapshot_file_hashes(snapshot_path: Path) -> dict[str, str]:
+    """Verify XL's sharded snapshot and return the hashes used by run manifests."""
+    manifest = validate_snapshot_manifest()
+    recorded_snapshot = Path(manifest["snapshot_path"]).resolve()
+    if snapshot_path.resolve() != recorded_snapshot:
+        raise ValueError(
+            "Resolved Hugging Face snapshot differs from the verified XL snapshot manifest"
+        )
+
+    required = {
+        "config.json",
+        "model.safetensors.index.json",
+        "model-00001-of-00002.safetensors",
+        "model-00002-of-00002.safetensors",
+        "spiece.model",
+        "tokenizer_config.json",
+    }
+    file_records = manifest["files"]
+    missing_records = required - set(file_records)
+    if missing_records:
+        raise FileNotFoundError(
+            "XL snapshot manifest is missing required file records: "
+            f"{sorted(missing_records)}"
+        )
+
+    hashes: dict[str, str] = {}
+    for name, record in sorted(file_records.items()):
+        relative = PurePosixPath(name)
+        if relative.is_absolute() or ".." in relative.parts or "\\" in name:
+            raise ValueError(f"Unsafe path in XL snapshot manifest: {name!r}")
+        path = snapshot_path.joinpath(*relative.parts)
+        if not path.is_file():
+            raise FileNotFoundError(f"Pinned XL snapshot is missing required file {name}")
+        expected_size = record.get("size_bytes")
+        expected_hash = record.get("sha256")
+        if path.stat().st_size != expected_size:
+            raise ValueError(f"Pinned XL snapshot file size changed for {name}")
+        actual_hash = base.sha256_file(path)
+        if actual_hash != expected_hash:
+            raise ValueError(f"Pinned XL snapshot file hash changed for {name}")
+        hashes[name] = actual_hash
+    return hashes
 
 
 def output_path(arguments: list[str]) -> Path | None:
@@ -149,7 +199,9 @@ def main() -> int:
         validate_snapshot_manifest()
 
     # Reuse the frozen v0.4 prompts and hierarchy without changing the active
-    # FLAN-T5-Large source. Only candidate-score microbatching is replaced.
+    # FLAN-T5-Large source. XL needs shard-aware hashing and candidate-score
+    # microbatching, so only those two runtime helpers are replaced.
+    base.snapshot_file_hashes = sharded_snapshot_file_hashes
     base.score_closed_label_batch = low_memory_score_closed_label_batch
     sys.argv = [sys.argv[0], *arguments]
     result = coarse_runner.main()

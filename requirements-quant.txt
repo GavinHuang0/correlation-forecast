@@ -2,3 +2,6 @@
 numpy>=2.0,<3
 pandas>=2.2,<4
 pyarrow>=16,<24
+scipy>=1.15,<2
+scikit-learn>=1.6,<2
+xgboost>=3,<4

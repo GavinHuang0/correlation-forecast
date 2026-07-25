@@ -1,0 +1,19 @@
+{
+  "cuda_confirmed_all_final_fits": true,
+  "ensemble_policy": "included only when an interior weight strictly improved over both components on every validation fold for that target",
+  "feature_name_leakage_scan_passed": true,
+  "feature_timing_audit_passed": true,
+  "fit_excludes_outer_test": true,
+  "fit_records": 12,
+  "generated_at_utc": "2026-07-25T05:56:24.201518Z",
+  "included_ensemble_targets": [
+    "t1_etf",
+    "t2_etf"
+  ],
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "requested_device": "cuda",
+  "status": "passed",
+  "xgboost_version": "3.3.0"
+}
