@@ -1,0 +1,29 @@
+{
+  "manifest_version": "llama-3.1-checked-in-benchmark-contract-v1",
+  "status": "prepared_and_validated_without_model",
+  "knowledge_cutoff": "2023-12-31",
+  "minimum_time_published_utc": "2024-01-02T18:34:09Z",
+  "maximum_time_published_utc": "2024-12-27T17:55:58Z",
+  "all_articles_after_cutoff": true,
+  "labels_present_in_extractor_inputs": false,
+  "counts": {
+    "all": 300,
+    "development": 72,
+    "evaluation": 228
+  },
+  "source_hashes": {
+    "all_inputs": "7254ae0efc78e6698161f1b9a638c232c1f511a160492b77810fb8949b7842d6",
+    "development_inputs": "44920068fa6806f2397609b9181d96e506ee0f729c8b1a42dd950e85278b4014",
+    "evaluation_inputs": "92cf5da0dcb26d186f416885528f6453fac81b26fa5b277025063b4ae070ac83",
+    "fine_reference": "94ae2481611fc2a88ce3ff2a16c6c2945c4083be2ef787810c1d1bb1f50967b7",
+    "coarse_reference": "d765d236c423a7f3ccebcc1c9b3336462458b40862c69f554e01a6fa4bd97ce1",
+    "schema": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa"
+  },
+  "prepared_outputs": {
+    "development_inputs": "outputs/llama_3_1/shared/benchmark_300/development_inputs.jsonl",
+    "evaluation_inputs": "outputs/llama_3_1/shared/benchmark_300/evaluation_inputs.jsonl",
+    "manifest": "outputs/llama_3_1/shared/benchmark_300/manifest.json"
+  },
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "warning": "The prepared extractor inputs are byte-identical copies and contain no labels. Silver references remain separate and are used only by evaluation."
+}

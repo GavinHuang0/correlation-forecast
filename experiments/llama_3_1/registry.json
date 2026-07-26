@@ -1,0 +1,19 @@
+{
+  "schema_version": "llama-3.1-experiment-registry-v1",
+  "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "model_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "current_status": "development_rejected_holdout_preserved",
+  "active_research_extractor": false,
+  "versions": [
+    {
+      "version": "v1.0",
+      "status": "rejected_on_development",
+      "summary": "experiments/llama_3_1/archive/v1_0/development_summary.json",
+      "mean_field_accuracy": 0.5758928571428571,
+      "mean_macro_f1": 0.3866416471498153,
+      "evaluation_materialized": false,
+      "notes": "Official chat-template candidate scoring with all cyclic option rotations. Event-family performance was promising, but scope and alignment collapsed."
+    }
+  ],
+  "active_extractor_contract": "experiments/active_extractor.json"
+}

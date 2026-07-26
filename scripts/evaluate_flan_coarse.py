@@ -18,6 +18,13 @@ FALLBACK_BY_FIELD = {
     "information_status": "unclear",
     "directional_alignment": "unclear",
 }
+ACCEPTED_PROMPT_VERSIONS = frozenset(
+    {
+        "flan-stock-sector-news-v0.4.0",
+        "flan-stock-sector-news-hybrid-v0.4.0",
+        "llama-3.1-stock-sector-news-v1.0.0",
+    }
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -182,12 +189,10 @@ def main() -> int:
         raise ValueError("Prediction hash differs from its manifest")
     if manifest.get("schema_sha256") != hashlib.sha256(schema_text.encode("utf-8")).hexdigest():
         raise ValueError("Evaluation schema differs from the extraction schema")
-    accepted_prompt_versions = {
-        "flan-stock-sector-news-v0.4.0",
-        "flan-stock-sector-news-hybrid-v0.4.0",
-    }
-    if manifest.get("prompt_version") not in accepted_prompt_versions:
-        raise ValueError("Predictions were not produced by an accepted v0.4 protocol")
+    if manifest.get("prompt_version") not in ACCEPTED_PROMPT_VERSIONS:
+        raise ValueError(
+            "Predictions were not produced by an accepted coarse extraction protocol"
+        )
     if manifest.get("total_prediction_count") != len(predictions):
         raise ValueError("Prediction count differs from the extraction manifest")
     prediction_order_hash = base.sha256_text(
@@ -484,7 +489,9 @@ def main() -> int:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote v0.4 agreement report for {len(selected_ids)} records to {args.output}")
+    print(
+        f"Wrote coarse agreement report for {len(selected_ids)} records to {args.output}"
+    )
     return 0
 
 

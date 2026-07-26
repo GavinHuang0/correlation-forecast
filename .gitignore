@@ -10,6 +10,7 @@
 .venv-training/
 .venv-llama2/
 .venv-flan-t5-xl/
+.venv-llama31/
 venv/
 node_modules/
 __pycache__/

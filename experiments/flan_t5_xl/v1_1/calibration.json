@@ -1,0 +1,1873 @@
+{
+  "config_version": "flan-t5-xl-score-calibration-v1",
+  "status": "frozen_on_development",
+  "model_id": "google/flan-t5-xl",
+  "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+  "selection_split": "fixed 72-document development split",
+  "selection_objective": [
+    "field macro_f1",
+    "field accuracy",
+    "field cohens_kappa",
+    "smaller absolute tau",
+    "averaged_then_canonical_then_reversed"
+  ],
+  "tau_grid": [
+    -1.0,
+    -0.75,
+    -0.5,
+    -0.25,
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "prior_smoothing": 0.5,
+  "source_prediction_path": "outputs\\flan_t5_xl\\v1_0\\development_predictions.jsonl",
+  "source_prediction_sha256": "4fc0442f5bf9357c9dd70437b1594efd8022b3d7330324460468fa87f60c8e6d",
+  "reference_path": "annotations\\chatgpt_5_6_sol_reference_coarse_v0_2.jsonl",
+  "reference_sha256": "d765d236c423a7f3ccebcc1c9b3336462458b40862c69f554e01a6fa4bd97ce1",
+  "schema_path": "config\\news_feature_schema_coarse.json",
+  "schema_sha256": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa",
+  "field_rules": {
+    "shock_scope": {
+      "source": "averaged",
+      "tau": 0.25,
+      "priors": {
+        "idiosyncratic": 0.540948275862069,
+        "common": 0.14439655172413793,
+        "mixed": 0.23060344827586207,
+        "unclear": 0.08405172413793104
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.625,
+        "macro_f1": 0.43921838177533384,
+        "cohens_kappa": 0.3777777777777778,
+        "prediction_distribution": {
+          "common": 11,
+          "idiosyncratic": 37,
+          "mixed": 1,
+          "unclear": 7
+        }
+      }
+    },
+    "event_family": {
+      "source": "canonical",
+      "tau": 0.75,
+      "priors": {
+        "earnings_guidance": 0.09635974304068523,
+        "product_demand": 0.25910064239828695,
+        "supply_capacity": 0.07922912205567452,
+        "regulation_legal": 0.09635974304068523,
+        "corporate_analyst": 0.28051391862955033,
+        "macro_market": 0.07494646680942184,
+        "other_or_unclear": 0.11349036402569593
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.5452380952380953,
+        "cohens_kappa": 0.44043043812451954,
+        "prediction_distribution": {
+          "corporate_analyst": 17,
+          "earnings_guidance": 6,
+          "macro_market": 19,
+          "other_or_unclear": 3,
+          "product_demand": 3,
+          "regulation_legal": 3,
+          "supply_capacity": 5
+        }
+      }
+    },
+    "information_status": {
+      "source": "canonical",
+      "tau": -1.0,
+      "priors": {
+        "confirmed": 0.5538793103448276,
+        "anticipated": 0.15732758620689655,
+        "rumor_or_opinion": 0.28663793103448276,
+        "unclear": 0.0021551724137931034
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.7142857142857143,
+        "macro_f1": 0.6261294261294261,
+        "cohens_kappa": 0.5175013462574045,
+        "prediction_distribution": {
+          "anticipated": 18,
+          "confirmed": 34,
+          "rumor_or_opinion": 3,
+          "unclear": 1
+        }
+      }
+    },
+    "directional_alignment": {
+      "source": "canonical",
+      "tau": -0.75,
+      "priors": {
+        "single_firm_only": 0.535483870967742,
+        "same_direction": 0.06666666666666667,
+        "opposite_direction": 0.03225806451612903,
+        "common_direction_unclear": 0.2817204301075269,
+        "unclear": 0.08387096774193549
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.5892857142857143,
+        "macro_f1": 0.27594594594594596,
+        "cohens_kappa": 0.23651452282157667,
+        "prediction_distribution": {
+          "common_direction_unclear": 7,
+          "opposite_direction": 1,
+          "single_firm_only": 45,
+          "unclear": 3
+        }
+      }
+    }
+  },
+  "development_aggregate": {
+    "mean_accuracy": 0.6160714285714286,
+    "mean_macro_f1": 0.4716329622722003
+  },
+  "candidate_rankings": {
+    "shock_scope": [
+      {
+        "source": "averaged",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.625,
+          "macro_f1": 0.43921838177533384,
+          "cohens_kappa": 0.3777777777777778,
+          "prediction_distribution": {
+            "common": 11,
+            "idiosyncratic": 37,
+            "mixed": 1,
+            "unclear": 7
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.3786435786435786,
+          "cohens_kappa": 0.27069767441860465,
+          "prediction_distribution": {
+            "common": 27,
+            "idiosyncratic": 25,
+            "unclear": 4
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.3778846153846154,
+          "cohens_kappa": 0.3316035288012455,
+          "prediction_distribution": {
+            "common": 18,
+            "idiosyncratic": 35,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.3743205044574908,
+          "cohens_kappa": 0.2610441767068273,
+          "prediction_distribution": {
+            "common": 10,
+            "idiosyncratic": 43,
+            "mixed": 1,
+            "unclear": 2
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.34291666666666665,
+          "cohens_kappa": 0.21265377855887513,
+          "prediction_distribution": {
+            "common": 8,
+            "idiosyncratic": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.33087293816374186,
+          "cohens_kappa": 0.26234906695938537,
+          "prediction_distribution": {
+            "common": 3,
+            "idiosyncratic": 41,
+            "unclear": 12
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.48214285714285715,
+          "macro_f1": 0.3270676691729323,
+          "cohens_kappa": 0.24183006535947715,
+          "prediction_distribution": {
+            "common": 13,
+            "idiosyncratic": 27,
+            "unclear": 16
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.3233879781420765,
+          "cohens_kappa": 0.264591439688716,
+          "prediction_distribution": {
+            "common": 3,
+            "idiosyncratic": 31,
+            "mixed": 2,
+            "unclear": 20
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.32124125874125875,
+          "cohens_kappa": 0.15560916767189387,
+          "prediction_distribution": {
+            "common": 5,
+            "idiosyncratic": 47,
+            "mixed": 1,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.35714285714285715,
+          "macro_f1": 0.3144757820660839,
+          "cohens_kappa": 0.16487158243579125,
+          "prediction_distribution": {
+            "common": 39,
+            "idiosyncratic": 13,
+            "unclear": 4
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.42857142857142855,
+          "macro_f1": 0.28626893939393944,
+          "cohens_kappa": 0.18877320054323224,
+          "prediction_distribution": {
+            "common": 2,
+            "idiosyncratic": 25,
+            "mixed": 2,
+            "unclear": 27
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.2818181818181818,
+          "cohens_kappa": 0.15254237288135594,
+          "prediction_distribution": {
+            "common": 7,
+            "idiosyncratic": 47,
+            "mixed": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.28041666666666665,
+          "cohens_kappa": 0.17208752217622708,
+          "prediction_distribution": {
+            "common": 8,
+            "idiosyncratic": 45,
+            "mixed": 2,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.2772727272727273,
+          "cohens_kappa": 0.12499999999999994,
+          "prediction_distribution": {
+            "common": 3,
+            "idiosyncratic": 47,
+            "mixed": 1,
+            "unclear": 5
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.35714285714285715,
+          "macro_f1": 0.25208719851576994,
+          "cohens_kappa": 0.13809320222317228,
+          "prediction_distribution": {
+            "common": 14,
+            "idiosyncratic": 19,
+            "unclear": 23
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.23518518518518516,
+          "cohens_kappa": 0.11111111111111117,
+          "prediction_distribution": {
+            "common": 2,
+            "idiosyncratic": 51,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.21888185654008438,
+          "cohens_kappa": 0.06145251396648052,
+          "prediction_distribution": {
+            "common": 4,
+            "idiosyncratic": 49,
+            "mixed": 1,
+            "unclear": 2
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.21643717728055079,
+          "cohens_kappa": 0.08076165462902181,
+          "prediction_distribution": {
+            "idiosyncratic": 53,
+            "mixed": 1,
+            "unclear": 2
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.17857142857142858,
+          "cohens_kappa": 0.031270791749833736,
+          "prediction_distribution": {
+            "common": 1,
+            "idiosyncratic": 54,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.1764705882352941,
+          "cohens_kappa": 0.016880486158001504,
+          "prediction_distribution": {
+            "idiosyncratic": 55,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.1764705882352941,
+          "cohens_kappa": 0.016880486158001504,
+          "prediction_distribution": {
+            "idiosyncratic": 55,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.1764705882352941,
+          "cohens_kappa": 0.016880486158001504,
+          "prediction_distribution": {
+            "idiosyncratic": 55,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.1764705882352941,
+          "cohens_kappa": 0.016880486158001504,
+          "prediction_distribution": {
+            "idiosyncratic": 55,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.17857142857142858,
+          "macro_f1": 0.17273280584297018,
+          "cohens_kappa": 0.04451038575667655,
+          "prediction_distribution": {
+            "common": 45,
+            "idiosyncratic": 1,
+            "unclear": 10
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.21428571428571427,
+          "macro_f1": 0.16647286821705426,
+          "cohens_kappa": 0.07715355805243444,
+          "prediction_distribution": {
+            "common": 12,
+            "idiosyncratic": 6,
+            "unclear": 38
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.17857142857142858,
+          "macro_f1": 0.16304347826086957,
+          "cohens_kappa": 0.06053975200583517,
+          "prediction_distribution": {
+            "common": 38,
+            "unclear": 18
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.16071428571428573,
+          "macro_f1": 0.1601055194805195,
+          "cohens_kappa": 0.01126972201352372,
+          "prediction_distribution": {
+            "common": 48,
+            "idiosyncratic": 2,
+            "unclear": 6
+          }
+        }
+      }
+    ],
+    "event_family": [
+      {
+        "source": "canonical",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.5452380952380953,
+          "cohens_kappa": 0.44043043812451954,
+          "prediction_distribution": {
+            "corporate_analyst": 17,
+            "earnings_guidance": 6,
+            "macro_market": 19,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 3,
+            "supply_capacity": 5
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.5187859759288331,
+          "cohens_kappa": 0.4220183486238533,
+          "prediction_distribution": {
+            "corporate_analyst": 16,
+            "earnings_guidance": 6,
+            "macro_market": 21,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 5
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.49897959183673474,
+          "cohens_kappa": 0.377036154151768,
+          "prediction_distribution": {
+            "corporate_analyst": 23,
+            "earnings_guidance": 6,
+            "macro_market": 15,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 4
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.4971616716862184,
+          "cohens_kappa": 0.4380453752181501,
+          "prediction_distribution": {
+            "corporate_analyst": 38,
+            "earnings_guidance": 5,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 5,
+            "regulation_legal": 2
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.4938617307388072,
+          "cohens_kappa": 0.3730507796881247,
+          "prediction_distribution": {
+            "corporate_analyst": 24,
+            "earnings_guidance": 4,
+            "macro_market": 16,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 4
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.4838304552590267,
+          "cohens_kappa": 0.3869473684210526,
+          "prediction_distribution": {
+            "corporate_analyst": 33,
+            "earnings_guidance": 6,
+            "macro_market": 7,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 2
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.48088902227557695,
+          "cohens_kappa": 0.36441021483583297,
+          "prediction_distribution": {
+            "corporate_analyst": 26,
+            "earnings_guidance": 6,
+            "macro_market": 12,
+            "other_or_unclear": 3,
+            "product_demand": 4,
+            "regulation_legal": 2,
+            "supply_capacity": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.4781112444977992,
+          "cohens_kappa": 0.35473251028806585,
+          "prediction_distribution": {
+            "corporate_analyst": 29,
+            "earnings_guidance": 4,
+            "macro_market": 12,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.4762001770405132,
+          "cohens_kappa": 0.42068965517241375,
+          "prediction_distribution": {
+            "corporate_analyst": 36,
+            "earnings_guidance": 5,
+            "macro_market": 7,
+            "other_or_unclear": 1,
+            "product_demand": 5,
+            "regulation_legal": 2
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.4757647886740904,
+          "cohens_kappa": 0.4097496706192358,
+          "prediction_distribution": {
+            "corporate_analyst": 39,
+            "earnings_guidance": 4,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 5,
+            "regulation_legal": 2
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.4757647886740904,
+          "cohens_kappa": 0.4097496706192358,
+          "prediction_distribution": {
+            "corporate_analyst": 39,
+            "earnings_guidance": 4,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 5,
+            "regulation_legal": 2
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.46523053665910813,
+          "cohens_kappa": 0.400941377834831,
+          "prediction_distribution": {
+            "corporate_analyst": 35,
+            "earnings_guidance": 5,
+            "macro_market": 7,
+            "other_or_unclear": 3,
+            "product_demand": 4,
+            "regulation_legal": 2
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.48214285714285715,
+          "macro_f1": 0.4640240711669283,
+          "cohens_kappa": 0.36735488897545776,
+          "prediction_distribution": {
+            "corporate_analyst": 20,
+            "earnings_guidance": 4,
+            "macro_market": 21,
+            "other_or_unclear": 2,
+            "product_demand": 2,
+            "regulation_legal": 2,
+            "supply_capacity": 5
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5535714285714286,
+          "macro_f1": 0.46315974665728366,
+          "cohens_kappa": 0.38730853391684905,
+          "prediction_distribution": {
+            "corporate_analyst": 39,
+            "earnings_guidance": 4,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 4,
+            "regulation_legal": 2,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.4642857142857143,
+          "macro_f1": 0.45983068242204456,
+          "cohens_kappa": 0.33174224343675424,
+          "prediction_distribution": {
+            "corporate_analyst": 24,
+            "earnings_guidance": 2,
+            "macro_market": 19,
+            "other_or_unclear": 3,
+            "product_demand": 1,
+            "regulation_legal": 2,
+            "supply_capacity": 5
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.45886354541816726,
+          "cohens_kappa": 0.4021352313167259,
+          "prediction_distribution": {
+            "corporate_analyst": 41,
+            "earnings_guidance": 3,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 5,
+            "regulation_legal": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.44642857142857145,
+          "macro_f1": 0.436734693877551,
+          "cohens_kappa": 0.34142640364188165,
+          "prediction_distribution": {
+            "corporate_analyst": 16,
+            "earnings_guidance": 5,
+            "macro_market": 25,
+            "other_or_unclear": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 5
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.44642857142857145,
+          "macro_f1": 0.4248299319727891,
+          "cohens_kappa": 0.323460639127046,
+          "prediction_distribution": {
+            "corporate_analyst": 21,
+            "earnings_guidance": 2,
+            "macro_market": 23,
+            "other_or_unclear": 2,
+            "regulation_legal": 2,
+            "supply_capacity": 6
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.42377754520611666,
+          "cohens_kappa": 0.3549488054607509,
+          "prediction_distribution": {
+            "corporate_analyst": 35,
+            "earnings_guidance": 4,
+            "macro_market": 8,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.42377754520611666,
+          "cohens_kappa": 0.3549488054607509,
+          "prediction_distribution": {
+            "corporate_analyst": 35,
+            "earnings_guidance": 4,
+            "macro_market": 8,
+            "other_or_unclear": 3,
+            "product_demand": 3,
+            "regulation_legal": 2,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.44642857142857145,
+          "macro_f1": 0.42240485937964933,
+          "cohens_kappa": 0.27666666666666667,
+          "prediction_distribution": {
+            "corporate_analyst": 32,
+            "earnings_guidance": 2,
+            "macro_market": 13,
+            "other_or_unclear": 3,
+            "product_demand": 1,
+            "regulation_legal": 2,
+            "supply_capacity": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.4107142857142857,
+          "macro_f1": 0.4155844155844156,
+          "cohens_kappa": 0.298937784522003,
+          "prediction_distribution": {
+            "corporate_analyst": 16,
+            "earnings_guidance": 2,
+            "macro_market": 28,
+            "other_or_unclear": 2,
+            "regulation_legal": 2,
+            "supply_capacity": 6
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.48214285714285715,
+          "macro_f1": 0.4109699823985538,
+          "cohens_kappa": 0.3068715322236449,
+          "prediction_distribution": {
+            "corporate_analyst": 36,
+            "earnings_guidance": 2,
+            "macro_market": 10,
+            "other_or_unclear": 3,
+            "product_demand": 1,
+            "regulation_legal": 2,
+            "supply_capacity": 2
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.48214285714285715,
+          "macro_f1": 0.38453276047261004,
+          "cohens_kappa": 0.2966652230402772,
+          "prediction_distribution": {
+            "corporate_analyst": 38,
+            "earnings_guidance": 2,
+            "macro_market": 9,
+            "other_or_unclear": 2,
+            "product_demand": 2,
+            "regulation_legal": 2,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.36938775510204075,
+          "cohens_kappa": 0.3083370092633437,
+          "prediction_distribution": {
+            "corporate_analyst": 41,
+            "earnings_guidance": 2,
+            "macro_market": 7,
+            "other_or_unclear": 2,
+            "product_demand": 2,
+            "regulation_legal": 1,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.48214285714285715,
+          "macro_f1": 0.33516156462585034,
+          "cohens_kappa": 0.26615454134658834,
+          "prediction_distribution": {
+            "corporate_analyst": 45,
+            "earnings_guidance": 2,
+            "macro_market": 5,
+            "other_or_unclear": 1,
+            "product_demand": 2,
+            "supply_capacity": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.44642857142857145,
+          "macro_f1": 0.29751900760304123,
+          "cohens_kappa": 0.19480519480519484,
+          "prediction_distribution": {
+            "corporate_analyst": 49,
+            "earnings_guidance": 2,
+            "macro_market": 2,
+            "other_or_unclear": 1,
+            "product_demand": 2
+          }
+        }
+      }
+    ],
+    "information_status": [
+      {
+        "source": "canonical",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.7142857142857143,
+          "macro_f1": 0.6261294261294261,
+          "cohens_kappa": 0.5175013462574045,
+          "prediction_distribution": {
+            "anticipated": 18,
+            "confirmed": 34,
+            "rumor_or_opinion": 3,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6428571428571429,
+          "macro_f1": 0.6118421052631579,
+          "cohens_kappa": 0.4850574712643679,
+          "prediction_distribution": {
+            "anticipated": 14,
+            "confirmed": 26,
+            "rumor_or_opinion": 1,
+            "unclear": 15
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6428571428571429,
+          "macro_f1": 0.6,
+          "cohens_kappa": 0.47590079550772113,
+          "prediction_distribution": {
+            "anticipated": 10,
+            "confirmed": 29,
+            "unclear": 17
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6964285714285714,
+          "macro_f1": 0.5823059360730594,
+          "cohens_kappa": 0.44618964514252457,
+          "prediction_distribution": {
+            "anticipated": 10,
+            "confirmed": 42,
+            "rumor_or_opinion": 1,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6785714285714286,
+          "macro_f1": 0.581060606060606,
+          "cohens_kappa": 0.46553552492046657,
+          "prediction_distribution": {
+            "anticipated": 15,
+            "confirmed": 35,
+            "rumor_or_opinion": 1,
+            "unclear": 5
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6964285714285714,
+          "macro_f1": 0.5792341220423413,
+          "cohens_kappa": 0.4396703943496173,
+          "prediction_distribution": {
+            "anticipated": 12,
+            "confirmed": 42,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6964285714285714,
+          "macro_f1": 0.5792341220423413,
+          "cohens_kappa": 0.4396703943496173,
+          "prediction_distribution": {
+            "anticipated": 12,
+            "confirmed": 42,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6964285714285714,
+          "macro_f1": 0.5750000000000001,
+          "cohens_kappa": 0.4254677127338562,
+          "prediction_distribution": {
+            "anticipated": 10,
+            "confirmed": 44,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6785714285714286,
+          "macro_f1": 0.5504385964912281,
+          "cohens_kappa": 0.38386308068459646,
+          "prediction_distribution": {
+            "anticipated": 9,
+            "confirmed": 45,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.4642857142857143,
+          "macro_f1": 0.5444106720702465,
+          "cohens_kappa": 0.3359683794466403,
+          "prediction_distribution": {
+            "anticipated": 11,
+            "confirmed": 16,
+            "unclear": 29
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6428571428571429,
+          "macro_f1": 0.5400940037031762,
+          "cohens_kappa": 0.4366197183098592,
+          "prediction_distribution": {
+            "anticipated": 25,
+            "confirmed": 28,
+            "rumor_or_opinion": 2,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6607142857142857,
+          "macro_f1": 0.5333710407239819,
+          "cohens_kappa": 0.33249686323713923,
+          "prediction_distribution": {
+            "anticipated": 7,
+            "confirmed": 47,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.44642857142857145,
+          "macro_f1": 0.5222222222222223,
+          "cohens_kappa": 0.3080908728577123,
+          "prediction_distribution": {
+            "anticipated": 10,
+            "confirmed": 17,
+            "unclear": 29
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6071428571428571,
+          "macro_f1": 0.5157747309450095,
+          "cohens_kappa": 0.3993174061433446,
+          "prediction_distribution": {
+            "anticipated": 28,
+            "confirmed": 25,
+            "rumor_or_opinion": 2,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.4872766122766123,
+          "cohens_kappa": 0.35,
+          "prediction_distribution": {
+            "anticipated": 23,
+            "confirmed": 21,
+            "rumor_or_opinion": 1,
+            "unclear": 11
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.625,
+          "macro_f1": 0.4790564373897707,
+          "cohens_kappa": 0.23187459177008476,
+          "prediction_distribution": {
+            "anticipated": 4,
+            "confirmed": 50,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.42857142857142855,
+          "macro_f1": 0.47673160173160173,
+          "cohens_kappa": 0.29393223010244285,
+          "prediction_distribution": {
+            "anticipated": 18,
+            "confirmed": 13,
+            "rumor_or_opinion": 1,
+            "unclear": 24
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.6071428571428571,
+          "macro_f1": 0.4394152595372107,
+          "cohens_kappa": 0.18410596026490036,
+          "prediction_distribution": {
+            "anticipated": 3,
+            "confirmed": 51,
+            "rumor_or_opinion": 1,
+            "unclear": 1
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.26785714285714285,
+          "macro_f1": 0.41005291005291,
+          "cohens_kappa": 0.2002786485545106,
+          "prediction_distribution": {
+            "anticipated": 11,
+            "confirmed": 5,
+            "unclear": 40
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.21428571428571427,
+          "macro_f1": 0.3568922305764411,
+          "cohens_kappa": 0.1567419575633128,
+          "prediction_distribution": {
+            "anticipated": 9,
+            "confirmed": 4,
+            "unclear": 43
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.10714285714285714,
+          "macro_f1": 0.24999999999999997,
+          "cohens_kappa": 0.08972691807542263,
+          "prediction_distribution": {
+            "anticipated": 6,
+            "unclear": 50
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.0,
+          "macro_f1": 0.0,
+          "cohens_kappa": 0.0,
+          "prediction_distribution": {
+            "unclear": 56
+          }
+        }
+      }
+    ],
+    "directional_alignment": [
+      {
+        "source": "canonical",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.27594594594594596,
+          "cohens_kappa": 0.23651452282157667,
+          "prediction_distribution": {
+            "common_direction_unclear": 7,
+            "opposite_direction": 1,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.27286902286902287,
+          "cohens_kappa": 0.22966507177033488,
+          "prediction_distribution": {
+            "common_direction_unclear": 8,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5892857142857143,
+          "macro_f1": 0.27286902286902287,
+          "cohens_kappa": 0.22966507177033488,
+          "prediction_distribution": {
+            "common_direction_unclear": 8,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.2686732186732187,
+          "cohens_kappa": 0.22491349480968845,
+          "prediction_distribution": {
+            "common_direction_unclear": 4,
+            "opposite_direction": 3,
+            "same_direction": 1,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.2676470588235294,
+          "cohens_kappa": 0.22381930184804924,
+          "prediction_distribution": {
+            "opposite_direction": 14,
+            "single_firm_only": 39,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": 1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.26592039800995027,
+          "cohens_kappa": 0.23404255319148937,
+          "prediction_distribution": {
+            "opposite_direction": 15,
+            "single_firm_only": 38,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -1.0,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.2626126126126126,
+          "cohens_kappa": 0.21219226260257895,
+          "prediction_distribution": {
+            "common_direction_unclear": 6,
+            "same_direction": 2,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.2461904761904762,
+          "cohens_kappa": 0.17299578059071727,
+          "prediction_distribution": {
+            "opposite_direction": 12,
+            "single_firm_only": 41,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5357142857142857,
+          "macro_f1": 0.23594594594594592,
+          "cohens_kappa": 0.17366628830874004,
+          "prediction_distribution": {
+            "common_direction_unclear": 2,
+            "opposite_direction": 6,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "reversed",
+        "tau": -0.75,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5178571428571429,
+          "macro_f1": 0.21699857752489332,
+          "cohens_kappa": 0.15199102636006723,
+          "prediction_distribution": {
+            "common_direction_unclear": 1,
+            "opposite_direction": 4,
+            "same_direction": 3,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "canonical",
+        "tau": -0.25,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.19794520547945205,
+          "cohens_kappa": 0.13751375137513747,
+          "prediction_distribution": {
+            "opposite_direction": 9,
+            "single_firm_only": 44,
+            "unclear": 3
+          }
+        }
+      },
+      {
+        "source": "averaged",
+        "tau": -0.5,
+        "metrics": {
+          "count": 56,
+          "accuracy": 0.5,
+          "macro_f1": 0.19594594594594594,
+          "cohens_kappa": 0.12499999999999994,
+          "prediction_distribution": {
+            "opposite_direction": 8,
+            "single_firm_only": 45,
+            "unclear": 3
+          }
+        }
+      }
+    ]
+  },
+  "claim_limit": "Supervised postprocessing selected against GPT-5.6 silver labels; requires a single locked evaluation on the untouched 228-document split."
+}

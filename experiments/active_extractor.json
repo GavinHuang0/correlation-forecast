@@ -1,0 +1,64 @@
+{
+  "schema_version": "active-news-extractor-v1",
+  "extractor_id": "flan-t5-xl-v1.1",
+  "status": "active_research_extractor",
+  "production_ready": false,
+  "selection_metric": "mean end-to-end semantic macro-F1 on the fixed 228-document evaluation split",
+  "model": {
+    "id": "google/flan-t5-xl",
+    "revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+    "device": "cuda",
+    "precision": "float16",
+    "quantization": null
+  },
+  "pipeline": {
+    "mode": "development_selected_score_calibration",
+    "runner": "scripts/run_flan_t5_xl_active.py",
+    "raw_runner": {
+      "path": "scripts/run_flan_t5_xl_coarse.py",
+      "sha256": "ddd6713dae7c4ce9902c5207c9e70fb4c0da39f881ce539cd9936fe29e38a28d"
+    },
+    "postprocessor": {
+      "path": "scripts/experiment_flan_t5_xl_v1_1.py",
+      "sha256": "79e7d0df419fc74a444ba2c321ffa881ee62af4ec660a18c3cef192d90ef87e9"
+    },
+    "schema": {
+      "path": "config/news_feature_schema_coarse.json",
+      "sha256": "201e19a0f2b9723e690c3a62eb145213b7e6d8c106a09e0da7374b71830d05fa"
+    },
+    "calibration": {
+      "path": "experiments/flan_t5_xl/v1_1/calibration.json",
+      "sha256": "63eb8ee9cbd935a77b75e8c89bfb70f7343cff372bbed59e8aba650a846f67c4"
+    },
+    "decoding": "order-averaged closed-label score followed by frozen fieldwise source/log-prior adjustment",
+    "prompt_profile": "zero_shot",
+    "record_batch_size": 1,
+    "candidate_batch_size": 1,
+    "network_during_extraction": "disabled"
+  },
+  "evaluation": {
+    "summary_path": "experiments/flan_t5_xl/v1_1/evaluation_summary.json",
+    "fixed_evaluation_records": 228,
+    "reference_relevant_records": 174,
+    "mean_field_accuracy": 0.6120689655172414,
+    "mean_macro_f1": 0.4635347811690556,
+    "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations"
+  },
+  "comparison": {
+    "raw_xl_v1_0_mean_accuracy": 0.5459770114942529,
+    "raw_xl_v1_0_mean_macro_f1": 0.4071409734129938,
+    "previous_flan_large_v0_4_mean_accuracy": 0.4942528735632184,
+    "previous_flan_large_v0_4_mean_macro_f1": 0.4457475542607053
+  },
+  "approved_uses": [
+    "exploratory news-feature extraction",
+    "forecast-pipeline integration testing",
+    "model-comparison research"
+  ],
+  "disallowed_claims": [
+    "production-grade semantic extraction",
+    "human-validated ground-truth accuracy",
+    "autonomous trading readiness"
+  ],
+  "warning": "v1.1 is active because it is the best tested extractor by mean semantic macro-F1 and accuracy, not because it passed the field-level acceptance thresholds."
+}

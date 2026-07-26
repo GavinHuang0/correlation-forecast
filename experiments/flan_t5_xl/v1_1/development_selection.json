@@ -1,0 +1,107 @@
+{
+  "title": "FLAN-T5-XL v1.1 development selection",
+  "config_path": "experiments\\flan_t5_xl\\v1_1\\calibration.json",
+  "config_sha256": "63eb8ee9cbd935a77b75e8c89bfb70f7343cff372bbed59e8aba650a846f67c4",
+  "development_aggregate": {
+    "mean_accuracy": 0.6160714285714286,
+    "mean_macro_f1": 0.4716329622722003
+  },
+  "field_rules": {
+    "shock_scope": {
+      "source": "averaged",
+      "tau": 0.25,
+      "priors": {
+        "idiosyncratic": 0.540948275862069,
+        "common": 0.14439655172413793,
+        "mixed": 0.23060344827586207,
+        "unclear": 0.08405172413793104
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.625,
+        "macro_f1": 0.43921838177533384,
+        "cohens_kappa": 0.3777777777777778,
+        "prediction_distribution": {
+          "common": 11,
+          "idiosyncratic": 37,
+          "mixed": 1,
+          "unclear": 7
+        }
+      }
+    },
+    "event_family": {
+      "source": "canonical",
+      "tau": 0.75,
+      "priors": {
+        "earnings_guidance": 0.09635974304068523,
+        "product_demand": 0.25910064239828695,
+        "supply_capacity": 0.07922912205567452,
+        "regulation_legal": 0.09635974304068523,
+        "corporate_analyst": 0.28051391862955033,
+        "macro_market": 0.07494646680942184,
+        "other_or_unclear": 0.11349036402569593
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.5357142857142857,
+        "macro_f1": 0.5452380952380953,
+        "cohens_kappa": 0.44043043812451954,
+        "prediction_distribution": {
+          "corporate_analyst": 17,
+          "earnings_guidance": 6,
+          "macro_market": 19,
+          "other_or_unclear": 3,
+          "product_demand": 3,
+          "regulation_legal": 3,
+          "supply_capacity": 5
+        }
+      }
+    },
+    "information_status": {
+      "source": "canonical",
+      "tau": -1.0,
+      "priors": {
+        "confirmed": 0.5538793103448276,
+        "anticipated": 0.15732758620689655,
+        "rumor_or_opinion": 0.28663793103448276,
+        "unclear": 0.0021551724137931034
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.7142857142857143,
+        "macro_f1": 0.6261294261294261,
+        "cohens_kappa": 0.5175013462574045,
+        "prediction_distribution": {
+          "anticipated": 18,
+          "confirmed": 34,
+          "rumor_or_opinion": 3,
+          "unclear": 1
+        }
+      }
+    },
+    "directional_alignment": {
+      "source": "canonical",
+      "tau": -0.75,
+      "priors": {
+        "single_firm_only": 0.535483870967742,
+        "same_direction": 0.06666666666666667,
+        "opposite_direction": 0.03225806451612903,
+        "common_direction_unclear": 0.2817204301075269,
+        "unclear": 0.08387096774193549
+      },
+      "development_metrics": {
+        "count": 56,
+        "accuracy": 0.5892857142857143,
+        "macro_f1": 0.27594594594594596,
+        "cohens_kappa": 0.23651452282157667,
+        "prediction_distribution": {
+          "common_direction_unclear": 7,
+          "opposite_direction": 1,
+          "single_firm_only": 45,
+          "unclear": 3
+        }
+      }
+    }
+  },
+  "candidate_count_per_field": 27
+}

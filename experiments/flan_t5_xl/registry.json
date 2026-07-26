@@ -1,0 +1,28 @@
+{
+  "schema_version": "flan-t5-xl-experiment-registry-v1",
+  "model": {
+    "id": "google/flan-t5-xl",
+    "revision": "7d6315df2c2fb742f0f5b556879d730926ca9001"
+  },
+  "active_version": "v1_1",
+  "active_pointer": "experiments/active_extractor.json",
+  "versions": [
+    {
+      "version": "v1_0",
+      "status": "archived_superseded",
+      "protocol_path": "experiments/flan_t5_xl/archive/v1_0/README.md",
+      "evaluation_summary_path": "experiments/flan_t5_xl/archive/v1_0/development_summary.json",
+      "local_artifact_namespace": "outputs/flan_t5_xl/v1_0",
+      "notes": "Uncalibrated order-averaged XL baseline."
+    },
+    {
+      "version": "v1_1",
+      "status": "active_research_extractor",
+      "protocol_path": "experiments/flan_t5_xl/v1_1/README.md",
+      "evaluation_summary_path": "experiments/flan_t5_xl/v1_1/evaluation_summary.json",
+      "local_artifact_namespace": "outputs/flan_t5_xl/v1_1",
+      "production_ready": false,
+      "notes": "Development-selected score calibration improved both mean macro-F1 and mean accuracy on the locked evaluation split."
+    }
+  ]
+}

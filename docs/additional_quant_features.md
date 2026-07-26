@@ -126,21 +126,21 @@ python scripts/build_additional_quant_features.py
 
 ## Mathematical definitions
 
-Let \(t\) be the forecast session, \(t-1\) its immediately preceding official
-session, and \(a\) either a stock or its configured sector ETF. Additional
+Let $t$ be the forecast session, $t-1$ its immediately preceding official
+session, and $a$ either a stock or its configured sector ETF. Additional
 features labelled `sector_*` are ETF quantities even in an LOO-target model.
 Only the 14 pair-history columns and the response change from ETF to LOO.
 
 ### Regular-session volatility, volume, and dispersion
 
-For a complete regular session \(d\), define the first interval return and
+For a complete regular session $d$, define the first interval return and
 subsequent exact-gap returns as
 
-\[
+$$
 u_{a,d,1}=\log\!\left(\frac{C_{a,d,1}}{O_{a,d,1}}\right),
 \qquad
 u_{a,d,k}=\log\!\left(\frac{C_{a,d,k}}{C_{a,d,k-1}}\right).
-\]
+$$
 
 The second equation is used only when the two bar timestamps are exactly
 15 minutes apart. A normal session requires 26 returns and an official 13:00
@@ -149,7 +149,7 @@ realized-variance fields missing.
 
 The unannualized realized volatility is
 
-\[
+$$
 \sigma^{RV}_{a,d}
 =
 \sqrt{\sum_{k\in\mathcal K_d^{RTH}}u_{a,d,k}^{2}},
@@ -157,18 +157,18 @@ The unannualized realized volatility is
 \texttt{lagged\_realized\_volatility}_{a,t}
 =
 \sigma^{RV}_{a,t-1}.
-\]
+$$
 
-If \(V_{a,d}\) is complete-session share volume, relative daily volume is
+If $V_{a,d}$ is complete-session share volume, relative daily volume is
 
-\[
+$$
 \mathrm{RelVol}^{20}_{a,t}
 =
 \frac{V_{a,t-1}}
 {\frac{1}{n_t}\sum_{\ell=2}^{21}I_{a,t-\ell}V_{a,t-\ell}},
 \qquad
 n_t=\sum_{\ell=2}^{21}I_{a,t-\ell}\ge 10.
-\]
+$$
 
 The numerator session is deliberately excluded from the 20-session reference
 window. Official-session reindexing ensures that a lag never jumps over a
@@ -176,15 +176,15 @@ missing market session.
 
 Let
 
-\[
+$$
 R^{CC}_{i,d}=\frac{C^{RTH}_{i,d}}{C^{RTH}_{i,d-1}}-1
-\]
+$$
 
 be a stock's close-to-close simple return. For the six configured stocks
-\(\mathcal S_s\) in sector \(s\), the lagged dispersion feature is the sample
+$\mathcal S_s$ in sector $s$, the lagged dispersion feature is the sample
 standard deviation
 
-\[
+$$
 \mathrm{Disp}_{s,t}
 =
 \sqrt{
@@ -192,17 +192,17 @@ standard deviation
 \sum_{i\in\mathcal S_s}
 \left(R^{CC}_{i,t-1}-\overline R^{CC}_{s,t-1}\right)^2
 }.
-\]
+$$
 
 All six returns must be present; otherwise the feature is missing.
 
 ### Premarket, overnight, and prior aftermarket features
 
-The premarket window is \(04{:}00\le\text{bar start}<09{:}00\) ET on forecast
-date \(t\). For its first open \(O^{PM}_{a,t}\), last close
-\(C^{PM}_{a,t}\), bar volumes \(v^{PM}_{a,t,k}\), and bar count \(N^{PM}_{a,t}\):
+The premarket window is $04{:}00\le\text{bar start}<09{:}00$ ET on forecast
+date $t$. For its first open $O^{PM}_{a,t}$, last close
+$C^{PM}_{a,t}$, bar volumes $v^{PM}_{a,t,k}$, and bar count $N^{PM}_{a,t}$:
 
-\[
+$$
 R^{PM}_{a,t}
 =
 \frac{C^{PM}_{a,t}}{O^{PM}_{a,t}}-1,
@@ -210,54 +210,54 @@ R^{PM}_{a,t}
 V^{PM}_{a,t}
 =
 \sum_k v^{PM}_{a,t,k}.
-\]
+$$
 
 There is no complete-grid requirement for an extended-hours window. If no
 usable bar exists, its values stay missing rather than becoming zero.
 Relative premarket volume is
 
-\[
+$$
 \mathrm{RelPMVol}^{20}_{a,t}
 =
 \frac{V^{PM}_{a,t}}
 {\frac{1}{n_t}\sum_{\ell=1}^{20}
 I^{PM}_{a,t-\ell}V^{PM}_{a,t-\ell}},
 \qquad n_t\ge 10.
-\]
+$$
 
 The feature named `overnight_return` stops at the last pre-09:00 close:
 
-\[
+$$
 R^{ON}_{a,t}
 =
 \frac{C^{PM}_{a,t}}{C^{RTH}_{a,t-1}}-1.
-\]
+$$
 
 It requires the exact preceding official RTH close. The cross-leg feature is
 
-\[
+$$
 R^{ON,\mathrm{relative}}_{i,t}
 =
 R^{ON}_{i,t}-R^{ON}_{ETF,t}.
-\]
+$$
 
 For the prior aftermarket window, the observation attached to forecast date
-\(t\) is the window following official session \(t-1\):
+$t$ is the window following official session $t-1$:
 
-\[
+$$
 R^{AM,prior}_{i,t}
 =
 \frac{C^{AM}_{i,t-1}}{O^{AM}_{i,t-1}}-1,
-\]
+$$
 
-\[
+$$
 \mathrm{RelAMVol}^{20}_{i,t}
 =
 \frac{V^{AM}_{i,t-1}}
 {\frac{1}{n_t}\sum_{\ell=2}^{21}
 I^{AM}_{i,t-\ell}V^{AM}_{i,t-\ell}},
 \qquad n_t\ge10.
-\]
+$$
 
 The availability indicators are deterministic missingness flags: stock and
 ETF premarket availability mean a bar count is present; prior-stock
@@ -268,29 +268,29 @@ aftermarket availability means the prior-window return is present.
 After reindexing FRED observations to official sessions and forward-filling
 published levels,
 
-\[
+$$
 \texttt{vix\_lag1}_t=VIX_{t-1},
 \qquad
 \texttt{vix\_change\_lag1}_t=VIX_{t-1}-VIX_{t-2}.
-\]
+$$
 
-For Treasury maturity \(m\in\{2,5,10\}\) years, the conservative publication
+For Treasury maturity $m\in\{2,5,10\}$ years, the conservative publication
 lag is two target sessions:
 
-\[
+$$
 \texttt{treasury}_{m,\mathrm{lag2},t}=Y_{m,t-2},
 \qquad
 \Delta Y^{lag2}_{m,t}=Y_{m,t-2}-Y_{m,t-3}.
-\]
+$$
 
 Yields remain in the percentage-point units supplied by FRED. Scheduled macro
 counts are same-date calendar quantities known at the forecast cutoff:
 
-\[
+$$
 N^{macro}_t=\#\{\text{scheduled releases on }t\},
 \qquad
 N^{preopen}_t=\#\{\text{those flagged before 09:00}\}.
-\]
+$$
 
 The agency indicators are Boolean maxima over the same schedule rows. They do
 not contain the realized macroeconomic surprise.
@@ -298,20 +298,20 @@ not contain the realized macroeconomic surprise.
 ### Optional factor-implied correlation
 
 This feature is generated for robustness but excluded from the primary
-training blocks. For asset \(a\), a rolling regression estimates
+training blocks. For asset $a$, a rolling regression estimates
 
-\[
+$$
 r_{a,d}-r_{f,d}
 =
 \alpha_a+\beta_a^\top f_d+\varepsilon_{a,d},
-\]
+$$
 
-where \(f_d=(Mkt-RF,SMB,HML,Mom)^\top\). The window contains at most 252 rows,
+where $f_d=(Mkt-RF,SMB,HML,Mom)^\top$. The window contains at most 252 rows,
 requires at least 126, and leaves the two immediately preceding factor rows
-outside the estimation slice before forecast date \(t\). With factor
-covariance \(\Sigma_f\), the implied correlation is
+outside the estimation slice before forecast date $t$. With factor
+covariance $\Sigma_f$, the implied correlation is
 
-\[
+$$
 \rho^{factor}_{i,b,t}
 =
 \frac{\beta_i^\top\Sigma_f\beta_b}
@@ -319,7 +319,7 @@ covariance \(\Sigma_f\), the implied correlation is
 \left(\beta_i^\top\Sigma_f\beta_i+\sigma_{\varepsilon_i}^2\right)
 \left(\beta_b^\top\Sigma_f\beta_b+\sigma_{\varepsilon_b}^2\right)
 }}.
-\]
+$$
 
 Residual covariance is assumed zero. This is not the characteristic-
 projection feature in Bollerslev, Li, and Tang.
@@ -329,9 +329,9 @@ projection feature in Bollerslev, Li, and Tang.
 Before rungs 2 and 3, nonnegative count, bar-count, volume, and relative-volume
 features listed in `LOG1P_FEATURES` receive the fixed transformation
 
-\[
+$$
 x^*=\log(1+x).
-\]
+$$
 
 During hyperparameter selection, linear models use training-block median
 imputation and training-block standardization. After selection, the final

@@ -1,0 +1,116 @@
+{
+  "title": "FLAN-T5-XL v1.1 locked evaluation",
+  "status": "active_research_extractor_below_acceptance_thresholds",
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "warning": "These metrics measure agreement with silver annotations, not objective human-ground-truth accuracy.",
+  "model": {
+    "id": "google/flan-t5-xl",
+    "revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+    "device": "cuda",
+    "precision": "float16",
+    "quantization": null
+  },
+  "selection": {
+    "split": "fixed 72-document development split",
+    "candidate_count_per_field": 27,
+    "primary_objective": "field macro-F1",
+    "secondary_objectives": [
+      "field accuracy",
+      "Cohen's kappa",
+      "smaller absolute calibration strength",
+      "stable score-source priority"
+    ],
+    "calibration_path": "experiments/flan_t5_xl/v1_1/calibration.json",
+    "calibration_sha256": "63eb8ee9cbd935a77b75e8c89bfb70f7343cff372bbed59e8aba650a846f67c4",
+    "development_mean_accuracy": 0.6160714285714286,
+    "development_mean_macro_f1": 0.4716329622722003,
+    "frozen_before_evaluation": true
+  },
+  "evaluation": {
+    "split": "fixed 228-document evaluation split",
+    "record_count": 228,
+    "reference_relevant_count": 174,
+    "semantic_coverage": 0.9942528735632183,
+    "relevance_gate_f1": 0.9351351351351351,
+    "mean_field_accuracy": 0.6120689655172414,
+    "mean_macro_f1": 0.4635347811690556,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.6494252873563219,
+        "macro_f1": 0.4683627923772493,
+        "cohens_kappa": 0.4088554720133668,
+        "required_macro_f1": 0.7,
+        "passed": false
+      },
+      "event_family": {
+        "accuracy": 0.5114942528735632,
+        "macro_f1": 0.47762299098773714,
+        "cohens_kappa": 0.42487167522165187,
+        "required_macro_f1": 0.65,
+        "passed": false
+      },
+      "information_status": {
+        "accuracy": 0.6149425287356322,
+        "macro_f1": 0.5797354497354498,
+        "cohens_kappa": 0.40867359878265275,
+        "required_macro_f1": 0.7,
+        "passed": false
+      },
+      "directional_alignment": {
+        "accuracy": 0.6724137931034483,
+        "macro_f1": 0.3284178915757863,
+        "cohens_kappa": 0.38724823921907814,
+        "required_macro_f1": 0.65,
+        "passed": false
+      }
+    }
+  },
+  "comparisons": {
+    "raw_xl_v1_0_same_evaluation": {
+      "mean_field_accuracy": 0.5459770114942529,
+      "mean_macro_f1": 0.4071409734129938,
+      "v1_1_accuracy_delta": 0.0660919540229885,
+      "v1_1_macro_f1_delta": 0.0563938077560618
+    },
+    "flan_t5_large_v0_4_previous_active": {
+      "mean_field_accuracy": 0.4942528735632184,
+      "mean_macro_f1": 0.4457475542607053,
+      "v1_1_accuracy_delta": 0.117816091954023,
+      "v1_1_macro_f1_delta": 0.0177872269083503
+    }
+  },
+  "run_integrity": {
+    "all_228_predictions_complete": true,
+    "input_truncation_count": 0,
+    "maximum_preflight_prompt_tokens": 368,
+    "maximum_input_tokens": 512,
+    "model_field_call_count": 627,
+    "deterministic_algorithms_enforced": true,
+    "network_access": "disabled"
+  },
+  "artifacts": {
+    "raw_predictions": {
+      "path": "outputs/flan_t5_xl/v1_1/evaluation_raw_predictions.jsonl",
+      "sha256": "3dbdb035bca6d63d21b769852e9d3dc247803f5f36484c1fd2d3965c8b009e41"
+    },
+    "raw_agreement": {
+      "path": "outputs/flan_t5_xl/v1_1/evaluation_raw_agreement.json",
+      "sha256": "fd06d4c3cf21a19670efd727b9687fbea3db0e3d6088d1f7186bca603b868ec8"
+    },
+    "active_predictions": {
+      "path": "outputs/flan_t5_xl/v1_1/evaluation_predictions.jsonl",
+      "sha256": "495cada7256542051acbdb004fef40767a45397fce5a987b06e0bf7c48827a52"
+    },
+    "active_agreement": {
+      "path": "outputs/flan_t5_xl/v1_1/evaluation_agreement.json",
+      "sha256": "6fe438c0dc15328bce2a635b2dd6c8bbbb75eea4eef5c1c0540bc2d7ae683cd6"
+    }
+  },
+  "decision": {
+    "active_research_extractor": true,
+    "production_ready": false,
+    "forecast_training_hard_labels": "not_approved_without_uncertainty_handling_or_human_validation",
+    "next_model_test_required": true,
+    "next_model": "meta-llama/Llama-3.1-8B-Instruct"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "title": "Llama 3.1 8B Instruct v1.0 development screen",
+  "status": "rejected_on_development_holdout_preserved",
+  "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+  "warning": "These metrics measure agreement with silver annotations, not objective human-ground-truth accuracy.",
+  "model": {
+    "id": "meta-llama/Llama-3.1-8B-Instruct",
+    "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "knowledge_cutoff": "2023-12-31",
+    "device": "cuda",
+    "precision": "float16",
+    "quantization": "NF4 with double quantization"
+  },
+  "cache": {
+    "verified_offline": true,
+    "file_count": 13,
+    "total_size_bytes": 16069779031,
+    "manifest_path": "outputs/llama_3_1/model_snapshot_manifest.json",
+    "manifest_sha256": "31fcebf733dec08b426c3acb7b07b2cee82400c42c55d1c00acaf9d590e16868"
+  },
+  "development": {
+    "record_count": 72,
+    "reference_relevant_count": 56,
+    "semantic_coverage": 0.9821428571428571,
+    "relevance_gate_f1": 0.9322033898305085,
+    "mean_field_accuracy": 0.5758928571428571,
+    "mean_macro_f1": 0.3866416471498153,
+    "field_metrics": {
+      "shock_scope": {
+        "accuracy": 0.5178571428571429,
+        "macro_f1": 0.17682926829268292,
+        "required_macro_f1": 0.7,
+        "passed": false
+      },
+      "event_family": {
+        "accuracy": 0.625,
+        "macro_f1": 0.5897849462365592,
+        "required_macro_f1": 0.65,
+        "passed": false
+      },
+      "information_status": {
+        "accuracy": 0.6607142857142857,
+        "macro_f1": 0.5396926338102809,
+        "required_macro_f1": 0.7,
+        "passed": false
+      },
+      "directional_alignment": {
+        "accuracy": 0.5,
+        "macro_f1": 0.24025974025974026,
+        "required_macro_f1": 0.65,
+        "passed": false
+      }
+    }
+  },
+  "comparison": {
+    "active_flan_t5_xl_v1_1_development_mean_accuracy": 0.6160714285714286,
+    "active_flan_t5_xl_v1_1_development_mean_macro_f1": 0.4716329622722003,
+    "accuracy_delta_vs_active_xl": -0.04017857142857151,
+    "macro_f1_delta_vs_active_xl": -0.08499131512238498
+  },
+  "run_integrity": {
+    "development_predictions_complete": true,
+    "input_truncation_count": 0,
+    "maximum_preflight_prompt_tokens": 419,
+    "maximum_input_tokens": 1024,
+    "model_forward_count": 957,
+    "official_chat_template": true,
+    "all_cyclic_option_rotations": true,
+    "network_access": "disabled"
+  },
+  "artifacts": {
+    "development_predictions": {
+      "path": "outputs/llama_3_1/v1_0/development_predictions.jsonl",
+      "sha256": "d6a9d27ffb1237b4a63d337fe8e9a02e064d288ca6185eb3fb812fd82a54b382"
+    },
+    "development_prediction_manifest": {
+      "path": "outputs/llama_3_1/v1_0/development_predictions.jsonl.manifest.json",
+      "sha256": "883e0c5e38d76ab2494b6cf9a1fc81b08a5a007fa8ac24a4e25fa280be58dd89"
+    },
+    "development_agreement": {
+      "path": "outputs/llama_3_1/v1_0/development_agreement.json",
+      "sha256": "8e5f952bdc1a026faf63eebc40971b76174fd80b03c3b36309b4ac796a379693"
+    }
+  },
+  "failure_analysis": {
+    "shock_scope_prediction_distribution": {
+      "idiosyncratic": 52,
+      "common": 2,
+      "mixed": 0,
+      "unclear": 2
+    },
+    "directional_alignment_prediction_distribution": {
+      "single_firm_only": 48,
+      "same_direction": 5,
+      "opposite_direction": 1,
+      "common_direction_unclear": 0,
+      "unclear": 2
+    },
+    "interpretation": "The model recognized event families reasonably well but treated most articles as single-firm shocks. Because alignment routing depends on scope, this also suppressed common-shock alignment labels."
+  },
+  "decision": {
+    "promoted": false,
+    "evaluation_materialized": false,
+    "holdout_preserved": true,
+    "active_extractor_remains": "flan-t5-xl-v1.1"
+  }
+}

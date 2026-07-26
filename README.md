@@ -16,27 +16,33 @@ The main hypothesis is that event scope matters:
 
 ## Operational model paths
 
-Only two extractor paths are current:
+FLAN-T5-XL v1.1 is now the active research extractor:
 
 | Extractor | Status | Protocol/results |
 |---|---|---|
-| FLAN-T5-Large v0.4 | Active research baseline; usable for exploratory comparisons, below production thresholds | [`experiments/flan_t5/v0_4/README.md`](experiments/flan_t5/v0_4/README.md) |
-| Llama 2 7B Chat v1.2 | Development-selected research candidate; useful as an event-family specialist, not an all-field replacement | [`experiments/llama_2/README.md`](experiments/llama_2/README.md) |
+| **FLAN-T5-XL v1.1** | **Active research extractor**; best tested mean macro-F1 and accuracy, below every production threshold | [`experiments/flan_t5_xl/v1_1/README.md`](experiments/flan_t5_xl/v1_1/README.md) |
+| FLAN-T5-Large v0.4 | Frozen prior baseline retained for paired comparisons | [`experiments/flan_t5/v0_4/README.md`](experiments/flan_t5/v0_4/README.md) |
+| Llama 2 7B Chat v1.2 | Historical research candidate; event-family specialist, not an all-field replacement | [`experiments/llama_2/README.md`](experiments/llama_2/README.md) |
+| Llama 3.1 8B Instruct v1.0 | Archived after failing all semantic development thresholds; holdout preserved | [`experiments/llama_3_1/archive/v1_0/README.md`](experiments/llama_3_1/archive/v1_0/README.md) |
 
-A completed FLAN-T5-XL development comparison is documented under
-[`experiments/flan_t5_xl/README.md`](experiments/flan_t5_xl/README.md). It
-improved mean macro-F1 only from 0.388 to 0.411 on the same development
-protocol, failed all semantic acceptance thresholds, and was rejected as a
-production extractor. It remains a scaling baseline and does not modify the
-active FLAN-T5-Large implementation.
+XL v1.1 applies a fieldwise score calibration selected only on the fixed
+72-document development split. On the locked 228-document comparison it
+achieved 0.612 mean accuracy and 0.464 mean macro-F1, versus 0.494 and 0.446
+for FLAN-T5-Large v0.4. All four semantic threshold checks still failed, so
+“active” means the default research path, not production approval.
 
 Machine-readable contracts:
 
+- [`experiments/active_extractor.json`](experiments/active_extractor.json)
+- [`experiments/flan_t5_xl/registry.json`](experiments/flan_t5_xl/registry.json)
 - [`experiments/flan_t5/active_baseline.json`](experiments/flan_t5/active_baseline.json)
 - [`experiments/flan_t5/registry.json`](experiments/flan_t5/registry.json)
 - [`experiments/llama_2/protocol.json`](experiments/llama_2/protocol.json)
 - [`experiments/llama_2/benchmark_manifest.json`](experiments/llama_2/benchmark_manifest.json)
 - [`experiments/llama_2/research_candidate.json`](experiments/llama_2/research_candidate.json)
+- [`experiments/llama_3_1/protocol.json`](experiments/llama_3_1/protocol.json)
+- [`experiments/llama_3_1/benchmark_manifest.json`](experiments/llama_3_1/benchmark_manifest.json)
+- [`experiments/llama_3_1/registry.json`](experiments/llama_3_1/registry.json)
 - [`config/quant_training_protocol_v1.json`](config/quant_training_protocol_v1.json)
 - [`experiments/quant_training/v1/README.md`](experiments/quant_training/v1/README.md)
 
@@ -48,15 +54,21 @@ Generated local data follows the same separation:
 
 ```text
 outputs/
+  flan_t5_xl/
+    v1_1/         # active calibrated XL predictions/results
+    v1_0/         # superseded raw XL development baseline
   flan_t5/
     shared/       # fixed 300-article benchmark
-    v0_4/         # active FLAN predictions/results
+    v0_4/         # prior FLAN-Large baseline
     archive/      # prior and rejected FLAN outputs
   llama_2/
     shared/       # prepared byte-identical 300-article benchmark
     v1_0/         # frozen failed baseline and diagnostics
     v1_1/         # corrected answer-boundary decoder
     v1_2/         # development-selected fieldwise hybrid
+  llama_3_1/
+    shared/       # post-cutoff byte-identical 72/228 benchmark
+    v1_0/         # completed development screen; evaluation holdout preserved
   quant_training/
     v1/
       rung_01/ ... rung_04/
@@ -108,6 +120,34 @@ two use mappings from the same pinned FLAN model's v0.2 fine prompt. The exact
 fine-compatibility prediction and manifest have been hash-verified into
 `outputs/flan_t5/v0_4/dependencies/v0_2_fine/`; the rest of v0.2 is archived.
 
+## FLAN-T5-XL v1.1 result
+
+The XL experiment reused the same schema, prompts, deterministic routing, and
+2024 benchmark with the larger pinned `google/flan-t5-xl` checkpoint. The raw
+XL decoder achieved 0.407 mean macro-F1 on the locked split. A bounded
+development experiment then selected one of 27 score-source/log-prior rules
+per semantic field and froze those choices before evaluating the 228 records.
+
+| Metric | Raw XL v1.0 | Active XL v1.1 |
+|---|---:|---:|
+| Mean field accuracy | 0.546 | **0.612** |
+| Mean semantic macro-F1 | 0.407 | **0.464** |
+
+Use the frozen wrapper for new point-in-time inputs:
+
+```powershell
+$env:HF_HUB_OFFLINE = "1"
+.\.venv-flan-t5-xl\Scripts\python.exe scripts\run_flan_t5_xl_active.py `
+  --input <POINT_IN_TIME_INPUT.jsonl> `
+  --output <CALIBRATED_OUTPUT.jsonl>
+```
+
+The wrapper verifies the active schema and calibration hashes, runs the pinned
+CUDA/FP16 XL configuration, retains raw scores, and applies the frozen
+postprocessor. See the
+[`XL runbook`](experiments/flan_t5_xl/v1_1/README.md)
+for validation, resumption, reproduction, and claim limits.
+
 ## Llama 2 comparison
 
 The local comparison uses:
@@ -150,13 +190,51 @@ v1.0 supplies scope and alignment. On the remaining 228 records, reported
 only as a post-hoc engineering comparison, it improves over v1.0 by 0.092
 mean accuracy and 0.092 mean macro-F1. Its event-family result is competitive
 with FLAN (0.449 versus 0.452 macro-F1), but scope and status remain strongly
-majority-dominated. FLAN v0.4 remains the better all-field semantic baseline.
-A fresh external holdout is required before promoting Llama v1.2 beyond a
-research candidate.
+majority-dominated. FLAN v0.4 remained the better all-field baseline in that
+comparison. A fresh external holdout is required before promoting Llama v1.2
+beyond a research candidate.
 
 See the
 [`Llama 2 runbook`](experiments/llama_2/README.md)
 for the exact runs, evaluation, diagnosis, and completed decoder experiment.
+
+## Llama 3.1 8B Instruct development screen
+
+Because XL v1.1 still misses all semantic thresholds, the pinned
+`meta-llama/Llama-3.1-8B-Instruct` checkpoint was screened locally. Meta
+documents a December 2023 knowledge cutoff; the fixed articles begin January
+2, 2024, so the same benchmark and existing silver labels were eligible.
+
+The completed pipeline:
+
+- cache and hash the gated immutable checkpoint;
+- create byte-identical, label-free development/evaluation inputs;
+- enforce the official chat template and exact assistant boundary;
+- average all cyclic option positions;
+- support complete multi-token candidate scoring; and
+- run NF4/FP16 at batch size one for the local 8 GiB GPU.
+
+The 13-file, 16.07 GB snapshot was verified offline. Smoke extraction and all
+72 development records completed with no truncation. The deterministic
+relevance gate passed at 0.932 F1, but the semantic model failed all four
+field thresholds:
+
+| Metric | Llama 3.1 v1.0 | Active XL v1.1 development |
+|---|---:|---:|
+| Mean field accuracy | 0.576 | **0.616** |
+| Mean semantic macro-F1 | 0.387 | **0.472** |
+
+Scope macro-F1 was only 0.177 and alignment macro-F1 was 0.240. The model
+classified 52 of 56 reference-relevant records as `idiosyncratic`, so the
+hierarchy also forced most alignment outputs to `single_firm_only`.
+
+v1.0 was rejected without running the 228-document evaluation split. This
+preserves the holdout for a future configuration whose scope rule and
+scope-dependent alignment routing are frozen before inference. The active
+research extractor remains FLAN-T5-XL v1.1.
+
+See the [`Llama 3.1 runbook`](experiments/llama_3_1/README.md) and
+[`archived development result`](experiments/llama_3_1/archive/v1_0/README.md).
 
 ## Schemas
 
@@ -186,12 +264,12 @@ auditable rules.
 1. Measure realized stock-sector correlation from intraday returns.
 2. Use a pooled panel of liquid stocks and sector benchmarks.
 3. Establish lagged-correlation, HAR, exponential, regularized-linear,
-   shallow-tree, and causal DCC-GARCH quantitative baselines.
+  shallow-tree, and causal DCC-GARCH quantitative baselines.
 4. Add frozen point-in-time news features.
 5. Keep every stock observed on the same date in the same chronological fold.
 6. Compare against news counts and conventional sentiment.
 7. Test economic value through hedge error, portfolio risk, and
-   coupling-aware filters, not forecast error alone.
+  coupling-aware filters, not forecast error alone.
 
 ## Historical price data
 
@@ -344,4 +422,4 @@ links to all per-rung results are in
 5. Keep semantic extraction separate from the downstream forecast model.
 6. Never tune against the final evaluation split.
 7. Keep licensed news, raw provider payloads, model weights, and credentials
-   out of source control.
+  out of source control.

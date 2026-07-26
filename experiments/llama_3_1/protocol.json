@@ -1,0 +1,93 @@
+{
+  "schema_version": "llama-3.1-local-comparison-v1",
+  "status": "development_rejected_holdout_preserved",
+  "decision_trigger": "FLAN-T5-XL v1.1 failed all four semantic macro-F1 thresholds",
+  "model": {
+    "id": "meta-llama/Llama-3.1-8B-Instruct",
+    "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "official_knowledge_cutoff": "December 2023",
+    "conservative_cutoff": "2023-12-31",
+    "release_date": "2024-07-23",
+    "license": "Llama 3.1 Community License",
+    "gated": true
+  },
+  "benchmark": {
+    "source": "same fixed 300-document FLAN benchmark",
+    "development_records": 72,
+    "evaluation_records": 228,
+    "minimum_time_published_utc": "2024-01-02T18:34:09Z",
+    "maximum_time_published_utc": "2024-12-27T17:55:58Z",
+    "all_records_after_cutoff": true,
+    "new_gpt_labeling_required": false,
+    "prepared_manifest": "outputs/llama_3_1/shared/benchmark_300/manifest.json",
+    "development_status": "completed",
+    "evaluation_status": "not_materialized",
+    "evaluation_reason": "The frozen v1.0 configuration failed every semantic development threshold; the 228-document holdout remains untouched."
+  },
+  "runtime": {
+    "device": "NVIDIA CUDA",
+    "target_hardware": "RTX 3070 Ti 8 GiB",
+    "quantization": "NF4 with double quantization",
+    "compute_dtype": "float16",
+    "batch_size": 1,
+    "operational_context_limit": 1024,
+    "required_runtime_versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "4.57.6",
+      "bitsandbytes": "0.49.2",
+      "accelerate": "1.14.0",
+      "huggingface_hub": "0.36.2",
+      "safetensors": "0.8.0",
+      "sentencepiece": "0.2.2"
+    },
+    "cpu_or_disk_offload": "forbidden in the frozen primary run",
+    "network_during_extraction": "disabled"
+  },
+  "decoding": {
+    "prompt": "same coarse article-first field prompts and deterministic hierarchy as FLAN v0.4",
+    "chat_format": "official pinned tokenizer chat template",
+    "assistant_reply": "Answer: <option letter>",
+    "option_orders": "all cyclic rotations",
+    "score": "next-token probability for one-token choices, exact mean log probability for a multi-token candidate sequence",
+    "free_text_generation": false,
+    "tie_break": "schema order"
+  },
+  "acceptance_thresholds": {
+    "relevance_gate_f1": 0.9,
+    "shock_scope_macro_f1": 0.7,
+    "event_family_macro_f1": 0.65,
+    "information_status_macro_f1": 0.7,
+    "directional_alignment_macro_f1": 0.65
+  },
+  "implementation": {
+    "requirements": "requirements-llama-3-1.txt",
+    "cache": "scripts/cache_llama_3_1.py",
+    "benchmark": "scripts/prepare_llama_3_1_benchmark.py",
+    "extract": "scripts/extract_llama_3_1_coarse.py",
+    "evaluate": "scripts/evaluate_flan_coarse.py"
+  },
+  "development_result": {
+    "version": "v1.0",
+    "record_count": 72,
+    "reference_relevant_count": 56,
+    "relevance_gate_f1": 0.9322033898305085,
+    "mean_field_accuracy": 0.5758928571428571,
+    "mean_macro_f1": 0.3866416471498153,
+    "threshold_results": {
+      "shock_scope": false,
+      "event_family": false,
+      "information_status": false,
+      "directional_alignment": false
+    },
+    "summary": "experiments/llama_3_1/archive/v1_0/development_summary.json"
+  },
+  "decision": {
+    "promoted": false,
+    "active_extractor_changed": false,
+    "active_extractor_remains": "flan-t5-xl-v1.1",
+    "reason": "Llama 3.1 v1.0 underperformed active XL v1.1 on development and collapsed scope and alignment toward dominant labels.",
+    "bounded_calibration_attempted": false,
+    "calibration_reason": "A post-hoc scope adjustment would change the hierarchy that determines whether the alignment prompt is run, requiring a new preregistered extraction version rather than a safe score-only correction."
+  },
+  "claim_limit": "The recorded result is a 72-document development-screen agreement with GPT-5.6-derived silver labels, not human-ground-truth accuracy. No 228-document Llama 3.1 evaluation result exists."
+}
