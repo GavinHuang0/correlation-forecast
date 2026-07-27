@@ -1,0 +1,64 @@
+{
+  "request_id": "fixture-amd-page",
+  "status": "OK",
+  "results": [
+    {
+      "id": "massive-fixture-001",
+      "publisher": {
+        "name": "Business Wire",
+        "homepage_url": "https://www.businesswire.com/"
+      },
+      "title": "AMD raises guidance after beating estimates",
+      "author": "Fixture Reporter",
+      "published_utc": "2024-01-02T13:59:59.987654Z",
+      "article_url": "https://example.com/amd-guidance",
+      "amp_url": "https://example.com/amp/amd-guidance",
+      "tickers": ["AMD", "NVDA"],
+      "description": "AMD beat analyst estimates and raised its guidance.",
+      "keywords": ["earnings", "guidance"],
+      "insights": [
+        {
+          "ticker": "AMD",
+          "sentiment": "positive",
+          "sentiment_reasoning": "Guidance was raised."
+        }
+      ]
+    },
+    {
+      "id": "massive-fixture-002",
+      "publisher": {
+        "name": "Example News",
+        "homepage_url": "https://news.example.com/"
+      },
+      "title": "AMD announces a customer contract",
+      "author": "Fixture Desk",
+      "published_utc": "2024-01-02T14:00:00Z",
+      "article_url": "https://example.com/amd-contract",
+      "tickers": ["AMD"],
+      "description": "AMD announced a new customer contract.",
+      "keywords": ["technology", "customer contract"],
+      "insights": []
+    },
+    {
+      "id": "massive-fixture-003",
+      "publisher": {
+        "name": "Example News",
+        "homepage_url": "https://news.example.com/"
+      },
+      "title": "AMD and Nvidia launch new products",
+      "author": "Fixture Desk",
+      "published_utc": "2024-01-02T14:00:01Z",
+      "article_url": "https://example.com/amd-nvidia-products",
+      "tickers": ["AMD", "NVDA"],
+      "description": "AMD and Nvidia launched new products for customers.",
+      "keywords": ["technology", "products"],
+      "insights": [
+        {
+          "ticker": "NVDA",
+          "sentiment": "neutral",
+          "sentiment_reasoning": "The launch terms were not disclosed."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "all_fold_gate_applied": true,
+  "expected_folds_present": true,
+  "expected_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "expected_targets_present": true,
+  "included_targets": [
+    "t1_etf",
+    "t2_etf"
+  ],
+  "observed_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "row_counts_match": true,
+  "status": "passed"
+}

@@ -1,0 +1,116 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.36575832701479094,
+      "incremental_r2_news_given_quant": 0.0035200699429132065,
+      "mean_squared_loss_delta_model_minus_base": -0.0004709119782116695,
+      "model_fisher_z_rmse": 0.36511401205985927,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.37513537703579797,
+      "incremental_r2_news_given_quant": -0.00324646453363453,
+      "mean_squared_loss_delta_model_minus_base": 0.0004568637570991817,
+      "model_fisher_z_rmse": 0.3757438154659229,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.21583536509985216,
+      "incremental_r2_news_given_quant": -0.019639895623244197,
+      "mean_squared_loss_delta_model_minus_base": 0.0009149226684364864,
+      "model_fisher_z_rmse": 0.21794455142586835,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.23389804358321656,
+      "incremental_r2_news_given_quant": -0.06073864622977143,
+      "mean_squared_loss_delta_model_minus_base": 0.0033229077632087574,
+      "model_fisher_z_rmse": 0.24089666364494347,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "control": {
+    "control": "fixed within-sector same-date wrong-stock rotation",
+    "mapping": {
+      "Energy:COP": "CVX",
+      "Energy:CVX": "EOG",
+      "Energy:EOG": "MPC",
+      "Energy:MPC": "SLB",
+      "Energy:SLB": "XOM",
+      "Energy:XOM": "COP",
+      "Financials:BAC": "C",
+      "Financials:C": "GS",
+      "Financials:GS": "JPM",
+      "Financials:JPM": "MS",
+      "Financials:MS": "WFC",
+      "Financials:WFC": "BAC",
+      "Health Care:ABBV": "AMGN",
+      "Health Care:AMGN": "GILD",
+      "Health Care:GILD": "JNJ",
+      "Health Care:JNJ": "MRK",
+      "Health Care:MRK": "PFE",
+      "Health Care:PFE": "ABBV",
+      "Industrials:BA": "CAT",
+      "Industrials:CAT": "DE",
+      "Industrials:DE": "LMT",
+      "Industrials:LMT": "UNP",
+      "Industrials:UNP": "UPS",
+      "Industrials:UPS": "BA",
+      "Semiconductors:AMD": "AVGO",
+      "Semiconductors:AVGO": "INTC",
+      "Semiconductors:INTC": "MU",
+      "Semiconductors:MU": "NVDA",
+      "Semiconductors:NVDA": "QCOM",
+      "Semiconductors:QCOM": "AMD"
+    }
+  },
+  "generated_at_utc": "2026-07-27T10:41:54.449529Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2897174730201546,
+      "fisher_z_rmse": 0.36511401205985927,
+      "model": "b4_wrong_stock",
+      "oos_r2_vs_persistence": 0.4245331619566921,
+      "raw_correlation_mae": 0.15117650545158406,
+      "raw_correlation_rmse": 0.21033177361511077,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.29771098719234834,
+      "fisher_z_rmse": 0.3757438154659229,
+      "model": "b4_wrong_stock",
+      "oos_r2_vs_persistence": 0.4094076516511721,
+      "raw_correlation_mae": 0.16847679937607538,
+      "raw_correlation_rmse": 0.23444028408044928,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.17408191850563848,
+      "fisher_z_rmse": 0.21794455142586835,
+      "model": "b4_wrong_stock",
+      "oos_r2_vs_persistence": 0.2685964650869779,
+      "raw_correlation_mae": 0.09297804458415092,
+      "raw_correlation_rmse": 0.1249685354178082,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.18925035465218945,
+      "fisher_z_rmse": 0.24089666364494347,
+      "model": "b4_wrong_stock",
+      "oos_r2_vs_persistence": 0.2370361842727411,
+      "raw_correlation_mae": 0.11048827304333221,
+      "raw_correlation_rmse": 0.15262455337706934,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "parity_gate": null,
+  "status": "complete"
+}

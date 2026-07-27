@@ -1,0 +1,376 @@
+{
+  "comparison_ladder": [
+    {
+      "base": "A0-L",
+      "candidate": "A1",
+      "controlled": true,
+      "family": "track_a_matched_elastic_net",
+      "folds": null,
+      "key": "A1_vs_A0-L",
+      "targets": null
+    },
+    {
+      "base": "A0-L",
+      "candidate": "A2",
+      "controlled": true,
+      "family": "track_a_matched_elastic_net",
+      "folds": null,
+      "key": "A2_vs_A0-L",
+      "targets": null
+    },
+    {
+      "base": "A0-L",
+      "candidate": "A3",
+      "controlled": true,
+      "family": "track_a_matched_elastic_net",
+      "folds": null,
+      "key": "A3_vs_A0-L",
+      "targets": null
+    },
+    {
+      "base": "A0-L",
+      "candidate": "A4",
+      "controlled": true,
+      "family": "track_a_matched_elastic_net",
+      "folds": null,
+      "key": "A4_vs_A0-L",
+      "targets": null
+    },
+    {
+      "base": "A0-L",
+      "candidate": "A5",
+      "controlled": true,
+      "family": "track_a_matched_elastic_net",
+      "folds": null,
+      "key": "A5_vs_A0-L",
+      "targets": null
+    },
+    {
+      "base": "A2",
+      "candidate": "A3",
+      "controlled": true,
+      "family": "track_a_nested_news_block",
+      "folds": null,
+      "key": "A3_vs_A2",
+      "targets": null
+    },
+    {
+      "base": "A3",
+      "candidate": "A4",
+      "controlled": true,
+      "family": "track_a_nested_news_block",
+      "folds": null,
+      "key": "A4_vs_A3",
+      "targets": null
+    },
+    {
+      "base": "A4",
+      "candidate": "A5",
+      "controlled": true,
+      "family": "track_a_nested_news_block",
+      "folds": null,
+      "key": "A5_vs_A4",
+      "targets": null
+    },
+    {
+      "base": "A0-T",
+      "candidate": "A6",
+      "controlled": true,
+      "family": "track_a_matched_xgboost",
+      "folds": null,
+      "key": "A6_vs_A0-T",
+      "targets": null
+    },
+    {
+      "base": "A0-L",
+      "candidate": "A7",
+      "controlled": true,
+      "family": "track_a_validation_gated_ensemble",
+      "folds": null,
+      "key": "A7_vs_A0-L",
+      "targets": [
+        "t1_etf",
+        "t2_etf"
+      ]
+    },
+    {
+      "base": "A0-T",
+      "candidate": "A7",
+      "controlled": true,
+      "family": "track_a_validation_gated_ensemble",
+      "folds": null,
+      "key": "A7_vs_A0-T",
+      "targets": [
+        "t1_etf",
+        "t2_etf"
+      ]
+    },
+    {
+      "base": "A5",
+      "candidate": "A7",
+      "controlled": true,
+      "family": "track_a_validation_gated_ensemble",
+      "folds": null,
+      "key": "A7_vs_A5",
+      "targets": [
+        "t1_etf",
+        "t2_etf"
+      ]
+    },
+    {
+      "base": "A6",
+      "candidate": "A7",
+      "controlled": true,
+      "family": "track_a_validation_gated_ensemble",
+      "folds": null,
+      "key": "A7_vs_A6",
+      "targets": [
+        "t1_etf",
+        "t2_etf"
+      ]
+    },
+    {
+      "base": "B0",
+      "candidate": "B1",
+      "controlled": true,
+      "family": "track_b_primary",
+      "folds": null,
+      "key": "B1_vs_B0",
+      "targets": null
+    },
+    {
+      "base": "B0",
+      "candidate": "B2",
+      "controlled": true,
+      "family": "track_b_primary",
+      "folds": null,
+      "key": "B2_vs_B0",
+      "targets": null
+    },
+    {
+      "base": "B0",
+      "candidate": "B3",
+      "controlled": true,
+      "family": "track_b_primary",
+      "folds": null,
+      "key": "B3_vs_B0",
+      "targets": null
+    },
+    {
+      "base": "B0",
+      "candidate": "B4",
+      "controlled": true,
+      "family": "track_b_primary",
+      "folds": null,
+      "key": "B4_vs_B0",
+      "targets": null
+    },
+    {
+      "base": "B0",
+      "candidate": "B5",
+      "controlled": true,
+      "family": "track_b_primary",
+      "folds": null,
+      "key": "B5_vs_B0",
+      "targets": null
+    },
+    {
+      "base": "B1",
+      "candidate": "B3",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B3_vs_B1",
+      "targets": null
+    },
+    {
+      "base": "B2",
+      "candidate": "B3",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B3_vs_B2",
+      "targets": null
+    },
+    {
+      "base": "B1",
+      "candidate": "B4",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B4_vs_B1",
+      "targets": null
+    },
+    {
+      "base": "B2",
+      "candidate": "B4",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B4_vs_B2",
+      "targets": null
+    },
+    {
+      "base": "B1",
+      "candidate": "B5",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B5_vs_B1",
+      "targets": null
+    },
+    {
+      "base": "B2",
+      "candidate": "B5",
+      "controlled": true,
+      "family": "track_b_vs_nonnews_calibration",
+      "folds": null,
+      "key": "B5_vs_B2",
+      "targets": null
+    },
+    {
+      "base": "S-B0",
+      "candidate": "S-B1",
+      "controlled": true,
+      "family": "t1_etf_winner_base_sensitivity",
+      "folds": null,
+      "key": "S-B1_vs_S-B0",
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    {
+      "base": "S-B0",
+      "candidate": "S-B2",
+      "controlled": true,
+      "family": "t1_etf_winner_base_sensitivity",
+      "folds": null,
+      "key": "S-B2_vs_S-B0",
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    {
+      "base": "S-B0",
+      "candidate": "S-B3",
+      "controlled": true,
+      "family": "t1_etf_winner_base_sensitivity",
+      "folds": null,
+      "key": "S-B3_vs_S-B0",
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    {
+      "base": "S-B0",
+      "candidate": "S-B4",
+      "controlled": true,
+      "family": "t1_etf_winner_base_sensitivity",
+      "folds": null,
+      "key": "S-B4_vs_S-B0",
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    {
+      "base": "S-B0",
+      "candidate": "S-B5",
+      "controlled": true,
+      "family": "t1_etf_winner_base_sensitivity",
+      "folds": null,
+      "key": "S-B5_vs_S-B0",
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    {
+      "base": "C-A5-L20",
+      "candidate": "A5",
+      "controlled": true,
+      "family": "track_a_placebo",
+      "folds": null,
+      "key": "A5_vs_C-A5-L20",
+      "targets": null
+    },
+    {
+      "base": "C-A5-WS",
+      "candidate": "A5",
+      "controlled": true,
+      "family": "track_a_placebo",
+      "folds": null,
+      "key": "A5_vs_C-A5-WS",
+      "targets": null
+    },
+    {
+      "base": "C-B4-L20",
+      "candidate": "B4",
+      "controlled": true,
+      "family": "track_b_placebo",
+      "folds": null,
+      "key": "B4_vs_C-B4-L20",
+      "targets": null
+    },
+    {
+      "base": "C-B4-WS",
+      "candidate": "B4",
+      "controlled": true,
+      "family": "track_b_placebo",
+      "folds": null,
+      "key": "B4_vs_C-B4-WS",
+      "targets": null
+    },
+    {
+      "base": "B4",
+      "candidate": "A5",
+      "controlled": false,
+      "family": "joint_vs_residual_uncontrolled",
+      "folds": [
+        "fold_2",
+        "fold_3"
+      ],
+      "key": "A5_vs_B4_common_folds",
+      "targets": null
+    },
+    {
+      "base": "B5",
+      "candidate": "A6",
+      "controlled": false,
+      "family": "joint_vs_residual_uncontrolled",
+      "folds": [
+        "fold_2",
+        "fold_3"
+      ],
+      "key": "A6_vs_B5_common_folds",
+      "targets": null
+    },
+    {
+      "base": "S-B0",
+      "candidate": "A7",
+      "controlled": false,
+      "family": "gated_joint_vs_quant_v1_winner",
+      "folds": [
+        "fold_2",
+        "fold_3"
+      ],
+      "key": "A7_vs_S-B0_common_folds",
+      "targets": [
+        "t1_etf"
+      ]
+    }
+  ],
+  "inference": {
+    "bootstrap_block_sessions": 10,
+    "bootstrap_method": "moving blocks of whole forecast dates; retain all stocks on each sampled date",
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 1729,
+    "naive_row_independence_assumed": false
+  },
+  "pooling": "stock-day-row weighted; fold weights proportional to eligible date counts",
+  "slice_comparisons": [
+    "A5_vs_A0-L",
+    "A6_vs_A0-T",
+    "B4_vs_B0",
+    "B5_vs_B0",
+    "S-B5_vs_S-B0"
+  ]
+}

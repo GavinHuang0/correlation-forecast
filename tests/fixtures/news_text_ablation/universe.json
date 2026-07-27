@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "sectors": [
+    {
+      "name": "Synthetic Sector One",
+      "benchmark": "SYN1",
+      "stocks": ["AAA", "AAB"]
+    },
+    {
+      "name": "Synthetic Sector Two",
+      "benchmark": "SYN2",
+      "stocks": ["BBB", "BBC"]
+    }
+  ]
+}

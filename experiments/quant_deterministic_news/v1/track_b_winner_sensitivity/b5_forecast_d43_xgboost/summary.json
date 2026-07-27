@@ -1,0 +1,30 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.36486160713739735,
+      "incremental_r2_news_given_quant": 0.009117242496138767,
+      "mean_squared_loss_delta_model_minus_base": -0.0012137237204265584,
+      "model_fisher_z_rmse": 0.3631945327816182,
+      "rows": 7530,
+      "target": "t1_etf"
+    }
+  ],
+  "control": {
+    "control": null
+  },
+  "generated_at_utc": "2026-07-27T10:40:08.705586Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2877864747634725,
+      "fisher_z_rmse": 0.3631945327816182,
+      "model": "b5_forecast_d43_xgboost",
+      "oos_r2_vs_persistence": 0.4305679515778812,
+      "raw_correlation_mae": 0.15023543945498732,
+      "raw_correlation_rmse": 0.2101808697245727,
+      "rows": 7530,
+      "target": "t1_etf"
+    }
+  ],
+  "parity_gate": null,
+  "status": "complete"
+}

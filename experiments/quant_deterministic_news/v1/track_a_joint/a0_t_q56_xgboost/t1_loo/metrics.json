@@ -1,0 +1,12 @@
+[
+  {
+    "fisher_z_mae": 0.30046236575780677,
+    "fisher_z_rmse": 0.3814343552392441,
+    "model": "a0_t_q56_xgboost",
+    "oos_r2_vs_persistence": 0.3963802782608252,
+    "raw_correlation_mae": 0.161197877475096,
+    "raw_correlation_rmse": 0.22913696412153178,
+    "rows": 11190,
+    "target": "t1_loo"
+  }
+]

@@ -5,6 +5,11 @@ for the locked ETF/LOO T1/T2 training ladder. Generated predictions and fit
 metadata live under `outputs/quant_training/v1`; reproducible summaries live
 here.
 
+This experiment is complete at rung 4 and remains quant-only. The planned
+deterministic-news study lives separately in
+[`experiments/quant_deterministic_news/v1`](../../quant_deterministic_news/v1/README.md);
+it does not change this protocol, its predictions, or its reported metrics.
+
 The initial model families, folds, and feature blocks were locked in
 `config/quant_training_protocol_v1.json` before outer-test results were
 inspected. Every model uses date-blocked folds, and T2 rows are purged whenever

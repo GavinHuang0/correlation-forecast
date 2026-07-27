@@ -77,10 +77,10 @@ outputs/
 
 `outputs/`, licensed/raw news, model weights, and secrets remain Git-ignored.
 
-## Benchmark and labels
+## Original extractor-selection benchmark and labels
 
-The fixed benchmark contains 300 Alpha Vantage headline/summary records from
-2024:
+The original extractor-selection benchmark contains 300 Alpha Vantage
+headline/summary records from 2024:
 
 - development: 72 records;
 - evaluation: 228 records;
@@ -103,7 +103,7 @@ core parses were null. Later versions used one-field constrained scoring,
 coarse economically motivated labels, deterministic relevance/surprise rules,
 article-first prompts, hierarchical routing, and option-order averaging.
 
-The selected v0.4 hybrid achieved on the fixed 228-record split:
+The selected v0.4 hybrid achieved on the original fixed 228-record split:
 
 | Metric | Mapped v0.2 | Active v0.4 |
 |---|---:|---:|
@@ -265,9 +265,12 @@ auditable rules.
 2. Use a pooled panel of liquid stocks and sector benchmarks.
 3. Establish lagged-correlation, HAR, exponential, regularized-linear,
   shallow-tree, and causal DCC-GARCH quantitative baselines.
-4. Add frozen point-in-time news features.
+4. Run the separate exploratory deterministic-news ablation, while reserving
+   strict point-in-time claims for a future version-preserving news archive.
 5. Keep every stock observed on the same date in the same chronological fold.
-6. Compare against news counts and conventional sentiment.
+6. Compare nested deterministic activity, scope, cue, timing, source, and
+   burst blocks against calibration and lag/permutation placebo controls;
+   conventional sentiment remains a separately versioned future control.
 7. Test economic value through hedge error, portfolio risk, and
   coupling-aware filters, not forecast error alone.
 
@@ -412,6 +415,70 @@ objectives, evaluation formulas, completed ladder, remaining limitations, and
 links to all per-rung results are in
 [`docs/training_readiness.md`](docs/training_readiness.md) and
 [`experiments/quant_training/v1/README.md`](experiments/quant_training/v1/README.md).
+
+## News-provider and deterministic-feature experiment
+
+The Massive/Alpha/full-text provider audit is isolated under
+[`experiments/news_provider_fulltext/v1_0/`](experiments/news_provider_fulltext/v1_0/README.md).
+Its generated provider payloads, licensed text, Q+D panel, local-model
+predictions, and GPT silver-label batches remain Git-ignored.
+
+The free Massive ordinary-news endpoint supplied a cursor-exhausted snapshot
+within the configured 30-stock, five-sector-benchmark, and SPY query scope.
+This does not claim exhaustive market-wide coverage, a complete still-open
+July 26 UTC day, or a contractual right to the observed pre-two-year history.
+After cross-query deduplication the snapshot contains 90,290 unique provider
+documents. It has been converted into 44 auditable deterministic-news columns
+and joined one-to-one to the 27,510-row quant panel. Two columns are constant
+and two are exact timing redundancies, so the manifest recommends 40 columns
+for fitting. The resulting artifact is sufficient for exploratory Q+D model
+integration, but not for a strict point-in-time training claim: ordinary
+Massive news lacks first-seen timestamps, update/version history, and article
+bodies. The panel and manifest are bound by SHA-256
+`352ba2635febfa0bc36bc6f797c00036a8aee9879327a8176e9accf180e50150`
+and
+`ac161d48901fae669fdc500099df92d218513d2e7d8d383539b8ed326445d86f`.
+
+The separate
+[quant plus deterministic-news experiment](experiments/quant_deterministic_news/v1/README.md)
+is complete, while the quant-only ladder remains unchanged. Exact Q-only
+replays passed, 25 model/control bundles were fitted, and the final report
+contains 118 paired target comparisons with 236,000 fold-contained
+date-block bootstrap draws. A5 improved T2 ETF MSE by 3.65% versus matched
+Elastic Net, but a 20-session stale-news placebo performed better. Residual
+news models did not robustly improve the primary XGBoost base. The current
+decision is therefore to retain the quant-only model and treat the news
+results as exploratory until prospective version-safe confirmation.
+
+The separate full-text benchmark retrieved 399 documents in 554 attempts
+covering 553 unique public URLs from a 5,180-document queue, then selected 300
+assignment-balanced documents from two publishers, all published strictly
+after 2026-03-01 00:00 UTC. Only 73 assigned targets are provider-tagged; 266
+documents tag the target or a known peer, and 34 rely on sector/market
+eligibility. Alpha Vantage matched only one selected document, so no Alpha
+summary comparison is estimable. GPT silver labels use reconstructed parent
+full text without provider ticker tags, whereas local models receive the
+applicable text variant plus honest provider tags. Reported model results are
+therefore agreement and information-retention tests, not objective accuracy,
+strict historical point-in-time validity, or a symmetric model contest.
+
+On the locked 228-document evaluation, chunked retrieved full text reduced
+mean macro-F1 relative to Massive descriptions by 0.0908 for FLAN-T5-XL and
+0.0593 for Llama 3.1; both paired 95% intervals were below zero. The current
+recommendation is therefore to use free Massive ordinary News for exploratory
+deterministic features, retain Alpaca for quant data, and buy neither Alpha
+premium nor the `$99` Benzinga feed for the current extraction pipeline.
+Strict point-in-time news training still requires a forward version-preserving
+collector or a provider contract that supplies auditable historical versions.
+
+See:
+
+- [`docs/news_provider_experiment_results.md`](docs/news_provider_experiment_results.md)
+  for the empirical access, coverage, full-text, and model-ablation results;
+- [`docs/news_provider_source_matrix.md`](docs/news_provider_source_matrix.md)
+  for documented versus observed provider capabilities; and
+- [`docs/q_plus_d_massive.md`](docs/q_plus_d_massive.md) for the joined-panel
+  contract and claim boundary.
 
 ## Reproducibility principles
 

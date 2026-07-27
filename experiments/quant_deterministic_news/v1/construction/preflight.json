@@ -1,0 +1,280 @@
+{
+  "claim_scope": {
+    "exploratory_only": true,
+    "point_in_time_version_safe": false,
+    "primary_training_eligible": false,
+    "reason": "Massive ordinary News supplies publication timestamps and current descriptions, but not first-seen timestamps, update history, or historical article versions."
+  },
+  "d40_matches_manifest": true,
+  "d43": [
+    "observed_relevant_article_count",
+    "observed_direct_target_article_count",
+    "observed_target_only_article_count",
+    "observed_peer_article_count",
+    "observed_peer_specific_article_count",
+    "observed_common_proxy_article_count",
+    "observed_macro_article_count",
+    "observed_mixed_target_common_article_count",
+    "observed_no_relevant_news",
+    "observed_multi_ticker_article_share",
+    "observed_target_peer_co_mention_share",
+    "observed_unique_peer_count",
+    "observed_peer_coverage_ratio",
+    "observed_sector_firms_with_news_share",
+    "observed_sector_entity_hhi",
+    "observed_target_share_of_sector_entity_mentions",
+    "observed_common_shock_balance",
+    "observed_firm_common_imbalance",
+    "positive_surprise_cue_article_count",
+    "negative_surprise_cue_article_count",
+    "earnings_guidance_cue_article_count",
+    "product_demand_cue_article_count",
+    "supply_capacity_cue_article_count",
+    "regulation_legal_cue_article_count",
+    "corporate_analyst_cue_article_count",
+    "macro_market_cue_article_count",
+    "hours_since_latest_precise_target_article",
+    "hours_since_latest_precise_common_article",
+    "recency_weighted_precise_target_count_12h",
+    "recency_weighted_precise_common_count_12h",
+    "same_day_premarket_precise_article_share",
+    "prior_session_afterhours_precise_article_share",
+    "unique_source_count",
+    "source_entropy",
+    "normalized_title_cluster_count",
+    "normalized_title_duplicate_ratio",
+    "max_normalized_title_cluster_size",
+    "max_normalized_title_cluster_source_count",
+    "press_release_wire_source_share",
+    "observed_target_news_burst_60_session",
+    "missing_hours_since_latest_precise_target_article",
+    "missing_hours_since_latest_precise_common_article",
+    "missing_observed_target_news_burst_60_session"
+  ],
+  "d43_ordered_sha256": "d61d01c7ff5a963764b3714a9df21cd41dfd654aa579ee597c757a3d319d2e1b",
+  "dates": 917,
+  "derived_missingness_flags": [
+    "missing_hours_since_latest_precise_target_article",
+    "missing_hours_since_latest_precise_common_article",
+    "missing_observed_target_news_burst_60_session"
+  ],
+  "exploratory_override_confirmed": true,
+  "feature_contract": {
+    "t1_etf": {
+      "a1_count": 43,
+      "a2_count": 74,
+      "a3_count": 82,
+      "a4_count": 90,
+      "a5_count": 99,
+      "q_count": 56,
+      "q_ordered_sha256": "70d453aeeb97616e12652648f91a2e9bf26247dfa38f4e3371392cb27a8b09c5"
+    },
+    "t1_loo": {
+      "a1_count": 43,
+      "a2_count": 74,
+      "a3_count": 82,
+      "a4_count": 90,
+      "a5_count": 99,
+      "q_count": 56,
+      "q_ordered_sha256": "467fe7c45a2c3d621dabba052840a99c83fee4ef30a2b3f24ff55ecd7c6ae303"
+    },
+    "t2_etf": {
+      "a1_count": 43,
+      "a2_count": 74,
+      "a3_count": 82,
+      "a4_count": 90,
+      "a5_count": 99,
+      "q_count": 56,
+      "q_ordered_sha256": "70d453aeeb97616e12652648f91a2e9bf26247dfa38f4e3371392cb27a8b09c5"
+    },
+    "t2_loo": {
+      "a1_count": 43,
+      "a2_count": 74,
+      "a3_count": 82,
+      "a4_count": 90,
+      "a5_count": 99,
+      "q_count": 56,
+      "q_ordered_sha256": "467fe7c45a2c3d621dabba052840a99c83fee4ef30a2b3f24ff55ecd7c6ae303"
+    }
+  },
+  "frozen_prediction_contract": {
+    "elastic_net": {
+      "artifact_sha256": [
+        "a1812ccf17096f38e2262072136579608e6e21c224ff6d4e5e92d6e1fadfe3fa"
+      ],
+      "base_model": [
+        "core_dense_volatility_extended_elastic_net"
+      ],
+      "folds": [
+        "fold_1",
+        "fold_2",
+        "fold_3"
+      ],
+      "rows": 44040,
+      "targets": [
+        "t1_etf",
+        "t1_loo",
+        "t2_etf",
+        "t2_loo"
+      ]
+    },
+    "winner_t1_etf": {
+      "artifact_sha256": [
+        "9c5355aad392c4902838d407748ba8daf39a8ae7cef02d3c4577f604898a857e"
+      ],
+      "base_model": [
+        "elastic_xgboost_ensemble"
+      ],
+      "folds": [
+        "fold_1",
+        "fold_2",
+        "fold_3"
+      ],
+      "rows": 11190,
+      "targets": [
+        "t1_etf"
+      ]
+    },
+    "xgboost": {
+      "artifact_sha256": [
+        "9c5355aad392c4902838d407748ba8daf39a8ae7cef02d3c4577f604898a857e"
+      ],
+      "base_model": [
+        "xgboost"
+      ],
+      "folds": [
+        "fold_1",
+        "fold_2",
+        "fold_3"
+      ],
+      "rows": 44040,
+      "targets": [
+        "t1_etf",
+        "t1_loo",
+        "t2_etf",
+        "t2_loo"
+      ]
+    }
+  },
+  "generated_at_utc": "2026-07-27T10:32:56.544012Z",
+  "manifest_path": "data/features/q_plus_d/massive_v1/manifest.json",
+  "manifest_sha256": "ac161d48901fae669fdc500099df92d218513d2e7d8d383539b8ed326445d86f",
+  "panel_path": "data/features/q_plus_d/massive_v1/modeling_panel_q_plus_d.parquet",
+  "panel_sha256": "352ba2635febfa0bc36bc6f797c00036a8aee9879327a8176e9accf180e50150",
+  "protocol_path": "config/quant_deterministic_news_protocol_v1.json",
+  "protocol_sha256": "3ed24d17c79b28bf88c614f2c4e8b3143ac7f6d888e6b61f50f37e5980ed772c",
+  "resolved_xgboost_candidates": [
+    {
+      "colsample_bytree": 0.8,
+      "learning_rate": 0.05,
+      "max_depth": 2,
+      "min_child_weight": 20,
+      "reg_lambda": 10,
+      "subsample": 0.8
+    },
+    {
+      "colsample_bytree": 1.0,
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "min_child_weight": 50,
+      "reg_lambda": 10,
+      "subsample": 0.8
+    },
+    {
+      "colsample_bytree": 0.8,
+      "learning_rate": 0.02,
+      "max_depth": 4,
+      "min_child_weight": 50,
+      "reg_lambda": 10,
+      "subsample": 1.0
+    },
+    {
+      "colsample_bytree": 1.0,
+      "learning_rate": 0.02,
+      "max_depth": 3,
+      "min_child_weight": 20,
+      "reg_lambda": 1,
+      "subsample": 1.0
+    }
+  ],
+  "rows": 27510,
+  "sectors": 5,
+  "split_counts": {
+    "t1_etf": {
+      "fold_1": {
+        "test": 3660,
+        "train": 12480,
+        "validation": 3840
+      },
+      "fold_2": {
+        "test": 3840,
+        "train": 16320,
+        "validation": 3660
+      },
+      "fold_3": {
+        "test": 3690,
+        "train": 19980,
+        "validation": 3840
+      }
+    },
+    "t1_loo": {
+      "fold_1": {
+        "test": 3660,
+        "train": 12480,
+        "validation": 3840
+      },
+      "fold_2": {
+        "test": 3840,
+        "train": 16320,
+        "validation": 3660
+      },
+      "fold_3": {
+        "test": 3690,
+        "train": 19980,
+        "validation": 3840
+      }
+    },
+    "t2_etf": {
+      "fold_1": {
+        "test": 3540,
+        "train": 12360,
+        "validation": 3720
+      },
+      "fold_2": {
+        "test": 3720,
+        "train": 16200,
+        "validation": 3540
+      },
+      "fold_3": {
+        "test": 3570,
+        "train": 19860,
+        "validation": 3720
+      }
+    },
+    "t2_loo": {
+      "fold_1": {
+        "test": 3540,
+        "train": 12360,
+        "validation": 3720
+      },
+      "fold_2": {
+        "test": 3720,
+        "train": 16200,
+        "validation": 3540
+      },
+      "fold_3": {
+        "test": 3570,
+        "train": 19860,
+        "validation": 3720
+      }
+    }
+  },
+  "status": "passed",
+  "stocks": 30,
+  "target_nonnull_rows": {
+    "t1_etf": 27510,
+    "t1_loo": 27510,
+    "t2_etf": 27390,
+    "t2_loo": 27390
+  }
+}

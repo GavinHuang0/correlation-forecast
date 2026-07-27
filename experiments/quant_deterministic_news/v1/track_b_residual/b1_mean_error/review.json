@@ -1,0 +1,88 @@
+{
+  "cuda_confirmed_all_final_fits": null,
+  "earlier_out_of_sample_residuals_only": true,
+  "expected_folds_present": true,
+  "expected_rows": {
+    "t1_etf": {
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "expected_targets_present": true,
+  "feature_name_leakage_scan_passed": true,
+  "observed_rows": {
+    "t1_etf": {
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "parity_gate": null,
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "requested_device": "cuda",
+  "row_counts_match": true,
+  "settings_fixed_for_fold2_and_fold3": true,
+  "settings_selected_on_fold1_q1_q2_only": true,
+  "status": "passed",
+  "validation_prediction_review": {
+    "expected_folds_present": true,
+    "expected_rows": {
+      "t1_etf": {
+        "fold_1": 1860
+      },
+      "t1_loo": {
+        "fold_1": 1860
+      },
+      "t2_etf": {
+        "fold_1": 1740
+      },
+      "t2_loo": {
+        "fold_1": 1740
+      }
+    },
+    "expected_targets_present": true,
+    "observed_rows": {
+      "t1_etf": {
+        "fold_1": 1860
+      },
+      "t1_loo": {
+        "fold_1": 1860
+      },
+      "t2_etf": {
+        "fold_1": 1740
+      },
+      "t2_loo": {
+        "fold_1": 1740
+      }
+    },
+    "prediction_bounds_valid": true,
+    "prediction_keys_unique": true,
+    "predictions_finite": true,
+    "row_counts_match": true
+  }
+}

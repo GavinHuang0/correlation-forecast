@@ -1,0 +1,84 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.36575832701479094,
+      "incremental_r2_news_given_quant": 0.0023311732330220103,
+      "mean_squared_loss_delta_model_minus_base": -0.00031186238242980927,
+      "model_fisher_z_rmse": 0.365331755255725,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.37513537703579797,
+      "incremental_r2_news_given_quant": -0.007782881545315368,
+      "mean_squared_loss_delta_model_minus_base": 0.0010952580775215888,
+      "model_fisher_z_rmse": 0.3765923647411242,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.21583536509985216,
+      "incremental_r2_news_given_quant": -0.04952909586335741,
+      "mean_squared_loss_delta_model_minus_base": 0.0023073082170008067,
+      "model_fisher_z_rmse": 0.22111583625961143,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.23389804358321656,
+      "incremental_r2_news_given_quant": -0.12941726344176052,
+      "mean_squared_loss_delta_model_minus_base": 0.0070801977995530495,
+      "model_fisher_z_rmse": 0.2485729120230306,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "control": {
+    "control": null
+  },
+  "generated_at_utc": "2026-07-27T10:37:52.423170Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2896746744737621,
+      "fisher_z_rmse": 0.365331755255725,
+      "model": "b2_linear_calibration",
+      "oos_r2_vs_persistence": 0.42384657449038754,
+      "raw_correlation_mae": 0.1514558176098419,
+      "raw_correlation_rmse": 0.21173103009245936,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.2981356526447293,
+      "fisher_z_rmse": 0.3765923647411242,
+      "model": "b2_linear_calibration",
+      "oos_r2_vs_persistence": 0.4067371481699925,
+      "raw_correlation_mae": 0.1688132668453737,
+      "raw_correlation_rmse": 0.2366475156366918,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.17652183413380068,
+      "fisher_z_rmse": 0.22111583625961143,
+      "model": "b2_linear_calibration",
+      "oos_r2_vs_persistence": 0.2471564774941234,
+      "raw_correlation_mae": 0.09446460517076415,
+      "raw_correlation_rmse": 0.127682424908091,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.19433362965437004,
+      "fisher_z_rmse": 0.2485729120230306,
+      "model": "b2_linear_calibration",
+      "oos_r2_vs_persistence": 0.18763730545072776,
+      "raw_correlation_mae": 0.11280502399104503,
+      "raw_correlation_rmse": 0.15725346728894377,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "parity_gate": null,
+  "status": "complete"
+}

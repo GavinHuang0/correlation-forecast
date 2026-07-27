@@ -1,0 +1,30 @@
+{
+  "base_prediction_reference.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/base_prediction_reference.json",
+    "sha256": "9d2dc7024ed542fdb4a77a719f98a3aec0244f0cc8eba11d0c662bd54542bff4"
+  },
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/fits.json",
+    "sha256": "7d5f53e25e6b4d49724afeb9df6711fc59a882138827cd09cdd355e6aff818c3"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/fold_metrics.json",
+    "sha256": "5ea11dbbff1b280421191b50a14a798083a961c67a296884b9293788149647ab"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/manifest.json",
+    "sha256": "3b55c099166ffddd0da984b52a6eedfe380503a76b429e52b1c848325c33c588"
+  },
+  "predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/predictions.parquet",
+    "sha256": "d6a9ce4c29f6a879f7625a92ba7fe538df6e88b27ce07a7fa7c9178bbe96f05b"
+  },
+  "residual_training_index.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/residual_training_index.parquet",
+    "sha256": "d640a39c8f3f29acba4240e701125d95a689d4946acea8b85c58edba7fbe23e8"
+  },
+  "validation_predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b5_forecast_d43_xgboost/validation_predictions.parquet",
+    "sha256": "c09e8388744684f3b538a531488e2ab32318c8382b3c8ce0b3221225347ed2ab"
+  }
+}

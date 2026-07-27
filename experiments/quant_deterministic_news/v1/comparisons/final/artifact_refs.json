@@ -1,0 +1,42 @@
+{
+  "RESULTS.md": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/RESULTS.md",
+    "sha256": "962765fbbda151b01384c3b5281775569da4220783999cc5bf2645e53f8d3bfe"
+  },
+  "bootstrap_loss_deltas.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/bootstrap_loss_deltas.parquet",
+    "sha256": "59cd4b4b910daafcd71cdf3bff39439558ea8bb35511987a69f1334604d5ac31"
+  },
+  "decision_gate.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/decision_gate.parquet",
+    "sha256": "39fc7be1cf63c5ce5ed5dc0ed169dea6251c08d47ba094b4dc6d9498f47a2b11"
+  },
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/fits.json",
+    "sha256": "5b388be1ef719df1d1423392b5cc0e9afd20166074ba393e60c63fccdf06bfe4"
+  },
+  "fold_comparisons.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/fold_comparisons.parquet",
+    "sha256": "ce57bd78b17c51284ba78f6eb4d3e6fadd35a77d9db8ac2e49df362c95a8d369"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/fold_metrics.json",
+    "sha256": "d9b814dde32b78cb59cd44c0551ba5fad875ad3143c024de27ca0c871b6f1e06"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/manifest.json",
+    "sha256": "1c7bce6d44b8078b5b8b5623d1a415941a93bd41888bab77add42406d276799b"
+  },
+  "model_metrics.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/model_metrics.parquet",
+    "sha256": "8a207b2541fab3dacec485ab152ab58eda1477b580342af1a1140ff91ba76aa9"
+  },
+  "news_slice_comparisons.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/news_slice_comparisons.parquet",
+    "sha256": "fa4206a0538ea5f0ad71920796346dba5a692534c0a44d4033ddecfc84fbdf53"
+  },
+  "paired_comparisons.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/comparisons/final/paired_comparisons.parquet",
+    "sha256": "a22337a0bfd7928fd4cfaceb7989b8771aed7948665da0048ba6fba58834dcd8"
+  }
+}

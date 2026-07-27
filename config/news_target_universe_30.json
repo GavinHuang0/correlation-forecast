@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "description": "Fixed 30-stock news-feature universe with display names and within-sector peer sets.",
+  "source_price_universe": "config/price_universe.json",
+  "targets": {
+    "AMD": {
+      "company": "Advanced Micro Devices",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["NVDA", "INTC", "MU", "AVGO", "QCOM"]
+    },
+    "NVDA": {
+      "company": "NVIDIA Corporation",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["AMD", "INTC", "MU", "AVGO", "QCOM"]
+    },
+    "INTC": {
+      "company": "Intel Corporation",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["AMD", "NVDA", "MU", "AVGO", "QCOM"]
+    },
+    "MU": {
+      "company": "Micron Technology",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["AMD", "NVDA", "INTC", "AVGO", "QCOM"]
+    },
+    "AVGO": {
+      "company": "Broadcom Inc.",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["AMD", "NVDA", "INTC", "MU", "QCOM"]
+    },
+    "QCOM": {
+      "company": "Qualcomm Incorporated",
+      "sector": "Semiconductors",
+      "benchmark": "SOXX",
+      "peers": ["AMD", "NVDA", "INTC", "MU", "AVGO"]
+    },
+    "JPM": {
+      "company": "JPMorgan Chase & Co.",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["BAC", "WFC", "C", "GS", "MS"]
+    },
+    "BAC": {
+      "company": "Bank of America Corporation",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["JPM", "WFC", "C", "GS", "MS"]
+    },
+    "WFC": {
+      "company": "Wells Fargo & Company",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["JPM", "BAC", "C", "GS", "MS"]
+    },
+    "C": {
+      "company": "Citigroup Inc.",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["JPM", "BAC", "WFC", "GS", "MS"]
+    },
+    "GS": {
+      "company": "The Goldman Sachs Group, Inc.",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["JPM", "BAC", "WFC", "C", "MS"]
+    },
+    "MS": {
+      "company": "Morgan Stanley",
+      "sector": "Financials",
+      "benchmark": "XLF",
+      "peers": ["JPM", "BAC", "WFC", "C", "GS"]
+    },
+    "XOM": {
+      "company": "Exxon Mobil Corporation",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["CVX", "COP", "EOG", "SLB", "MPC"]
+    },
+    "CVX": {
+      "company": "Chevron Corporation",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["XOM", "COP", "EOG", "SLB", "MPC"]
+    },
+    "COP": {
+      "company": "ConocoPhillips",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["XOM", "CVX", "EOG", "SLB", "MPC"]
+    },
+    "EOG": {
+      "company": "EOG Resources, Inc.",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["XOM", "CVX", "COP", "SLB", "MPC"]
+    },
+    "SLB": {
+      "company": "SLB",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["XOM", "CVX", "COP", "EOG", "MPC"]
+    },
+    "MPC": {
+      "company": "Marathon Petroleum Corporation",
+      "sector": "Energy",
+      "benchmark": "XLE",
+      "peers": ["XOM", "CVX", "COP", "EOG", "SLB"]
+    },
+    "JNJ": {
+      "company": "Johnson & Johnson",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["MRK", "PFE", "ABBV", "AMGN", "GILD"]
+    },
+    "MRK": {
+      "company": "Merck & Co., Inc.",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["JNJ", "PFE", "ABBV", "AMGN", "GILD"]
+    },
+    "PFE": {
+      "company": "Pfizer Inc.",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["JNJ", "MRK", "ABBV", "AMGN", "GILD"]
+    },
+    "ABBV": {
+      "company": "AbbVie Inc.",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["JNJ", "MRK", "PFE", "AMGN", "GILD"]
+    },
+    "AMGN": {
+      "company": "Amgen Inc.",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["JNJ", "MRK", "PFE", "ABBV", "GILD"]
+    },
+    "GILD": {
+      "company": "Gilead Sciences, Inc.",
+      "sector": "Health Care",
+      "benchmark": "XLV",
+      "peers": ["JNJ", "MRK", "PFE", "ABBV", "AMGN"]
+    },
+    "CAT": {
+      "company": "Caterpillar Inc.",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["DE", "UNP", "BA", "UPS", "LMT"]
+    },
+    "DE": {
+      "company": "Deere & Company",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["CAT", "UNP", "BA", "UPS", "LMT"]
+    },
+    "UNP": {
+      "company": "Union Pacific Corporation",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["CAT", "DE", "BA", "UPS", "LMT"]
+    },
+    "BA": {
+      "company": "The Boeing Company",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["CAT", "DE", "UNP", "UPS", "LMT"]
+    },
+    "UPS": {
+      "company": "United Parcel Service, Inc.",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["CAT", "DE", "UNP", "BA", "LMT"]
+    },
+    "LMT": {
+      "company": "Lockheed Martin Corporation",
+      "sector": "Industrials",
+      "benchmark": "XLI",
+      "peers": ["CAT", "DE", "UNP", "BA", "UPS"]
+    }
+  }
+}

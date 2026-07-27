@@ -1,0 +1,32 @@
+{
+  "base_family": "xgboost",
+  "control": {
+    "control": null
+  },
+  "device": "cuda",
+  "feature_ordered_sha256": "77180a1fb7c3b25aef252f310407c3c852354430a86c126d1463ed251bf7f3f3",
+  "features": [
+    "base_predicted_fisher_z"
+  ],
+  "method": "B2",
+  "settings_by_target": {
+    "t1_etf": {
+      "estimator": "ols"
+    },
+    "t1_loo": {
+      "estimator": "ols"
+    },
+    "t2_etf": {
+      "estimator": "ols"
+    },
+    "t2_loo": {
+      "estimator": "ols"
+    }
+  },
+  "targets": [
+    "t1_etf",
+    "t1_loo",
+    "t2_etf",
+    "t2_loo"
+  ]
+}

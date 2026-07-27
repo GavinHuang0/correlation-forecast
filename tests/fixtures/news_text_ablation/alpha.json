@@ -1,0 +1,23 @@
+{
+  "feed": [
+    {
+      "title": "AAA launches a new component",
+      "url": "https://news.example/aaa-component",
+      "time_published": "20260302T090000",
+      "summary": "Synthetic Alpha-style summary for AAA."
+    },
+    {
+      "provider_article_id": "massive-2",
+      "title": "AAB completes its planned expansion",
+      "url": "https://different.example/aab",
+      "time_published": "20260303T100000",
+      "summary": "Synthetic Alpha-style summary for AAB."
+    },
+    {
+      "title": "BBB raises outlook",
+      "url": "https://different.example/bbb",
+      "time_published": "20260304T123456",
+      "summary": "Synthetic Alpha-style summary for BBB."
+    }
+  ]
+}

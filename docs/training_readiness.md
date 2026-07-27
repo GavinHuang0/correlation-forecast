@@ -25,8 +25,8 @@ Large Parquet panels, predictions, and fit records are generated locally under
 | Matched modeling panel | Ready | 27,510 rows, 30 stocks, 917 dates |
 | Chronological splitter and T2 boundary purge | Ready | Three locked date-blocked folds |
 | Rungs 1–4 | Complete | Linear, practical linear, GPU XGBoost, and DCC-GARCH |
-| Deterministic daily-news production panel | Not ready | Required for rung 5 |
-| Validated production LLM feature panel | Not ready | Required for rung 6 |
+| Deterministic daily-news panel | Mechanically ready for a separate exploratory experiment | 27,510 exact Q+D joins; 44 materialized and 40 recommended fields; not historical-version-safe |
+| Validated production LLM feature panel | Not ready; separate future experiment | Current extractor evaluations do not support a production semantic feature block |
 | Economic hedge evaluation and dependence-aware inference | Not yet run | Forecast metrics are complete; economic/statistical follow-up remains |
 
 ## Target design
@@ -325,7 +325,7 @@ validation rows, with preprocessing refit on that union. All stocks from the
 same date remain together. The last four training-session rows are not
 restored when train and validation are later joined for the final fit.
 
-## Completed ladder
+## Completed quant-only ladder (v1)
 
 | Rung | Targets | Estimators | Features | Status |
 |---|---|---|---|---|
@@ -333,8 +333,16 @@ restored when train and validation are later joined for the final fit.
 | 2 | T1/T2 ETF and LOO | LASSO and Elastic Net | Core+dense; then volatility; then extended hours | Complete |
 | 3 | T1/T2 ETF and LOO | Shallow XGBoost and eligible validation-weighted ensemble | Full rung-2 block | Complete; CUDA used |
 | 4 | T1/T2 ETF and LOO | Bivariate Gaussian GARCH(1,1)-DCC(1,1) | Lagged daily RTH returns | Complete |
-| 5 | T1/T2 ETF and LOO | Best locked quant estimator | Quant + deterministic daily news | Not ready |
-| 6 | T1/T2 ETF and LOO | Same folds and estimator comparison | Quant + deterministic + validated LLM features | Not ready |
+
+The historical quant-v1 ladder ends at rung 4. Deterministic-news work was
+completed as a separately versioned, exploratory
+[quant plus deterministic-news experiment](../experiments/quant_deterministic_news/v1/README.md).
+It compared joint Q+D estimators with corrections to saved out-of-sample
+quant forecasts without modifying the models or results above. Exact Q-only
+parity replays passed. A5's T2 ETF gain versus matched Elastic Net did not beat
+the stale-news placebo, and neither placebo-tested linear news specification
+passed the final falsification gate. LLM augmentation remains a distinct
+future experiment.
 
 ## Model definitions
 
@@ -598,9 +606,10 @@ configuration selection, Elastic Net tuning, and ensemble-weight selection.
 That does not leak the outer block, but cross-fitted validation predictions or
 a separate calibration slice would give a less optimistic ensemble gate.
 
-No statistical-significance or trading-value claim is made yet. The next
-quantitative work should add date-block inference and an explicit tradable
-hedge evaluation before moving to news rungs.
+No statistical-significance or trading-value claim is made yet. Date-block
+inference and an explicit tradable hedge evaluation remain quant-v1
+follow-ups. The exploratory deterministic-news plan proceeds separately and
+does not extend or renumber this completed ladder.
 
 ## Reproduction
 

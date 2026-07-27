@@ -1,0 +1,12 @@
+[
+  {
+    "fisher_z_mae": 0.2930061659873328,
+    "fisher_z_rmse": 0.3713591054637918,
+    "model": "a3_q56_d1_d2_elastic_net",
+    "oos_r2_vs_persistence": 0.40654627169430424,
+    "raw_correlation_mae": 0.1459185246320693,
+    "raw_correlation_rmse": 0.20925238312850677,
+    "rows": 11190,
+    "target": "t1_etf"
+  }
+]

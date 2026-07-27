@@ -1,0 +1,74 @@
+{
+  "base_family": "winner_t1_etf",
+  "control": {
+    "control": null
+  },
+  "device": "cuda",
+  "feature_ordered_sha256": "77866becd1801dbfc68c100fecb40ca3bc1ba66f6666eea7bec771884d4c0ae6",
+  "features": [
+    "base_predicted_fisher_z",
+    "observed_relevant_article_count",
+    "observed_direct_target_article_count",
+    "observed_target_only_article_count",
+    "observed_peer_article_count",
+    "observed_peer_specific_article_count",
+    "observed_common_proxy_article_count",
+    "observed_macro_article_count",
+    "observed_mixed_target_common_article_count",
+    "observed_no_relevant_news",
+    "observed_multi_ticker_article_share",
+    "observed_target_peer_co_mention_share",
+    "observed_unique_peer_count",
+    "observed_peer_coverage_ratio",
+    "observed_sector_firms_with_news_share",
+    "observed_sector_entity_hhi",
+    "observed_target_share_of_sector_entity_mentions",
+    "observed_common_shock_balance",
+    "observed_firm_common_imbalance",
+    "positive_surprise_cue_article_count",
+    "negative_surprise_cue_article_count",
+    "earnings_guidance_cue_article_count",
+    "product_demand_cue_article_count",
+    "supply_capacity_cue_article_count",
+    "regulation_legal_cue_article_count",
+    "corporate_analyst_cue_article_count",
+    "macro_market_cue_article_count",
+    "hours_since_latest_precise_target_article",
+    "hours_since_latest_precise_common_article",
+    "recency_weighted_precise_target_count_12h",
+    "recency_weighted_precise_common_count_12h",
+    "same_day_premarket_precise_article_share",
+    "prior_session_afterhours_precise_article_share",
+    "unique_source_count",
+    "source_entropy",
+    "normalized_title_cluster_count",
+    "normalized_title_duplicate_ratio",
+    "max_normalized_title_cluster_size",
+    "max_normalized_title_cluster_source_count",
+    "press_release_wire_source_share",
+    "observed_target_news_burst_60_session",
+    "missing_hours_since_latest_precise_target_article",
+    "missing_hours_since_latest_precise_common_article",
+    "missing_observed_target_news_burst_60_session"
+  ],
+  "method": "B5",
+  "settings_by_target": {
+    "t1_etf": {
+      "best_iteration": 13,
+      "candidate_id": 0,
+      "config": {
+        "colsample_bytree": 0.8,
+        "learning_rate": 0.05,
+        "max_depth": 2,
+        "min_child_weight": 20,
+        "reg_lambda": 10,
+        "subsample": 0.8
+      },
+      "cuda_confirmed": true,
+      "validation_mse": 0.15522667921597832
+    }
+  },
+  "targets": [
+    "t1_etf"
+  ]
+}

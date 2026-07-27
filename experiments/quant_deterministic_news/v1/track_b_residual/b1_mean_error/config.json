@@ -1,0 +1,30 @@
+{
+  "base_family": "xgboost",
+  "control": {
+    "control": null
+  },
+  "device": "cuda",
+  "feature_ordered_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "features": [],
+  "method": "B1",
+  "settings_by_target": {
+    "t1_etf": {
+      "development_train_mean_error": 0.010934297835212796
+    },
+    "t1_loo": {
+      "development_train_mean_error": 0.02957970053541485
+    },
+    "t2_etf": {
+      "development_train_mean_error": 0.03508797069845061
+    },
+    "t2_loo": {
+      "development_train_mean_error": 0.051485752215875605
+    }
+  },
+  "targets": [
+    "t1_etf",
+    "t1_loo",
+    "t2_etf",
+    "t2_loo"
+  ]
+}

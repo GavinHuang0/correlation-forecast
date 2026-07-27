@@ -1,0 +1,109 @@
+{
+  "expected_folds_present": true,
+  "expected_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "expected_targets_present": true,
+  "feature_name_leakage_scan_passed": true,
+  "feature_timing_audit_passed": true,
+  "observed_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "parity_gate": null,
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "preprocessing_excludes_outer_test": true,
+  "row_counts_match": true,
+  "status": "passed",
+  "validation_prediction_review": {
+    "expected_folds_present": true,
+    "expected_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t1_loo": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t2_etf": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      },
+      "t2_loo": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      }
+    },
+    "expected_targets_present": true,
+    "observed_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t1_loo": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t2_etf": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      },
+      "t2_loo": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      }
+    },
+    "prediction_bounds_valid": true,
+    "prediction_keys_unique": true,
+    "predictions_finite": true,
+    "row_counts_match": true
+  }
+}

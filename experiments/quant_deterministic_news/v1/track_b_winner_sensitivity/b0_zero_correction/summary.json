@@ -1,0 +1,35 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.36486160713739735,
+      "incremental_r2_news_given_quant": 0.0,
+      "mean_squared_loss_delta_model_minus_base": 0.0,
+      "model_fisher_z_rmse": 0.36486160713739735,
+      "rows": 7530,
+      "target": "t1_etf"
+    }
+  ],
+  "control": {
+    "control": null
+  },
+  "generated_at_utc": "2026-07-27T10:38:58.921604Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2887895668956378,
+      "fisher_z_rmse": 0.36486160713739735,
+      "model": "b0_zero_correction",
+      "oos_r2_vs_persistence": 0.4253285324526399,
+      "raw_correlation_mae": 0.15076450486751977,
+      "raw_correlation_rmse": 0.2136659837204337,
+      "rows": 7530,
+      "target": "t1_etf"
+    }
+  ],
+  "parity_gate": {
+    "maximum_absolute_correlation_difference": 0.0,
+    "maximum_absolute_fisher_z_difference": 0.0,
+    "mean_absolute_fisher_z_difference": 0.0,
+    "rows": 7530
+  },
+  "status": "complete"
+}

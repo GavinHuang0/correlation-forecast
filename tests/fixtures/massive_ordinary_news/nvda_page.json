@@ -1,0 +1,28 @@
+{
+  "request_id": "fixture-nvda-page",
+  "status": "OK",
+  "results": [
+    {
+      "id": "massive-fixture-001",
+      "publisher": {
+        "name": "Business Wire",
+        "homepage_url": "https://www.businesswire.com/"
+      },
+      "title": "AMD raises guidance after beating estimates",
+      "author": "Fixture Reporter",
+      "published_utc": "2024-01-02T13:59:59.987654Z",
+      "article_url": "https://example.com/amd-guidance",
+      "amp_url": "https://example.com/amp/amd-guidance",
+      "tickers": ["AMD", "NVDA"],
+      "description": "AMD beat analyst estimates and raised its guidance.",
+      "keywords": ["earnings", "guidance"],
+      "insights": [
+        {
+          "ticker": "AMD",
+          "sentiment": "positive",
+          "sentiment_reasoning": "Guidance was raised."
+        }
+      ]
+    }
+  ]
+}

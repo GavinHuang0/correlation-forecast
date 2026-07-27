@@ -1,5 +1,14 @@
 # Deterministic news feature readiness
 
+> **Legacy pilot (superseded).** This document records the original bounded
+> 2024 Alpha Vantage semiconductor pilot. It is not the current provider or
+> training-readiness assessment. The current 30-stock Massive ordinary-news
+> archive, 75,570-row stock-day feature panel, 44 materialized / 40
+> recommended deterministic columns, and 27,510-row Q+D join are documented
+> in [news_provider_experiment_results.md](news_provider_experiment_results.md)
+> and [q_plus_d_massive.md](q_plus_d_massive.md). Those current artifacts are
+> still marked exploratory and non-version-safe.
+
 ## Decision
 
 The repository does **not** yet contain a complete, point-in-time news archive

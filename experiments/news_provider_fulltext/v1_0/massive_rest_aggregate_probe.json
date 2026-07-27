@@ -1,0 +1,42 @@
+{
+  "probe_version": "massive-rest-aggregate-access-v1",
+  "probe_date": "2026-07-26",
+  "credential_value_recorded": false,
+  "endpoint_template": "/v2/aggs/ticker/{ticker}/range/15/minute/{from}/{to}",
+  "ticker": "AMD",
+  "query": {
+    "adjusted": true,
+    "sort": "asc",
+    "limit": 50000
+  },
+  "probes": [
+    {
+      "label": "recent",
+      "date": "2026-07-20",
+      "http_status": 200,
+      "api_status": "OK",
+      "results_count": 64,
+      "query_count": 811,
+      "adjusted": true
+    },
+    {
+      "label": "quant_panel_start",
+      "date": "2022-11-01",
+      "http_status": 403,
+      "api_status": null,
+      "results_count": null,
+      "query_count": null,
+      "adjusted": null
+    },
+    {
+      "label": "endpoint_history_start",
+      "date": "2016-07-20",
+      "http_status": 403,
+      "api_status": null,
+      "results_count": null,
+      "query_count": null,
+      "adjusted": null
+    }
+  ],
+  "interpretation": "The configured free key can retrieve adjusted recent 15-minute REST aggregates but cannot retrieve the 2022-11-01 start of the existing quant panel or 2016 history. It therefore cannot reproduce the full 2022-11-01 through 2026-06-30 quant panel."
+}

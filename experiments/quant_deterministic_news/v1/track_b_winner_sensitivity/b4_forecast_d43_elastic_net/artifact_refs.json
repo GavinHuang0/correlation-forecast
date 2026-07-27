@@ -1,0 +1,30 @@
+{
+  "base_prediction_reference.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/base_prediction_reference.json",
+    "sha256": "e8e3546ccb7b5a833341f51cf10fc2ca4b220a733fcaee82a4c8ade4451743a5"
+  },
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/fits.json",
+    "sha256": "d87d0aa5398600b29fb58f368f57b83aeabfd6467dd156572e27d9838c1f901c"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/fold_metrics.json",
+    "sha256": "06548c083145179ca8f68494672ac39eb883d9d29faf7ab1398e784b603da7ae"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/manifest.json",
+    "sha256": "d4f21bd4279613d807611c87dc71eb69255d392128333f4370a8243305d0e1b3"
+  },
+  "predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/predictions.parquet",
+    "sha256": "c567df9f344c5bd106a4b2f38936ba16933c52b0fa045833d3899c652a94c95e"
+  },
+  "residual_training_index.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/residual_training_index.parquet",
+    "sha256": "5532f4cc21446aece37085a069b0b398b76e4f2c43e9c22551ebfdfebc99a48e"
+  },
+  "validation_predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_winner_sensitivity/b4_forecast_d43_elastic_net/validation_predictions.parquet",
+    "sha256": "3697245a32deb00cbdcfda65d5ba8d2c108c16181613b915a031f7d9c9466768"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "id": "massive-1",
+      "publisher": {"name": "Synthetic Wire"},
+      "title": "AAA launches a new component",
+      "published_utc": "2026-03-02T09:00:00Z",
+      "article_url": "https://news.example/aaa-component?utm_source=test",
+      "tickers": ["AAA"],
+      "description": "AAA introduced a synthetic component for laboratory testing."
+    },
+    {
+      "id": "massive-2",
+      "publisher": {"name": "Synthetic Wire"},
+      "title": "AAB completes its planned expansion",
+      "published_utc": "2026-03-03T10:00:00Z",
+      "article_url": "https://news.example/aab-expansion/",
+      "tickers": ["AAB"],
+      "description": "AAB completed a fictional capacity expansion on schedule."
+    },
+    {
+      "id": "massive-3",
+      "publisher": {"name": "Synthetic Wire"},
+      "title": "BBB: Raises Outlook!",
+      "published_utc": "2026-03-04T12:34:56Z",
+      "article_url": "https://news.example/bbb-outlook",
+      "tickers": ["BBB"],
+      "description": "BBB raised its invented outlook after a test-period update."
+    },
+    {
+      "id": "massive-4",
+      "publisher": {"name": "Synthetic Wire"},
+      "title": "BBC schedules a prototype review",
+      "published_utc": "2026-03-05T15:00:00Z",
+      "article_url": "https://news.example/bbc-review",
+      "tickers": ["BBC"],
+      "description": "BBC scheduled a fictional prototype review for next quarter."
+    }
+  ]
+}

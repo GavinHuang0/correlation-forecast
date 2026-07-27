@@ -1,0 +1,12 @@
+[
+  {
+    "fisher_z_mae": 0.20257578394862738,
+    "fisher_z_rmse": 0.26065039373444904,
+    "model": "a5_stale_news_lag20",
+    "oos_r2_vs_persistence": 0.2282329728334188,
+    "raw_correlation_mae": 0.11078671164825335,
+    "raw_correlation_rmse": 0.1524289494908767,
+    "rows": 10830,
+    "target": "t2_loo"
+  }
+]

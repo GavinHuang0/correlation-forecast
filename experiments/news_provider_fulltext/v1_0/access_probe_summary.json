@@ -1,0 +1,103 @@
+{
+  "experiment_id": "news-provider-fulltext-v1.0",
+  "probe_date": "2026-07-26",
+  "credential_values_recorded": false,
+  "massive": {
+    "ordinary_news": {
+      "endpoint": "/v2/reference/news",
+      "http_status": 200,
+      "recent_amd_probe": {
+        "window": [
+          "2026-02-17",
+          "2026-02-20"
+        ],
+        "returned": 10,
+        "description_present": 10,
+        "next_url_present": true
+      },
+      "historical_probes": [
+        {
+          "window": [
+            "2024-01-01",
+            "2024-01-31"
+          ],
+          "returned": 10,
+          "http_status": 200
+        },
+        {
+          "window": [
+            "2023-01-01",
+            "2023-01-31"
+          ],
+          "returned": 7,
+          "http_status": 200
+        },
+        {
+          "window": [
+            "2016-06-22",
+            "2016-06-23"
+          ],
+          "returned": 5,
+          "http_status": 200
+        }
+      ],
+      "observed_fields": [
+        "article_url",
+        "author",
+        "description",
+        "id",
+        "image_url",
+        "insights",
+        "keywords",
+        "published_utc",
+        "publisher",
+        "tickers",
+        "title"
+      ],
+      "entitlement_interpretation": "The live key currently returns records as early as the endpoint's 2016 history. This exceeds the Basic plan's documented two-year history and is an observed behavior, not a guaranteed entitlement."
+    },
+    "benzinga_partner_news": {
+      "endpoint": "/benzinga/v2/news",
+      "http_status": 403,
+      "accessible": false
+    },
+    "flat_files": {
+      "listing_http_status": 200,
+      "list_objects_succeeded": true,
+      "observed_prefix": "us_stocks_sip/day_aggs_v1/",
+      "minute_object_validation": {
+        "current_object": "us_stocks_sip/minute_aggs_v1/2026/07/2026-07-21.csv.gz",
+        "historical_object": "us_stocks_sip/minute_aggs_v1/2016/01/2016-01-04.csv.gz",
+        "head_http_status": 403,
+        "range_get_http_status": 403,
+        "object_body_retrieved": false
+      },
+      "news_available": false,
+      "interpretation": "The S3-compatible credentials can enumerate market-data keys, but neither tested minute-aggregate object was readable. The free flat-file credentials are not usable as a quant-data source in this environment, and flat files do not supply news."
+    },
+    "rest_aggregates": {
+      "endpoint": "/v2/aggs/ticker/{ticker}/range/15/minute/{from}/{to}",
+      "adjusted": true,
+      "recent_2026_07_20_http_status": 200,
+      "recent_2026_07_20_results_count": 64,
+      "quant_panel_start_2022_11_01_http_status": 403,
+      "historical_2016_07_20_http_status": 403,
+      "interpretation": "Recent adjusted 15-minute REST bars are accessible, but the free key cannot reproduce the existing quant panel's 2022-11-01 start or older history."
+    }
+  },
+  "alpha_vantage": {
+    "endpoint": "NEWS_SENTIMENT",
+    "http_status": 200,
+    "amd_probe": {
+      "window": [
+        "2026-03-01",
+        "2026-07-26"
+      ],
+      "sort": "EARLIEST",
+      "limit": 1000,
+      "returned": 1000,
+      "latest_returned_timestamp_date": "2026-04-01",
+      "interpretation": "The result ceiling truncates broad windows; per-ticker adaptive time slicing is required."
+    }
+  }
+}

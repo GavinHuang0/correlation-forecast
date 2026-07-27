@@ -1,0 +1,15 @@
+{
+  "audit_version": "alpha-free-quota-retry-v1",
+  "attempted_at_utc": "2026-07-26T16:20:00Z",
+  "local_calendar_date": "2026-07-27",
+  "endpoint": "NEWS_SENTIMENT",
+  "resume_root": "data/raw/alpha_vantage_news/postcutoff_overlap_v1",
+  "next_pending_ticker": "UNP",
+  "request_succeeded": false,
+  "provider_response_type": "Information",
+  "provider_message_redacted": "The configured key remains subject to the standard 25 requests per day limit; subscribe to a premium plan to remove daily limits.",
+  "api_key_recorded": false,
+  "new_response_cached": false,
+  "pending_queue_changed": false,
+  "interpretation": "The resumable collector attempted to extend the maximum-use diagnostic after the local calendar date changed, but the provider quota had not reset. No additional Alpha response was cached; UNP and BA remain pending."
+}

@@ -1,0 +1,22 @@
+{
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_a_joint/a2_q56_d1_elastic_net/fits.json",
+    "sha256": "a7d6770fdb55d3758bc8eaeee94fa75054b06cffcc0ff8e7ce8a369c5fbe21d3"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_a_joint/a2_q56_d1_elastic_net/fold_metrics.json",
+    "sha256": "d597554e35b5dc3c940b4d5db2af035a4106c6d13df4568b6c8db467a3b09193"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_a_joint/a2_q56_d1_elastic_net/manifest.json",
+    "sha256": "ed65da549f0a11fde343985b3529efa483957ba7342a10b10f1ddb12b23c0a6a"
+  },
+  "predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_a_joint/a2_q56_d1_elastic_net/predictions.parquet",
+    "sha256": "bae78d9873efd1a65d8445ce707096de0b2702b181a38c1a424ac291092a465f"
+  },
+  "validation_predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_a_joint/a2_q56_d1_elastic_net/validation_predictions.parquet",
+    "sha256": "8e31ab8184a92b22ea5a48fef07dae3b0bcfbfd51f59c4e66837e0e8daac3f31"
+  }
+}

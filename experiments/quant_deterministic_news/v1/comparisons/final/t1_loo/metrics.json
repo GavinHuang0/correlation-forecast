@@ -1,0 +1,200 @@
+[
+  {
+    "bundle": "A0-L",
+    "fisher_z_mae": 0.30396126637757487,
+    "fisher_z_rmse": 0.3857667800309052,
+    "model": "a0_l_q56_elastic_net",
+    "oos_r2_vs_persistence": 0.3825902842841896,
+    "raw_correlation_mae": 0.16278995667351517,
+    "raw_correlation_rmse": 0.23127816921011649,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A0-T",
+    "fisher_z_mae": 0.30046236575780677,
+    "fisher_z_rmse": 0.3814343552392441,
+    "model": "a0_t_q56_xgboost",
+    "oos_r2_vs_persistence": 0.3963802782608252,
+    "raw_correlation_mae": 0.161197877475096,
+    "raw_correlation_rmse": 0.22913696412153178,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A1",
+    "fisher_z_mae": 0.37733672328095663,
+    "fisher_z_rmse": 0.47348896889771724,
+    "model": "a1_d43_elastic_net",
+    "oos_r2_vs_persistence": 0.06987024384394802,
+    "raw_correlation_mae": 0.20142762664226238,
+    "raw_correlation_rmse": 0.27520163470763814,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A2",
+    "fisher_z_mae": 0.303746142317109,
+    "fisher_z_rmse": 0.38542667854970525,
+    "model": "a2_q56_d1_elastic_net",
+    "oos_r2_vs_persistence": 0.38367845157622904,
+    "raw_correlation_mae": 0.16264452430544235,
+    "raw_correlation_rmse": 0.23087226745865638,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A3",
+    "fisher_z_mae": 0.3037094427534439,
+    "fisher_z_rmse": 0.3852802349125657,
+    "model": "a3_q56_d1_d2_elastic_net",
+    "oos_r2_vs_persistence": 0.3841467078110814,
+    "raw_correlation_mae": 0.16260315925375313,
+    "raw_correlation_rmse": 0.23069921175184782,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A4",
+    "fisher_z_mae": 0.30403737383227686,
+    "fisher_z_rmse": 0.3853955262121167,
+    "model": "a4_q56_d1_d2_d3_elastic_net",
+    "oos_r2_vs_persistence": 0.3837780766519605,
+    "raw_correlation_mae": 0.16273520872357056,
+    "raw_correlation_rmse": 0.23077045951795042,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A5",
+    "fisher_z_mae": 0.3036246667686708,
+    "fisher_z_rmse": 0.3850552502511602,
+    "model": "a5_q56_d43_elastic_net",
+    "oos_r2_vs_persistence": 0.38486575372353393,
+    "raw_correlation_mae": 0.16239931825737225,
+    "raw_correlation_rmse": 0.23021834235993005,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "A6",
+    "fisher_z_mae": 0.30151319711558133,
+    "fisher_z_rmse": 0.38240522874965593,
+    "model": "a6_q56_d43_xgboost",
+    "oos_r2_vs_persistence": 0.3933035536892273,
+    "raw_correlation_mae": 0.16157590219878432,
+    "raw_correlation_rmse": 0.22924715397863576,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B0",
+    "fisher_z_mae": 0.2964498621323949,
+    "fisher_z_rmse": 0.37513537703579797,
+    "model": "b0_zero_correction",
+    "oos_r2_vs_persistence": 0.41131878433943103,
+    "raw_correlation_mae": 0.16864161020643584,
+    "raw_correlation_rmse": 0.23925824527985162,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B1",
+    "fisher_z_mae": 0.2986547276212574,
+    "fisher_z_rmse": 0.3775603082215852,
+    "model": "b1_mean_error",
+    "oos_r2_vs_persistence": 0.403683539306648,
+    "raw_correlation_mae": 0.16999460147155845,
+    "raw_correlation_rmse": 0.2415382748549141,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B2",
+    "fisher_z_mae": 0.2981356526447293,
+    "fisher_z_rmse": 0.3765923647411242,
+    "model": "b2_linear_calibration",
+    "oos_r2_vs_persistence": 0.4067371481699925,
+    "raw_correlation_mae": 0.1688132668453737,
+    "raw_correlation_rmse": 0.2366475156366918,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B3",
+    "fisher_z_mae": 0.2979647348724958,
+    "fisher_z_rmse": 0.3763834747154375,
+    "model": "b3_d43_elastic_net",
+    "oos_r2_vs_persistence": 0.4073951133006576,
+    "raw_correlation_mae": 0.16913003566290563,
+    "raw_correlation_rmse": 0.23839923697573281,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B4",
+    "fisher_z_mae": 0.2976937531275265,
+    "fisher_z_rmse": 0.3757095558705484,
+    "model": "b4_forecast_d43_elastic_net",
+    "oos_r2_vs_persistence": 0.40951534488059727,
+    "raw_correlation_mae": 0.16845514713630158,
+    "raw_correlation_rmse": 0.234458425110003,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "B5",
+    "fisher_z_mae": 0.2992410649564469,
+    "fisher_z_rmse": 0.3778885358251407,
+    "model": "b5_forecast_d43_xgboost",
+    "oos_r2_vs_persistence": 0.40264628726877427,
+    "raw_correlation_mae": 0.1691362826103641,
+    "raw_correlation_rmse": 0.23650722103938387,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "C-A5-L20",
+    "fisher_z_mae": 0.302161671303329,
+    "fisher_z_rmse": 0.38348399946132694,
+    "model": "a5_stale_news_lag20",
+    "oos_r2_vs_persistence": 0.38987572652763836,
+    "raw_correlation_mae": 0.16182968525333535,
+    "raw_correlation_rmse": 0.22955393831666132,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "C-A5-WS",
+    "fisher_z_mae": 0.30415098797517054,
+    "fisher_z_rmse": 0.385464879303377,
+    "model": "a5_wrong_stock",
+    "oos_r2_vs_persistence": 0.38355627469684495,
+    "raw_correlation_mae": 0.16278288559896179,
+    "raw_correlation_rmse": 0.23077414178987815,
+    "rows": 11190,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "C-B4-L20",
+    "fisher_z_mae": 0.2986547276212574,
+    "fisher_z_rmse": 0.3775603082215852,
+    "model": "b4_stale_news_lag20",
+    "oos_r2_vs_persistence": 0.403683539306648,
+    "raw_correlation_mae": 0.16999460147155845,
+    "raw_correlation_rmse": 0.2415382748549141,
+    "rows": 7530,
+    "target": "t1_loo"
+  },
+  {
+    "bundle": "C-B4-WS",
+    "fisher_z_mae": 0.29771098719234834,
+    "fisher_z_rmse": 0.3757438154659229,
+    "model": "b4_wrong_stock",
+    "oos_r2_vs_persistence": 0.4094076516511721,
+    "raw_correlation_mae": 0.16847679937607538,
+    "raw_correlation_rmse": 0.23444028408044928,
+    "rows": 7530,
+    "target": "t1_loo"
+  }
+]

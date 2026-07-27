@@ -1,0 +1,317 @@
+{
+  "experiment_id": "news-provider-fulltext-v1.0",
+  "status": "complete",
+  "isolation": {
+    "active_extractor_paths_are_read_only": true,
+    "raw_massive_stock_root": "data/raw/massive/ordinary_news/free_v1",
+    "raw_massive_benchmark_control_root": "data/raw/massive/ordinary_news/free_v1_benchmarks",
+    "raw_alpha_overlap_root": "data/raw/alpha_vantage_news/postcutoff_overlap_v1",
+    "provider_comparison_root": "data/external/news_provider_comparison/v1_0",
+    "fulltext_root": "data/external/news_provider_comparison/v1_0/fulltext",
+    "deterministic_news_root": "data/features/news_deterministic/massive_v1",
+    "q_plus_d_root": "data/features/q_plus_d/massive_v1",
+    "benchmark_root": "data/benchmarks/news_text_ablation_300/v1",
+    "prediction_root": "outputs/news_provider_fulltext/v1_0",
+    "annotation_root": "annotations/news_provider_fulltext/v1_0"
+  },
+  "universe": {
+    "price_universe_path": "config/price_universe.json",
+    "news_target_universe_path": "config/news_target_universe_30.json",
+    "stock_count": 30,
+    "sector_count": 5
+  },
+  "provider_collection": {
+    "massive_ordinary": {
+      "start": "2016-06-22",
+      "end": "2026-07-26",
+      "pagination": "all cursors exposed at collection time",
+      "query_scope": {
+        "stock_ticker_count": 30,
+        "benchmark_tickers": [
+          "SOXX",
+          "XLF",
+          "XLE",
+          "XLV",
+          "XLI"
+        ],
+        "control_tickers": [
+          "SPY"
+        ]
+      },
+      "completeness_claim": "cursor-complete snapshot within the configured 36 ticker queries; not exhaustive market-wide news coverage or a complete open 2026-07-26 UTC day",
+      "calls_per_minute": 5,
+      "credential": "MASSIVE_API_KEY",
+      "observed_unique_documents": 90290,
+      "documented_basic_history_years": 2,
+      "older_observed_access_is_contractual": false
+    },
+    "alpha_overlap": {
+      "start": "2026-03-01",
+      "end": "2026-03-07",
+      "ticker_count": 24,
+      "tickers": [
+        "AMD",
+        "NVDA",
+        "INTC",
+        "MU",
+        "AVGO",
+        "JPM",
+        "BAC",
+        "WFC",
+        "C",
+        "GS",
+        "XOM",
+        "CVX",
+        "COP",
+        "EOG",
+        "SLB",
+        "JNJ",
+        "MRK",
+        "PFE",
+        "ABBV",
+        "AMGN",
+        "CAT",
+        "DE",
+        "UNP",
+        "BA"
+      ],
+      "scope_note": "Bounded overlap diagnostic; not the full 30-stock universe.",
+      "one_ticker_per_request": true,
+      "adaptive_result_ceiling_split": true,
+      "daily_call_budget": 25,
+      "credential": "ALPHA_VANTAGE_KEY",
+      "status": "quota_exhausted_bounded_diagnostic",
+      "completed_unique_ticker_count": 22,
+      "completed_slice_count": 23,
+      "pending_tickers": [
+        "UNP",
+        "BA"
+      ],
+      "cached_response_count": 24,
+      "unique_summaries_from_complete_slices": 4120,
+      "selected_benchmark_exact_match_count": 1,
+      "provider_comparison_estimable": false
+    },
+    "massive_flat_files": {
+      "purpose": "access audit only; stock aggregate flat files contain no news",
+      "credentials": [
+        "MASSIVE_FLAT_KEY",
+        "MASSIVE_FLAT_SECRET"
+      ],
+      "prefix_listing_succeeded": true,
+      "tested_object_count": 2,
+      "tested_object_head_http_status": 403,
+      "tested_object_range_get_http_status": 403,
+      "object_body_retrieved": false,
+      "audit_path": "reports/generated/massive_flat_minute_object_validation_2026-07-26.json"
+    },
+    "massive_rest_aggregates": {
+      "purpose": "bounded adjusted 15-minute bar entitlement probe",
+      "recent_date_http_status": 200,
+      "recent_date_result_count": 64,
+      "quant_panel_start_http_status": 403,
+      "historical_2016_http_status": 403,
+      "audit_path": "experiments/news_provider_fulltext/v1_0/massive_rest_aggregate_probe.json"
+    }
+  },
+  "q_plus_d": {
+    "row_count": 27510,
+    "column_count": 170,
+    "materialized_deterministic_column_count": 44,
+    "nonconstant_deterministic_column_count": 42,
+    "recommended_deterministic_column_count": 40,
+    "constant_columns": [
+      "timing_imprecise_article_count",
+      "government_primary_source_share"
+    ],
+    "exact_redundancies": {
+      "timing_eligible_article_count": "observed_relevant_article_count",
+      "timing_eligible_share": "1 - observed_no_relevant_news"
+    },
+    "output_sha256": "352ba2635febfa0bc36bc6f797c00036a8aee9879327a8176e9accf180e50150",
+    "manifest_sha256": "ac161d48901fae669fdc500099df92d218513d2e7d8d383539b8ed326445d86f",
+    "primary_training_eligible": false
+  },
+  "text_ablation": {
+    "strict_publication_cutoff": "2026-03-01T00:00:00Z",
+    "cutoff_reason": "after GPT-5.6 Sol's documented 2026-02-16 knowledge cutoff and after the local-model cutoff/release boundaries",
+    "document_count": 300,
+    "balance": "10 unique assignment-eligible documents per stock; not a direct-target balance",
+    "development_count": 72,
+    "evaluation_count": 228,
+    "assignment_provenance": {
+      "selected_target_provider_tagged_count": 73,
+      "selected_target_or_peer_provider_tagged_count": 266,
+      "selected_sector_or_market_eligibility_only_count": 34,
+      "provider_tickers_exposed_to_local_models": true,
+      "expanded_assignment_tickers_exposed_as_provider_metadata": false
+    },
+    "selected_sources": {
+      "The Motley Fool": 204,
+      "Benzinga": 96
+    },
+    "fulltext_retrieval": {
+      "candidate_queue_count": 5180,
+      "retrieval_attempt_count": 554,
+      "unique_url_count": 553,
+      "successful_text_count": 399,
+      "attempted_url_success_rate": 0.7202166064981949,
+      "unique_url_success_rate": 0.7215189873417721,
+      "candidate_queue_coverage_claimed": false,
+      "selection_bias_warning": "retrieval stopped after balanced assignment became feasible; only two publishers are represented"
+    },
+    "variants": {
+      "massive_description": {
+        "selected_document_count": 300
+      },
+      "alpha_summary": {
+        "selected_exact_match_count": 1,
+        "provider_comparison_estimable": false
+      },
+      "fulltext_evidence_chunks": {
+        "selected_parent_document_count": 300,
+        "chunk_count": 1675,
+        "maximum_chunk_characters": 850,
+        "text_kind": "publicly retrieved current page text, not a version-safe historical body"
+      }
+    },
+    "reference": {
+      "model": "gpt-5.6-sol",
+      "type": "silver annotation",
+      "execution_surface": "Codex collaboration agent",
+      "dated_api_snapshot_pinned": false,
+      "platform_system_instructions_replaced": false,
+      "external_tools": false,
+      "input": "headline, reconstructed parent full text, and target metadata; no provider ticker tags",
+      "document_count": 300,
+      "abstention_count": 103,
+      "non_abstained_count": 197,
+      "distribution": {
+        "shock_scope": {
+          "common": 149,
+          "idiosyncratic": 59,
+          "mixed": 42,
+          "unclear": 50
+        },
+        "event_family": {
+          "corporate_analyst": 86,
+          "earnings_guidance": 30,
+          "macro_market": 92,
+          "other_or_unclear": 9,
+          "product_demand": 48,
+          "regulation_legal": 15,
+          "supply_capacity": 20
+        },
+        "information_status": {
+          "anticipated": 38,
+          "confirmed": 151,
+          "rumor_or_opinion": 110,
+          "unclear": 1
+        },
+        "directional_alignment": {
+          "common_direction_unclear": 146,
+          "opposite_direction": 6,
+          "same_direction": 40,
+          "single_firm_only": 58,
+          "unclear": 50
+        }
+      },
+      "claim_limit": "agreement with a non-human silver reference, not objective accuracy"
+    },
+    "comparison_asymmetry": {
+      "local_model_input": "applicable text variant, target metadata, and actual provider ticker tags",
+      "gpt_reference_input": "headline, reconstructed full parent text, and target metadata without provider ticker tags",
+      "fulltext_reference_advantage": true,
+      "interpretation": "information-retention agreement; not a symmetric model contest"
+    },
+    "evaluation_protocol": {
+      "chunk_aggregation_candidates": [
+        "mean_score",
+        "max_score",
+        "best_margin",
+        "plurality"
+      ],
+      "chunk_aggregation_selection_split": "development",
+      "aggregation_lock_required_for_evaluation": true,
+      "primary_report_split": "evaluation",
+      "all_300_report_role": "descriptive_only",
+      "sensitivity_filters": [
+        "non_abstained",
+        "Benzinga source",
+        "direct_target_tag",
+        "peer_only_tag",
+        "expanded_sector_or_market_only"
+      ]
+    },
+    "local_models": [
+      {
+        "model": "google/flan-t5-xl",
+        "revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+        "runner": "scripts/run_news_text_ablation_local.ps1",
+        "extractor": "scripts/run_flan_t5_xl_coarse.py"
+      },
+      {
+        "model": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+        "runner": "scripts/run_news_text_ablation_local.ps1",
+        "extractor": "scripts/extract_llama_3_1_coarse.py"
+      }
+    ],
+    "evaluation_results": {
+      "paired_difference": "fulltext_evidence_chunks minus massive_description",
+      "evaluation_document_count": 228,
+      "flan_t5_xl": {
+        "selected_chunk_aggregation": "max_score",
+        "description_mean_accuracy": 0.43969298245614036,
+        "fulltext_mean_accuracy": 0.37719298245614036,
+        "mean_accuracy_delta": -0.0625,
+        "mean_accuracy_delta_bootstrap_95pct": [
+          -0.09100877192982457,
+          -0.03289473684210527
+        ],
+        "description_mean_macro_f1": 0.35615106635147925,
+        "fulltext_mean_macro_f1": 0.26534377183463775,
+        "mean_macro_f1_delta": -0.09080729451684152,
+        "mean_macro_f1_delta_bootstrap_95pct": [
+          -0.1283369647863746,
+          -0.056067784276305994
+        ],
+        "description_output_sha256": "89ade123043109858f5e24e818470c2ff2c8dac79b7b798e9cb555b63cc8251c",
+        "fulltext_output_sha256": "04a2df536d8b16d139148e74afebb150d9ae77afe46f509fcc7f9e03d9d38bf4",
+        "aggregation_lock_sha256": "fa8fc93cd40fb4ed3baa94acf54b725aea5f623f38660b188f14d3745fab261c",
+        "primary_evaluation_sha256": "c1c25d892b2263351071f82a3647d9d24e8cfc4a428e897282f852a3fffdc69e"
+      },
+      "llama_3_1": {
+        "selected_chunk_aggregation": "max_score",
+        "description_mean_accuracy": 0.4638157894736842,
+        "fulltext_mean_accuracy": 0.4265350877192982,
+        "mean_accuracy_delta": -0.03728070175438596,
+        "mean_accuracy_delta_bootstrap_95pct": [
+          -0.06578947368421054,
+          -0.008771929824561394
+        ],
+        "description_mean_macro_f1": 0.3661324603418323,
+        "fulltext_mean_macro_f1": 0.3068704604512013,
+        "mean_macro_f1_delta": -0.05926199989063098,
+        "mean_macro_f1_delta_bootstrap_95pct": [
+          -0.09271360370116777,
+          -0.028485145429913705
+        ],
+        "description_output_sha256": "66642a78f1694059522485571fa04679ae8d2c620c11899fcfd4e0179df7f342",
+        "fulltext_output_sha256": "9a1a32e647381c91412b5da4b203fa009c9a9bfd6986bf42ddf589b677109291",
+        "aggregation_lock_sha256": "d4a80348e1265eecb1c71d173c390ba6c07c395778202ba9a6a0420fbc0ac0b3",
+        "primary_evaluation_sha256": "080b3f30545642f1767b50f9062c56b5e04e7c70f7dcb37592c9d3b3965505cf"
+      },
+      "claim_limit": "On this retrieval-selected two-publisher benchmark and frozen chunk-aggregation pipeline, current-page full text reduced agreement with a fulltext-derived GPT silver reference. This is not objective accuracy, paid-Benzinga validation, or strict point-in-time evidence.",
+      "protocol_disclosure": "A stale FLAN description-only report exposed description-arm evaluation metrics before the fulltext aggregation lock. It was not used for reducer selection, but the broader protocol is not fully blinded."
+    },
+    "procurement_decision": {
+      "quant": "retain the complete adjusted Alpaca SIP archive; no Massive stock-data purchase is required",
+      "deterministic_news": "use the preserved free Massive ordinary-news snapshot for exploratory Q+D; do not claim strict historical point-in-time validity",
+      "massive_starter": "do not buy solely for the ordinary-news schema; revisit only for a written history/throughput guarantee if free access closes",
+      "alpha_premium": "do not buy for presumed text richness; the official schema does not document full bodies or version history",
+      "benzinga_partner_feed": "do not buy for the current frozen extractor; both local models performed better from ordinary descriptions than from retrieved bodies",
+      "strict_point_in_time_path": "start an immutable forward collector or obtain written provider guarantees for first-seen timestamps, version history, body coverage, and retention rights"
+    }
+  }
+}

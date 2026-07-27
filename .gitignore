@@ -27,6 +27,7 @@ models/
 outputs/
 reports/generated/
 annotations/parts/
+annotations/news_provider_fulltext/
 *.parquet
 *.feather
 *.arrow

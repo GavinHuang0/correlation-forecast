@@ -1,0 +1,515 @@
+{
+  "protocol_version": "1.0-proposed",
+  "status": "locked_before_training",
+  "experiment_id": "quant-deterministic-news-v1",
+  "claim_scope": {
+    "exploratory_only": true,
+    "point_in_time_version_safe": false,
+    "primary_training_eligible": false,
+    "reason": "Massive ordinary News supplies publication timestamps and current descriptions, but not first-seen timestamps, update history, or historical article versions."
+  },
+  "isolation": {
+    "completed_quant_v1_is_read_only": true,
+    "quant_protocol": "config/quant_training_protocol_v1.json",
+    "quant_predictions": "outputs/quant_training/v1",
+    "quant_rung_2_predictions": "outputs/quant_training/v1/rung_02/predictions.parquet",
+    "quant_rung_3_predictions": "outputs/quant_training/v1/rung_03/predictions.parquet",
+    "quant_winner_summary": "experiments/quant_training/v1/comparisons/summary.json",
+    "joined_panel": "data/features/q_plus_d/massive_v1/modeling_panel_q_plus_d.parquet",
+    "joined_manifest": "data/features/q_plus_d/massive_v1/manifest.json",
+    "experiment_root": "experiments/quant_deterministic_news/v1",
+    "future_output_root": "outputs/quant_deterministic_news/v1"
+  },
+  "source_artifacts": {
+    "joined_panel_sha256": "352ba2635febfa0bc36bc6f797c00036a8aee9879327a8176e9accf180e50150",
+    "joined_manifest_sha256": "ac161d48901fae669fdc500099df92d218513d2e7d8d383539b8ed326445d86f",
+    "quant_rung_2_predictions_sha256": "a1812ccf17096f38e2262072136579608e6e21c224ff6d4e5e92d6e1fadfe3fa",
+    "quant_rung_3_predictions_sha256": "9c5355aad392c4902838d407748ba8daf39a8ae7cef02d3c4577f604898a857e",
+    "quant_winner_summary_sha256": "056d960ce2c42aa757a4aaf43247337af7e19cb42db060e89261cba87f3026b9",
+    "row_count": 27510,
+    "date_count": 917,
+    "stock_count": 30,
+    "sector_count": 5,
+    "start": "2022-11-01",
+    "end": "2026-06-30"
+  },
+  "targets": [
+    "t1_etf",
+    "t1_loo",
+    "t2_etf",
+    "t2_loo"
+  ],
+  "target_row_eligibility": {
+    "t1": "forecast_date must lie inside the current train, validation, or test block",
+    "t2": "forecast_date must lie inside the current block and target_etf_t2_end_date or target_loo_t2_end_date, as applicable, must be less than or equal to that block's end date",
+    "effect": "purge the final four forecast sessions from every T2 train, validation, and test block; do not restore purged rows when train and validation are joined for the outer-test refit",
+    "expected_rows": {
+      "fold_1": {
+        "t1_train_validation_test": [12480, 3840, 3660],
+        "t2_train_validation_test": [12360, 3720, 3540]
+      },
+      "fold_2": {
+        "t1_train_validation_test": [16320, 3660, 3840],
+        "t2_train_validation_test": [16200, 3540, 3720]
+      },
+      "fold_3": {
+        "t1_train_validation_test": [19980, 3840, 3690],
+        "t2_train_validation_test": [19860, 3720, 3570]
+      }
+    }
+  },
+  "folds": [
+    {
+      "name": "fold_1",
+      "train_start": "2022-11-01",
+      "train_end": "2024-06-30",
+      "validation_start": "2024-07-01",
+      "validation_end": "2024-12-31",
+      "test_start": "2025-01-01",
+      "test_end": "2025-06-30"
+    },
+    {
+      "name": "fold_2",
+      "train_start": "2022-11-01",
+      "train_end": "2024-12-31",
+      "validation_start": "2025-01-01",
+      "validation_end": "2025-06-30",
+      "test_start": "2025-07-01",
+      "test_end": "2025-12-31"
+    },
+    {
+      "name": "fold_3",
+      "train_start": "2022-11-01",
+      "train_end": "2025-06-30",
+      "validation_start": "2025-07-01",
+      "validation_end": "2025-12-31",
+      "test_start": "2026-01-01",
+      "test_end": "2026-06-30"
+    }
+  ],
+  "feature_blocks": {
+    "q_pair_etf_14": [
+      "etf_rc_d",
+      "etf_rc_w",
+      "etf_rc_m",
+      "etf_rc_negative_d",
+      "etf_rc_negative_w",
+      "etf_rc_negative_m",
+      "etf_exp_rc_d",
+      "etf_exp_rc_w",
+      "etf_exp_rc_m",
+      "etf_exp_rc_q",
+      "etf_exp_rc_negative_d",
+      "etf_exp_rc_negative_w",
+      "etf_exp_rc_negative_m",
+      "etf_exp_rc_negative_q"
+    ],
+    "q_pair_loo_14": [
+      "loo_rc_d",
+      "loo_rc_w",
+      "loo_rc_m",
+      "loo_rc_negative_d",
+      "loo_rc_negative_w",
+      "loo_rc_negative_m",
+      "loo_exp_rc_d",
+      "loo_exp_rc_w",
+      "loo_exp_rc_m",
+      "loo_exp_rc_q",
+      "loo_exp_rc_negative_d",
+      "loo_exp_rc_negative_w",
+      "loo_exp_rc_negative_m",
+      "loo_exp_rc_negative_q"
+    ],
+    "q_sector_state_8": [
+      "sector_exp_rc_d",
+      "sector_exp_rc_w",
+      "sector_exp_rc_m",
+      "sector_exp_rc_q",
+      "sector_exp_rc_negative_d",
+      "sector_exp_rc_negative_w",
+      "sector_exp_rc_negative_m",
+      "sector_exp_rc_negative_q"
+    ],
+    "q_dense_15": [
+      "lagged_relative_daily_volume_20d",
+      "sector_lagged_relative_daily_volume_20d",
+      "lagged_sector_return_dispersion",
+      "vix_lag1",
+      "vix_change_lag1",
+      "treasury_2y_lag2",
+      "treasury_2y_change_lag2",
+      "treasury_5y_lag2",
+      "treasury_5y_change_lag2",
+      "treasury_10y_lag2",
+      "treasury_10y_change_lag2",
+      "scheduled_macro_event_count",
+      "scheduled_preopen_macro_count",
+      "bls_release_day",
+      "fomc_decision_day"
+    ],
+    "q_volatility_2": [
+      "lagged_realized_volatility",
+      "sector_lagged_realized_volatility"
+    ],
+    "q_extended_17": [
+      "stock_overnight_return",
+      "premarket_return",
+      "premarket_volume",
+      "relative_premarket_volume_20d",
+      "premarket_bar_count",
+      "sector_overnight_return",
+      "sector_premarket_return",
+      "sector_premarket_volume",
+      "sector_relative_premarket_volume_20d",
+      "sector_premarket_bar_count",
+      "stock_minus_sector_overnight_return",
+      "prior_aftermarket_return",
+      "prior_aftermarket_volume",
+      "prior_relative_aftermarket_volume_20d",
+      "stock_premarket_available",
+      "sector_premarket_available",
+      "stock_prior_aftermarket_available"
+    ],
+    "d_activity_scope_18": [
+      "observed_relevant_article_count",
+      "observed_direct_target_article_count",
+      "observed_target_only_article_count",
+      "observed_peer_article_count",
+      "observed_peer_specific_article_count",
+      "observed_common_proxy_article_count",
+      "observed_macro_article_count",
+      "observed_mixed_target_common_article_count",
+      "observed_no_relevant_news",
+      "observed_multi_ticker_article_share",
+      "observed_target_peer_co_mention_share",
+      "observed_unique_peer_count",
+      "observed_peer_coverage_ratio",
+      "observed_sector_firms_with_news_share",
+      "observed_sector_entity_hhi",
+      "observed_target_share_of_sector_entity_mentions",
+      "observed_common_shock_balance",
+      "observed_firm_common_imbalance"
+    ],
+    "d_cues_8": [
+      "positive_surprise_cue_article_count",
+      "negative_surprise_cue_article_count",
+      "earnings_guidance_cue_article_count",
+      "product_demand_cue_article_count",
+      "supply_capacity_cue_article_count",
+      "regulation_legal_cue_article_count",
+      "corporate_analyst_cue_article_count",
+      "macro_market_cue_article_count"
+    ],
+    "d_timing_6": [
+      "hours_since_latest_precise_target_article",
+      "hours_since_latest_precise_common_article",
+      "recency_weighted_precise_target_count_12h",
+      "recency_weighted_precise_common_count_12h",
+      "same_day_premarket_precise_article_share",
+      "prior_session_afterhours_precise_article_share"
+    ],
+    "d_source_title_7": [
+      "unique_source_count",
+      "source_entropy",
+      "normalized_title_cluster_count",
+      "normalized_title_duplicate_ratio",
+      "max_normalized_title_cluster_size",
+      "max_normalized_title_cluster_source_count",
+      "press_release_wire_source_share"
+    ],
+    "d_burst_1": [
+      "observed_target_news_burst_60_session"
+    ],
+    "d_missingness_3": [
+      "missing_hours_since_latest_precise_target_article",
+      "missing_hours_since_latest_precise_common_article",
+      "missing_observed_target_news_burst_60_session"
+    ]
+  },
+  "feature_counts": {
+    "quant_per_target": 56,
+    "recommended_materialized_deterministic": 40,
+    "derived_deterministic_missingness": 3,
+    "full_deterministic_design": 43,
+    "full_joint_design": 99
+  },
+  "excluded_columns": {
+    "constant": [
+      "timing_imprecise_article_count",
+      "government_primary_source_share"
+    ],
+    "exact_redundancy": [
+      "timing_eligible_article_count",
+      "timing_eligible_share"
+    ],
+    "roles": [
+      "targets",
+      "join keys",
+      "13 deterministic-news audit/provenance columns",
+      "news_row_matched"
+    ]
+  },
+  "preprocessing": {
+    "missingness_indicators_created_before_imputation": true,
+    "linear_imputation": "training-partition median only",
+    "linear_scaling": "training-partition mean and standard deviation only",
+    "xgboost_missing_policy": "native missing branches plus explicit deterministic-news missingness indicators",
+    "fixed_log1p": {
+      "quant": "reuse quant v1 fixed transformations",
+      "deterministic": [
+        "observed_relevant_article_count",
+        "observed_direct_target_article_count",
+        "observed_target_only_article_count",
+        "observed_peer_article_count",
+        "observed_peer_specific_article_count",
+        "observed_common_proxy_article_count",
+        "observed_macro_article_count",
+        "observed_mixed_target_common_article_count",
+        "observed_unique_peer_count",
+        "positive_surprise_cue_article_count",
+        "negative_surprise_cue_article_count",
+        "earnings_guidance_cue_article_count",
+        "product_demand_cue_article_count",
+        "supply_capacity_cue_article_count",
+        "regulation_legal_cue_article_count",
+        "corporate_analyst_cue_article_count",
+        "macro_market_cue_article_count",
+        "hours_since_latest_precise_target_article",
+        "hours_since_latest_precise_common_article",
+        "recency_weighted_precise_target_count_12h",
+        "recency_weighted_precise_common_count_12h",
+        "unique_source_count",
+        "normalized_title_cluster_count",
+        "max_normalized_title_cluster_size",
+        "max_normalized_title_cluster_source_count"
+      ]
+    }
+  },
+  "model_tuning": {
+    "linear_alpha_grid": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003,
+      0.01,
+      0.03,
+      0.1
+    ],
+    "elastic_net_l1_ratio_grid": [
+      0.1,
+      0.5,
+      0.9,
+      1.0
+    ],
+    "linear_boundary_expansion": "reuse quant v1 validation-only rule",
+    "xgboost_candidates": "reuse config/quant_training_protocol_v1.json rung_3 candidate_configs",
+    "xgboost_max_estimators": 2000,
+    "xgboost_early_stopping_rounds": 75,
+    "xgboost_device_preference": "cuda",
+    "ensemble_xgboost_weights": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ]
+  },
+  "training_resolutions": {
+    "a0_canonical_baseline": "the frozen quant-v1 predictions are the reported baseline; Q56 replays are parity gates and cannot silently replace a differing frozen artifact",
+    "track_b_selection": "report every predeclared B0-B5 rung; do not select and relabel a single residual winner after inspecting fold-2 or fold-3 losses",
+    "track_b_xgboost_refit": "select the candidate and best iteration on fold-1 Q1-to-Q2 development only; keep both fixed when refitting on all fold-1 residuals for fold 2 and on fold-1 plus fold-2 residuals for fold 3",
+    "secondary_base_sensitivity": "repeat B0-B5 for T1 ETF using its frozen quant-v1 ensemble base; the other three target winners equal the primary XGBoost base",
+    "bootstrap_fold_boundary": "construct moving date blocks separately within each outer fold; no resampled block may cross a model-refit boundary",
+    "placebo_scope": "fit the 20-session stale-news and fixed within-sector wrong-stock controls for A5 and B4, using the same estimator budgets and only their appropriate prior data"
+  },
+  "track_a_joint": {
+    "uses_all_three_quant_v1_folds": true,
+    "rungs": [
+      {
+        "name": "A0",
+        "role": "frozen and parity-checked quant controls",
+        "models": [
+          "full-block elastic_net",
+          "xgboost"
+        ],
+        "features": "Q56"
+      },
+      {
+        "name": "A1",
+        "role": "news-only diagnostic",
+        "models": [
+          "elastic_net"
+        ],
+        "features": "D43"
+      },
+      {
+        "name": "A2",
+        "role": "activity and scope increment",
+        "models": [
+          "elastic_net"
+        ],
+        "features": "Q56 + D_activity_scope_18",
+        "feature_count": 74
+      },
+      {
+        "name": "A3",
+        "role": "lexical cue increment",
+        "models": [
+          "elastic_net"
+        ],
+        "features": "Q56 + D_activity_scope_18 + D_cues_8",
+        "feature_count": 82
+      },
+      {
+        "name": "A4",
+        "role": "timing increment",
+        "models": [
+          "elastic_net"
+        ],
+        "features": "Q56 + D_activity_scope_18 + D_cues_8 + D_timing_6 + two recency missingness indicators",
+        "feature_count": 90
+      },
+      {
+        "name": "A5",
+        "role": "full joint linear model",
+        "models": [
+          "elastic_net"
+        ],
+        "features": "Q56 + D43",
+        "feature_count": 99
+      },
+      {
+        "name": "A6",
+        "role": "full joint nonlinear challenger",
+        "models": [
+          "shallow_xgboost"
+        ],
+        "features": "Q56 + D43",
+        "feature_count": 99
+      },
+      {
+        "name": "A7",
+        "role": "optional validation-gated combination",
+        "models": [
+          "elastic_net_xgboost_ensemble"
+        ],
+        "features": "Q56 + D43",
+        "eligibility": "interior weight must strictly beat both components on every validation fold"
+      }
+    ]
+  },
+  "track_b_residual_reuse": {
+    "base": "saved quant-v1 rung-3 XGBoost outer predictions for all four targets",
+    "secondary_base": "recorded quant-v1 development winner per target",
+    "training_design": {
+      "hyperparameter_development": {
+        "train_start": "2025-01-01",
+        "train_end": "2025-03-31",
+        "validation_start": "2025-04-01",
+        "validation_end": "2025-06-30",
+        "t2_rule": "purge labels crossing 2025-03-31 or 2025-06-30",
+        "expected_rows_per_target": {
+          "t1_train_validation": [1800, 1860],
+          "t2_train_validation": [1680, 1740]
+        }
+      },
+      "fold_2": "fit on all fold-1 out-of-sample base errors and predict corrections for fold 2",
+      "fold_3": "keep hyperparameters fixed; refit on fold-1 plus fold-2 out-of-sample base errors and predict corrections for fold 3",
+      "reported_folds": [
+        "fold_2",
+        "fold_3"
+      ]
+    },
+    "rungs": [
+      {
+        "name": "B0",
+        "correction": "zero",
+        "inputs": "frozen quant forecast"
+      },
+      {
+        "name": "B1",
+        "correction": "historical mean error",
+        "inputs": "intercept only"
+      },
+      {
+        "name": "B2",
+        "correction": "linear calibration",
+        "inputs": "frozen quant forecast"
+      },
+      {
+        "name": "B3",
+        "correction": "elastic_net",
+        "inputs": "D43"
+      },
+      {
+        "name": "B4",
+        "correction": "elastic_net",
+        "inputs": "frozen quant forecast + D43"
+      },
+      {
+        "name": "B5",
+        "correction": "shallow_xgboost",
+        "inputs": "frozen quant forecast + D43"
+      }
+    ]
+  },
+  "comparisons": {
+    "track_a_primary": "paired against the matching frozen or parity-replayed quant-only estimator on all three folds",
+    "track_b_primary": "paired against the unchanged saved quant forecast on fold 2 and fold 3",
+    "track_a_vs_track_b": "compare final forecast losses only on common fold-2 and fold-3 keys; this is not a controlled architecture comparison because Track B has residual-training data only from earlier saved outer-test predictions",
+    "controlled_architecture_comparison_requirement": "generate forward-chained out-of-fold quant forecasts throughout each Track-A fit pool, then train joint and residual architectures from the same eligible dates",
+    "never_compare": "track-A three-fold pooled loss against track-B two-fold pooled loss"
+  },
+  "metrics": [
+    "fisher_z_rmse",
+    "fisher_z_mae",
+    "raw_correlation_rmse",
+    "raw_correlation_mae",
+    "oos_r2_vs_persistence",
+    "incremental_r2_news_given_quant",
+    "paired_fisher_z_squared_loss_delta",
+    "date_block_bootstrap_confidence_interval"
+  ],
+  "inference": {
+    "bootstrap_method": "moving blocks of whole forecast dates; retain all stocks on each sampled date",
+    "bootstrap_block_sessions": 10,
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 1729,
+    "naive_row_independence_assumed": false
+  },
+  "controls": [
+    "news-only direct model",
+    "intercept-only residual correction",
+    "forecast-only linear calibration",
+    "20-session lagged deterministic-news placebo",
+    "fixed within-sector same-date wrong-stock permutation",
+    "news-day versus observed-no-news sensitivity"
+  ],
+  "execution_order": [
+    "construction_preflight",
+    "A0-L",
+    "A0-T",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B0-B5 T1-ETF winner-base sensitivity",
+    "A5 and B4 stale-news controls",
+    "A5 and B4 wrong-stock controls",
+    "final comparisons and date-block inference"
+  ],
+  "interpretation": {
+    "all_results_are_development_estimates": true,
+    "reason": "The existing outer blocks were already inspected when quant v1 selected its model ladder.",
+    "future_confirmation": "Use data strictly after 2026-06-30 and a version-preserving news archive."
+  }
+}

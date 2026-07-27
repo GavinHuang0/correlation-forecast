@@ -47,7 +47,7 @@ import coarse_news_features as coarse  # noqa: E402
 
 NEW_YORK = ZoneInfo("America/New_York")
 UTC = timezone.utc
-BUILDER_VERSION = "deterministic-news-pilot-v1.0.0"
+BUILDER_VERSION = "deterministic-news-pilot-v1.0.1"
 DEFAULT_RAW_DIRECTORY = REPOSITORY_ROOT / "data" / "raw" / "alpha_vantage_news"
 DEFAULT_UNIVERSE = REPOSITORY_ROOT / "config" / "target_universe.json"
 DEFAULT_CALENDAR = (
@@ -639,6 +639,8 @@ def build_pair_rows(
 
         macro_topic = bool(set(article["topics"]) & MACRO_TOPICS)
         for target in targets:
+            target_sector_members = {target.ticker, *target.peers}
+            target_sector_entities = sector_entities & target_sector_members
             input_record = {
                 "article_id": article["article_id"],
                 "headline": article["title"],
@@ -669,7 +671,7 @@ def build_pair_rows(
             common = bool(
                 macro
                 or explicit_sector
-                or len(sector_entities) >= 2
+                or len(target_sector_entities) >= 2
             )
             peer_specific = bool(peer_evidence and not common)
             relevant = bool(direct or peer_evidence or common)
@@ -678,7 +680,7 @@ def build_pair_rows(
             target_only = bool(
                 direct
                 and not common
-                and sector_entities.issubset({target.ticker})
+                and target_sector_entities.issubset({target.ticker})
             )
             family_cues = article["family_cues"]
             pair_rows.append(
@@ -775,10 +777,10 @@ def aggregate_stock_days(
         for row in coverage
         if row["query_kind"] == "ticker"
     }
-    all_sector_tickers = sorted(
-        {target.ticker for target in targets}
-        | {peer for target in targets for peer in target.peers}
-    )
+    sector_members: dict[str, set[str]] = defaultdict(set)
+    for target in targets:
+        sector_members[target.sector].add(target.ticker)
+        sector_members[target.sector].update(target.peers)
     output: list[dict[str, Any]] = []
     selected_sessions = [
         session for session in sessions if start <= session.date <= end
@@ -786,25 +788,30 @@ def aggregate_stock_days(
     for session in selected_sessions:
         date_key = session.date.isoformat()
         day_articles = list(mapped_articles.get(session.date, ()))
-        sector_entity_counts: Counter[str] = Counter()
-        for article in day_articles:
-            for ticker in article.get("sector_entities", ()):
-                sector_entity_counts[str(ticker)] += 1
-        total_sector_entity_mentions = sum(sector_entity_counts.values())
-        sector_hhi = (
-            sum(
-                (count / total_sector_entity_mentions) ** 2
-                for count in sector_entity_counts.values()
-            )
-            if total_sector_entity_mentions
-            else 0.0
-        )
-        sector_firm_share = safe_share(
-            len(sector_entity_counts),
-            len(all_sector_tickers),
-        )
+        sector_entity_counts_by_sector: dict[str, Counter[str]] = {}
+        for sector, members in sector_members.items():
+            counts: Counter[str] = Counter()
+            for article in day_articles:
+                for ticker in article.get("sector_entities", ()):
+                    if ticker in members:
+                        counts[str(ticker)] += 1
+            sector_entity_counts_by_sector[sector] = counts
 
         for target in targets:
+            sector_entity_counts = sector_entity_counts_by_sector[target.sector]
+            total_sector_entity_mentions = sum(sector_entity_counts.values())
+            sector_hhi = (
+                sum(
+                    (entity_count / total_sector_entity_mentions) ** 2
+                    for entity_count in sector_entity_counts.values()
+                )
+                if total_sector_entity_mentions
+                else 0.0
+            )
+            sector_firm_share = safe_share(
+                len(sector_entity_counts),
+                len(sector_members[target.sector]),
+            )
             relevant = rows_by_key.get((date_key, target.ticker), [])
             count = len(relevant)
             direct_count = sum(bool(row["direct_target_evidence"]) for row in relevant)

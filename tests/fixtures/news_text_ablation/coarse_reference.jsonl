@@ -1,0 +1,2 @@
+{"article_id":"article-a","target_ticker":"AAA","labels":{"shock_scope":"idiosyncratic","event_family":"product_demand","information_status":"confirmed","directional_alignment":"single_firm_only"}}
+{"article_id":"article-b","target_ticker":"BBB","labels":{"shock_scope":"common","event_family":"macro_market","information_status":"anticipated","directional_alignment":"common_direction_unclear"}}

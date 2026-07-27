@@ -1,0 +1,84 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.36575832701479094,
+      "incremental_r2_news_given_quant": 0.00472716760770775,
+      "mean_squared_loss_delta_model_minus_base": -0.0006323964823384901,
+      "model_fisher_z_rmse": 0.3648928024753575,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.37513537703579797,
+      "incremental_r2_news_given_quant": -0.0030635247241754815,
+      "mean_squared_loss_delta_model_minus_base": 0.00043111926865438725,
+      "model_fisher_z_rmse": 0.3757095558705484,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.21583536509985216,
+      "incremental_r2_news_given_quant": -0.026285123532844512,
+      "mean_squared_loss_delta_model_minus_base": 0.0012244899781641662,
+      "model_fisher_z_rmse": 0.21865359545626195,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.23389804358321656,
+      "incremental_r2_news_given_quant": -0.059423011133462156,
+      "mean_squared_loss_delta_model_minus_base": 0.0032509316105210915,
+      "model_fisher_z_rmse": 0.24074722511916385,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "control": {
+    "control": null
+  },
+  "generated_at_utc": "2026-07-27T10:38:21.403406Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2896131129304505,
+      "fisher_z_rmse": 0.3648928024753575,
+      "model": "b4_forecast_d43_elastic_net",
+      "oos_r2_vs_persistence": 0.4252302604685798,
+      "raw_correlation_mae": 0.1511067002247878,
+      "raw_correlation_rmse": 0.21035303170040592,
+      "rows": 7530,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.2976937531275265,
+      "fisher_z_rmse": 0.3757095558705484,
+      "model": "b4_forecast_d43_elastic_net",
+      "oos_r2_vs_persistence": 0.40951534488059727,
+      "raw_correlation_mae": 0.16845514713630158,
+      "raw_correlation_rmse": 0.234458425110003,
+      "rows": 7530,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.17507715137194094,
+      "fisher_z_rmse": 0.21865359545626195,
+      "model": "b4_forecast_d43_elastic_net",
+      "oos_r2_vs_persistence": 0.26382973988894765,
+      "raw_correlation_mae": 0.09354888412000802,
+      "raw_correlation_rmse": 0.12460859110573974,
+      "rows": 7290,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.18914386319581006,
+      "fisher_z_rmse": 0.24074722511916385,
+      "model": "b4_forecast_d43_elastic_net",
+      "oos_r2_vs_persistence": 0.23798248897913854,
+      "raw_correlation_mae": 0.11040934212631126,
+      "raw_correlation_rmse": 0.15257474536332782,
+      "rows": 7290,
+      "target": "t2_loo"
+    }
+  ],
+  "parity_gate": null,
+  "status": "complete"
+}

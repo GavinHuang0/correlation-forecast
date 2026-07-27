@@ -1,0 +1,12 @@
+[
+  {
+    "fisher_z_mae": 0.2887331502065563,
+    "fisher_z_rmse": 0.36427056499901445,
+    "model": "b4_stale_news_lag20",
+    "oos_r2_vs_persistence": 0.4271888539635067,
+    "raw_correlation_mae": 0.15092732689053734,
+    "raw_correlation_rmse": 0.211122355760264,
+    "rows": 7530,
+    "target": "t1_etf"
+  }
+]

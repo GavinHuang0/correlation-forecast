@@ -1,0 +1,17 @@
+{
+  "all_model_bundles_hash_verified": true,
+  "all_stocks_retained_per_sampled_date": true,
+  "bootstrap_block_sessions": 10,
+  "bootstrap_resamples": 2000,
+  "bootstrap_seed": 1729,
+  "decision_gate_any_passed": false,
+  "decision_gate_exact_boolean_threshold_prelocked": false,
+  "fold_contained_date_blocks": true,
+  "multiple_testing_adjustment": null,
+  "pooling": "stock-day-row weighted; equivalent to equal date weighting because every eligible target-date has 30 stocks; fold weights are proportional to eligible date counts",
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "status": "passed",
+  "track_a_vs_track_b_labeled_uncontrolled": true
+}

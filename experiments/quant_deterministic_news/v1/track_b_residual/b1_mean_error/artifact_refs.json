@@ -1,0 +1,30 @@
+{
+  "base_prediction_reference.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/base_prediction_reference.json",
+    "sha256": "9d2dc7024ed542fdb4a77a719f98a3aec0244f0cc8eba11d0c662bd54542bff4"
+  },
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/fits.json",
+    "sha256": "7f8ca27a600ed8cb7ea6c1a2966bab1cc1c7dff14a4725c703d607e317cd73e8"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/fold_metrics.json",
+    "sha256": "2d9ffe270c6d5dc6b5be35430c47513dc117f1c217290ddd570a57c9944eb3f8"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/manifest.json",
+    "sha256": "e512891dca6dde4b96090ae058ed39bdac9ba9374363ba9ee5543061d7722e61"
+  },
+  "predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/predictions.parquet",
+    "sha256": "9e9a25d14f670144b4482251cf88359f7405fc8e13861b220c14c2a727f8405f"
+  },
+  "residual_training_index.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/residual_training_index.parquet",
+    "sha256": "d640a39c8f3f29acba4240e701125d95a689d4946acea8b85c58edba7fbe23e8"
+  },
+  "validation_predictions.parquet": {
+    "path": "outputs/quant_deterministic_news/v1/track_b_residual/b1_mean_error/validation_predictions.parquet",
+    "sha256": "186cec49a23dc1d318fba2fee64cc2b0fd7e058f6b6abfd61e51178242430e33"
+  }
+}

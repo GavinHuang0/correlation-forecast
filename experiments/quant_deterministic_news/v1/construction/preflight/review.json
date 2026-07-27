@@ -1,0 +1,10 @@
+{
+  "feature_contract_passed": true,
+  "frozen_prediction_contract_passed": true,
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "source_contract_passed": true,
+  "split_contract_passed": true,
+  "status": "passed"
+}
