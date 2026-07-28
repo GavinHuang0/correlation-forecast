@@ -1,0 +1,17 @@
+{
+  "actual_targets_exactly_matched_in_every_comparison": true,
+  "all_input_bundle_manifests_hash_verified": true,
+  "all_prediction_artifacts_hash_verified": true,
+  "all_stocks_retained_per_forecast_date": true,
+  "bootstrap_fold_contained": true,
+  "bootstrap_resamples": 2000,
+  "bootstrap_seed": 1729,
+  "d3_d4_fit_artifacts_hash_verified": true,
+  "decision_gate_any_target_passed": false,
+  "decision_gate_exact_boolean_threshold_prelocked": false,
+  "development_only_non_version_safe": true,
+  "moving_block_sessions": 10,
+  "multiple_testing_adjustment": null,
+  "prediction_keys_exactly_matched_in_every_comparison": true,
+  "status": "passed"
+}

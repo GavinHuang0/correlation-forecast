@@ -1,0 +1,134 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37093074760929556,
+      "folds_model_better": 1,
+      "incremental_r2": -0.0031331104818550504,
+      "mean_squared_loss_delta_model_minus_base": 0.0004310834791187582,
+      "model_fisher_z_rmse": 0.37151137667790163,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3857667800309052,
+      "folds_model_better": 1,
+      "incremental_r2": 0.003131858489959116,
+      "mean_squared_loss_delta_model_minus_base": -0.0004660706798987062,
+      "model_fisher_z_rmse": 0.38516222283021745,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2448421017380565,
+      "folds_model_better": 3,
+      "incremental_r2": 0.01962165378781644,
+      "mean_squared_loss_delta_model_minus_base": -0.0011762721275535473,
+      "model_fisher_z_rmse": 0.24242809790937037,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26339432475218233,
+      "folds_model_better": 3,
+      "incremental_r2": 0.011291846084610757,
+      "mean_squared_loss_delta_model_minus_base": -0.0007833895538374235,
+      "model_fisher_z_rmse": 0.2619029987568311,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "control": {
+    "all_rows_available": true,
+    "control": "20-session within-stock stale-D2 shift",
+    "first_recipient_date": "2022-11-01",
+    "first_source_date": "2022-10-04",
+    "last_recipient_date": "2026-06-30",
+    "last_source_date": "2026-06-01",
+    "row_count": 27510,
+    "sessions": 20,
+    "wrapped": false
+  },
+  "generated_at_utc": "2026-07-28T06:50:33.094015Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.293155024363943,
+      "fisher_z_rmse": 0.37151137667790163,
+      "model": "d3_stale_d2_lag20",
+      "oos_r2_vs_persistence": 0.40605949517469364,
+      "raw_correlation_mae": 0.14602876456453204,
+      "raw_correlation_rmse": 0.20924403216576487,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.3035539236481354,
+      "fisher_z_rmse": 0.38516222283021745,
+      "model": "d3_stale_d2_lag20",
+      "oos_r2_vs_persistence": 0.3845239241441374,
+      "raw_correlation_mae": 0.16250006008087198,
+      "raw_correlation_rmse": 0.2301954150586186,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.19007315470451225,
+      "fisher_z_rmse": 0.24242809790937037,
+      "model": "d3_stale_d2_lag20",
+      "oos_r2_vs_persistence": 0.24161921604116643,
+      "raw_correlation_mae": 0.09523758309787565,
+      "raw_correlation_rmse": 0.12926636591176785,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.20331822740308939,
+      "fisher_z_rmse": 0.2619029987568311,
+      "model": "d3_stale_d2_lag20",
+      "oos_r2_vs_persistence": 0.22079740278083315,
+      "raw_correlation_mae": 0.11112202702785372,
+      "raw_correlation_rmse": 0.15294856470808882,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37150528340558964,
+      "folds_model_better": 1,
+      "incremental_r2": -3.280342193678898e-05,
+      "mean_squared_loss_delta_model_minus_base": 4.5274028422278756e-06,
+      "model_fisher_z_rmse": 0.37151137667790163,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3856818607789348,
+      "folds_model_better": 2,
+      "incremental_r2": 0.002692830239157451,
+      "mean_squared_loss_delta_model_minus_base": -0.00040055983838756086,
+      "model_fisher_z_rmse": 0.38516222283021745,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2422208879027448,
+      "folds_model_better": 1,
+      "incremental_r2": -0.0017116495463238568,
+      "mean_squared_loss_delta_model_minus_base": 0.0001004241195611934,
+      "model_fisher_z_rmse": 0.24242809790937037,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26250517140710017,
+      "folds_model_better": 2,
+      "incremental_r2": 0.004582629525482829,
+      "mean_squared_loss_delta_model_minus_base": -0.00031578425765036784,
+      "model_fisher_z_rmse": 0.2619029987568311,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison_label": "Falsification control versus contemporaneous V2-D3",
+  "status": "complete"
+}

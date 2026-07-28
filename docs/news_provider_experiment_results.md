@@ -108,9 +108,12 @@ is preserved locally but must be described as observed, undocumented access.
 The paid Benzinga partner endpoint returned HTTP 403 under the free
 credentials. Its official
 [schema](https://massive.com/docs/rest/partners/benzinga/news) is materially
-richer—optional body/teaser plus `published` and `last_updated`—but body
-coverage is explicitly not guaranteed and the endpoint does not document
-retrieval of every historical article revision.
+richer—optional body/teaser plus `published` and `last_updated`—and currently
+advertises history since 2009 and more than 600 Benzinga-authored articles per
+day. Those product-level statements do not establish accessible completeness
+for this project's entitlement. Body coverage is explicitly not guaranteed,
+and the endpoint does not document retrieval of every historical article
+revision.
 
 ### Massive flat files
 
@@ -552,3 +555,15 @@ record version immutably under provider ID plus text hash, record local
 never overwrite an earlier body or description. That can create a genuinely
 point-in-time archive for future tests, but it cannot repair the historical
 version uncertainty in the current retrospective backfill.
+
+The subsequent
+[v2 deterministic and semantic feature design](../experiments/quant_deterministic_news/v2/README.md)
+does not reverse these procurement findings or authorize a purchase. It treats
+the Massive Benzinga partner feed as the most feature-rich documented
+historical candidate under the user's acquisition constraint, conditional on
+a coverage audit, while keeping ordinary retrospective, paid retrospective,
+and prospective versioned panels separate. It also removes raw
+coverage/source proxies from the primary feature block and defines distinct
+weak- and high-accuracy LLM contracts. The D2 deterministic panel and
+available-data Q+D ladder have since been built and trained; all semantic
+panels remain construction-blocked.

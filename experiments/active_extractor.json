@@ -16,11 +16,11 @@
     "runner": "scripts/run_flan_t5_xl_active.py",
     "raw_runner": {
       "path": "scripts/run_flan_t5_xl_coarse.py",
-      "sha256": "ddd6713dae7c4ce9902c5207c9e70fb4c0da39f881ce539cd9936fe29e38a28d"
+      "sha256": "763924fa9b50efb2b65eab7e8bc3214c09bd403c6877563a48224b66406a9074"
     },
     "postprocessor": {
       "path": "scripts/experiment_flan_t5_xl_v1_1.py",
-      "sha256": "79e7d0df419fc74a444ba2c321ffa881ee62af4ec660a18c3cef192d90ef87e9"
+      "sha256": "00b7bd0647efb9eb38bf64e2cd62190f6540eefc796891d015713996a46a57e7"
     },
     "schema": {
       "path": "config/news_feature_schema_coarse.json",

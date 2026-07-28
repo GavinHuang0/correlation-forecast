@@ -1,0 +1,12 @@
+[
+  {
+    "fisher_z_mae": 0.20360261406614744,
+    "fisher_z_rmse": 0.26250517140710017,
+    "model": "d3_q56_d2_elastic_net",
+    "oos_r2_vs_persistence": 0.2172101669797869,
+    "raw_correlation_mae": 0.1112817946724181,
+    "raw_correlation_rmse": 0.15323955509227366,
+    "rows": 10830,
+    "target": "t2_loo"
+  }
+]

@@ -265,12 +265,14 @@ auditable rules.
 2. Use a pooled panel of liquid stocks and sector benchmarks.
 3. Establish lagged-correlation, HAR, exponential, regularized-linear,
   shallow-tree, and causal DCC-GARCH quantitative baselines.
-4. Run the separate exploratory deterministic-news ablation, while reserving
-   strict point-in-time claims for a future version-preserving news archive.
+4. Preserve the completed exploratory deterministic-news ablation and design
+   a separately versioned normalized deterministic/semantic experiment, while
+   reserving strict point-in-time claims for a version-preserving archive.
 5. Keep every stock observed on the same date in the same chronological fold.
-6. Compare nested deterministic activity, scope, cue, timing, source, and
-   burst blocks against calibration and lag/permutation placebo controls;
-   conventional sentiment remains a separately versioned future control.
+6. Preserve the completed D43 ablations and placebo controls, then evaluate
+   any future normalized deterministic and semantic blocks through separately
+   versioned, nested comparisons; conventional sentiment remains a separate
+   control.
 7. Test economic value through hedge error, portfolio risk, and
   coupling-aware filters, not forecast error alone.
 
@@ -449,6 +451,39 @@ Elastic Net, but a 20-session stale-news placebo performed better. Residual
 news models did not robustly improve the primary XGBoost base. The current
 decision is therefore to retain the quant-only model and treat the news
 results as exploratory until prospective version-safe confirmation.
+
+The
+[deterministic and semantic v2 design](experiments/quant_deterministic_news/v2/README.md)
+preserves that v1 record and specifies a 30-feature normalized deterministic
+block, a 17-feature
+abstention-aware block, and a 70-feature rich semantic block. Its separate
+[training ladder](experiments/quant_deterministic_news/v2/TRAINING_LADDER.md)
+crosses both semantic contracts with FLAN-T5-XL and GPT-5.6 Sol, adding matched
+Q+L and Q+D+L designs while excluding every other LLM. The D2 panel and
+available-data deterministic ladder are now complete: D3 modestly improved
+both T2 targets versus matched Q56, but no target passed the stale-news,
+wrong-stock, fold-consistency, and paired-inference gate together. The shared
+semantic corpus is also complete at 466,902 article-target assignments,
+55,197 assigned articles, and 27,510 stock-days, including 204 stock-days with
+no candidate. The FLAN-T5-XL W17 construction pipeline and its silver-only
+acceptance lock are implemented; its full tokenizer preflight passed all
+4,202,118 logical prompts with zero over-512 violations, and its one-record
+CUDA float16 smoke completed on the RTX 3070 Ti with no failure or truncation.
+The GPT-5.6 Sol R70 offline Batch, adjudication, and aggregation pipeline has a
+final hash-bound full-corpus preflight covering 933,804 requests in 934
+conservative files.
+Neither pipeline has produced a complete article-inference corpus or daily
+semantic panel, so no FLAN/GPT downstream semantic model was trained. GPT
+remains an explicitly future-contaminated oracle design rather than OOS
+evidence. No paid call has been made, and any pilot/full run remains gated by an API
+credential, licensed-text confirmation, an explicit request budget, and
+separate user authorization. The redesign separates direct,
+peer-idiosyncratic, sector-common, and macro-common articles; removes raw
+coverage/source proxies from the primary matrix; and keeps ordinary Massive,
+retrospective Benzinga, and prospective versioned panels distinct. See the
+[final v2 comparison](experiments/quant_deterministic_news/v2/training/comparisons/final/RESULTS.md).
+The exact construction commands and fail-closed completion gates are in the
+[semantic construction runbook](experiments/quant_deterministic_news/v2/training/semantic/CONSTRUCTION_RUNBOOK.md).
 
 The separate full-text benchmark retrieved 399 documents in 554 attempts
 covering 553 unique public URLs from a 5,180-document queue, then selected 300

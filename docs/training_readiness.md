@@ -25,8 +25,14 @@ Large Parquet panels, predictions, and fit records are generated locally under
 | Matched modeling panel | Ready | 27,510 rows, 30 stocks, 917 dates |
 | Chronological splitter and T2 boundary purge | Ready | Three locked date-blocked folds |
 | Rungs 1–4 | Complete | Linear, practical linear, GPU XGBoost, and DCC-GARCH |
-| Deterministic daily-news panel | Mechanically ready for a separate exploratory experiment | 27,510 exact Q+D joins; 44 materialized and 40 recommended fields; not historical-version-safe |
-| Validated production LLM feature panel | Not ready; separate future experiment | Current extractor evaluations do not support a production semantic feature block |
+| Deterministic daily-news v1 panel | Complete exploratory artifact | 27,510 exact Q+D joins; 44 materialized and 40 recommended fields; not historical-version-safe |
+| D2-Normalized v2 | Complete exploratory artifact | 71,760 complete stock-days; 27,510 exact Q56+D2 joins; 30 normalized plus five level features; non-version-safe |
+| Deterministic-news v2 training | Complete exploratory development run | D0/D1/D3/D4/D5 and stale/wrong-stock controls fit; matched D43 skipped; no D3 target passed every useful-news gate |
+| Shared v2 semantic input corpus | Complete exploratory artifact | 466,902 article-target assignments, 55,197 assigned articles, 27,510 stock-days, and 204 no-candidate stock-days; bounded shared text and routing hashes are frozen |
+| `W17__flan_t5_xl` | Construction pipeline ready; inference not run | Full tokenizer preflight passed 466,902 assignments and 4,202,118 logical prompts with zero violations (field maxima 398/427/360 under 512); one-record CUDA float16 smoke passed on the RTX 3070 Ti; no full-corpus predictions or daily W17 panel |
+| `W17__gpt_5_6_sol` | Not pursued in the current construction pass | Its future design remains deterministic coarsening from accepted GPT R70 fine labels; no daily panel or training exists |
+| `R70__flan_t5_xl` | Not pursued in the current construction pass | Fine taxonomy exists, but no pinned fine-XL workflow, calibration, daily panel, or training exists |
+| `R70__gpt_5_6_sol` | Offline construction pipeline ready; paid inference blocked | Final hash-bound preflight passed at 933,804 two-view requests, 3,613,888,330 bytes, maximum request size 4,458 bytes, and 934 conservative files; no paid call or authorization gates satisfied |
 | Economic hedge evaluation and dependence-aware inference | Not yet run | Forecast metrics are complete; economic/statistical follow-up remains |
 
 ## Target design
@@ -341,8 +347,78 @@ It compared joint Q+D estimators with corrections to saved out-of-sample
 quant forecasts without modifying the models or results above. Exact Q-only
 parity replays passed. A5's T2 ETF gain versus matched Elastic Net did not beat
 the stale-news placebo, and neither placebo-tested linear news specification
-passed the final falsification gate. LLM augmentation remains a distinct
-future experiment.
+passed the final falsification gate. The separate
+[v2 feature design](../experiments/quant_deterministic_news/v2/README.md)
+has now produced and trained the available D2-Normalized deterministic branch.
+No target passed every final falsification gate. The shared semantic input
+corpus and the FLAN W17 and GPT R70 construction pipelines now exist, but
+full-corpus semantic inference, daily W17/R70 panels, and downstream semantic
+training have not occurred.
+
+## V2 news ladder
+
+The canonical design and execution record is
+[`experiments/quant_deterministic_news/v2/TRAINING_LADDER.md`](../experiments/quant_deterministic_news/v2/TRAINING_LADDER.md).
+It is a separate experiment and does not create quant-v1 rungs 5 or higher.
+
+The deterministic branch is:
+
+| V2 rung | Estimator | Inputs | Raw columns |
+|---|---|---|---:|
+| `V2-D0` | Elastic Net | Matched Q56 | 56 |
+| `V2-D1` | Elastic Net | D2-Normalized only | 30 |
+| `V2-D2` | Elastic Net | Q56 + matched D43-recomputed | 99 |
+| `V2-D3` | Elastic Net | Q56 + D2-Normalized | 86 |
+| `V2-D4` | Elastic Net | Q56 + D2-Normalized + D2-Levels | 91 |
+| `V2-D5` | Shallow XGBoost | Q56 + D2-Normalized | 86 |
+
+`V2-D3` is the primary redesigned Q+D endpoint. `V2-D2` is required because
+the completed D43 result used a different construction/row universe; D43 must
+be recomputed on the exact D2 source profile and eligible rows. `V2-D4` is a
+provider-level sensitivity, and `V2-D5` is eligible only after validation
+supports the linear endpoint.
+
+The semantic branch is repeated for all four immutable arms:
+
+```text
+W17__flan_t5_xl
+W17__gpt_5_6_sol
+R70__flan_t5_xl
+R70__gpt_5_6_sol
+```
+
+| V2 template | Inputs | W17 raw columns | R70 raw columns |
+|---|---|---:|---:|
+| `V2-S0__<arm>` | Matched Q56 | 56 | 56 |
+| `V2-S1__<arm>` | Q56 + D2-Normalized | 86 | 86 |
+| `V2-S2__<arm>` | Q56 + L | 73 | 126 |
+| `V2-S3__<arm>` | Q56 + D2-Normalized + L | 103 | 156 |
+| `V2-S4__<arm>` | Shallow XGBoost on the `S3` inputs | 103 | 156 |
+
+The decisive comparisons are Q+L versus matched Q and Q+D+L versus matched
+Q+D. Counts exclude any training-fold-derived semantic missingness indicators,
+which must be named and counted separately. If uncalibrated quality weights
+make `rllm_mean_accepted_quality_weight` constant, it remains an audit column
+and is excluded from fitting.
+
+Only FLAN-T5-XL and GPT-5.6 Sol enter this ladder. GPT W17 is deterministically
+coarsened from its fine R70 labels; FLAN W17 uses the active coarse extractor,
+while FLAN R70 requires a separate fine-schema XL workflow. GPT results are
+explicitly future-knowledge-contaminated oracle diagnostics, not OOS evidence.
+The shared extractor view is the complete trimmed headline plus, when
+available, two line feeds and a deterministic leading description excerpt of
+at most 512 Unicode code points, preferring a whitespace boundary within the
+last 64 code points. Candidate routing may use complete source/provider
+metadata, but provider tickers, keywords, and full-source candidate roles are
+not exposed to either extractor. Extractor-visible entities and role flags are
+recomputed only from the bounded shared view. The pinned FLAN tokenizer must
+preflight every actual prompt; silent runner-side truncation is forbidden.
+
+The ladder reuses the three chronological date blocks only as development
+evaluation, preserves T1/T2 × ETF/LOO, and refits matched Q controls on each
+eligible row set. It repeats the 20-session stale, fixed within-sector
+wrong-stock, semantic coverage-only, and label-permutation controls. Residual
+correction remains deferred.
 
 ## Model definitions
 
@@ -608,8 +684,9 @@ a separate calibration slice would give a less optimistic ensemble gate.
 
 No statistical-significance or trading-value claim is made yet. Date-block
 inference and an explicit tradable hedge evaluation remain quant-v1
-follow-ups. The exploratory deterministic-news plan proceeds separately and
-does not extend or renumber this completed ladder.
+follow-ups. The completed deterministic-news v1 experiment and the separately
+versioned v2 design/execution record remain separate and do not extend or
+renumber this completed ladder.
 
 ## Reproduction
 

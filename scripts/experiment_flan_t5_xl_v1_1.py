@@ -5,8 +5,15 @@ import copy
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 from typing import Any
+
+# Support the repository's isolated Windows Python runtime, which does not add
+# the script directory to sys.path. This is import bootstrapping only.
+SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+if str(SCRIPT_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIRECTORY))
 
 import evaluate_flan_agreement as agreement
 import extract_flan_t5 as base

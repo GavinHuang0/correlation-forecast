@@ -1,0 +1,38 @@
+{
+  "bootstrap_loss_deltas.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/bootstrap_loss_deltas.parquet",
+    "sha256": "895eec7b2a690eef5bac2fe570a977a2f601b7b7f2c67433f86640f33b41cf2d"
+  },
+  "comparison_specs.json": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/comparison_specs.json",
+    "sha256": "0e0d6e50d4dccb16b71f0c045c18c0b14fdd7e240c3c3a9946887517555dabdb"
+  },
+  "decision_gate.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/decision_gate.parquet",
+    "sha256": "a7a0816a5c31a15cfce626e23f97b396e4f6d4c1ae3c371a4b3e67bf802a6b64"
+  },
+  "elastic_net_selection_stability.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/elastic_net_selection_stability.parquet",
+    "sha256": "c27bb0b7d230bfb32f39d4dd26e64a77f6e36b052225aec4130867e2549bd1c6"
+  },
+  "elastic_net_stability_summary.json": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/elastic_net_stability_summary.json",
+    "sha256": "80eea8f04f9ed6449cebd3db1c533d8cb1e6db3c3571c42da1dda773df697471"
+  },
+  "fold_comparisons.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/fold_comparisons.parquet",
+    "sha256": "3f281da0a36ee57dbbdf2c821996efa192f4d6b38abaec3abf75714c3e01ec6d"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/manifest.json",
+    "sha256": "540eb236f4c0b276d0173ca08dd28d1aa8c60dbb47a08d993498448df3968540"
+  },
+  "model_metrics.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/model_metrics.parquet",
+    "sha256": "18092ee6c6554dede6fb1858f47e3498649f7cfdd3616e167bcbd253fb747713"
+  },
+  "paired_comparisons.parquet": {
+    "path": "outputs/quant_deterministic_news/v2/comparisons/final/paired_comparisons.parquet",
+    "sha256": "45e91ab343da080ca382dda71304bcc4710f8e6bba54e6b9e7264d429cf13150"
+  }
+}

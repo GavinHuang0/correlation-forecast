@@ -1,0 +1,171 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37093074760929556,
+      "folds_model_better": 0,
+      "incremental_r2": -0.004385731579866992,
+      "mean_squared_loss_delta_model_minus_base": 0.0006034311393994532,
+      "model_fisher_z_rmse": 0.37174325906651,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3857667800309052,
+      "folds_model_better": 1,
+      "incremental_r2": -0.00017977855743933624,
+      "mean_squared_loss_delta_model_minus_base": 2.6753927345575936e-05,
+      "model_fisher_z_rmse": 0.3858014547701426,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2448421017380565,
+      "folds_model_better": 2,
+      "incremental_r2": 0.015953259311499268,
+      "mean_squared_loss_delta_model_minus_base": -0.0009563604818775616,
+      "model_fisher_z_rmse": 0.24288123497222106,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26339432475218233,
+      "folds_model_better": 3,
+      "incremental_r2": 0.0074852520480444,
+      "mean_squared_loss_delta_model_minus_base": -0.0005193011150116379,
+      "model_fisher_z_rmse": 0.262406686646218,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "control": {
+    "all_rows_available": true,
+    "control": "fixed within-sector same-date wrong-stock D2 rotation",
+    "mapping": {
+      "Energy": {
+        "COP": "CVX",
+        "CVX": "EOG",
+        "EOG": "MPC",
+        "MPC": "SLB",
+        "SLB": "XOM",
+        "XOM": "COP"
+      },
+      "Financials": {
+        "BAC": "C",
+        "C": "GS",
+        "GS": "JPM",
+        "JPM": "MS",
+        "MS": "WFC",
+        "WFC": "BAC"
+      },
+      "Health Care": {
+        "ABBV": "AMGN",
+        "AMGN": "GILD",
+        "GILD": "JNJ",
+        "JNJ": "MRK",
+        "MRK": "PFE",
+        "PFE": "ABBV"
+      },
+      "Industrials": {
+        "BA": "CAT",
+        "CAT": "DE",
+        "DE": "LMT",
+        "LMT": "UNP",
+        "UNP": "UPS",
+        "UPS": "BA"
+      },
+      "Semiconductors": {
+        "AMD": "AVGO",
+        "AVGO": "INTC",
+        "INTC": "MU",
+        "MU": "NVDA",
+        "NVDA": "QCOM",
+        "QCOM": "AMD"
+      }
+    },
+    "row_count": 27510,
+    "same_date": true
+  },
+  "generated_at_utc": "2026-07-28T06:50:50.969837Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2936417601214751,
+      "fisher_z_rmse": 0.37174325906651,
+      "model": "d3_wrong_stock_d2",
+      "oos_r2_vs_persistence": 0.4053178364660597,
+      "raw_correlation_mae": 0.14613086679057682,
+      "raw_correlation_rmse": 0.2091972530333579,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.30418564559909933,
+      "fisher_z_rmse": 0.3858014547701426,
+      "model": "d3_wrong_stock_d2",
+      "oos_r2_vs_persistence": 0.3824792872561491,
+      "raw_correlation_mae": 0.16283644308160353,
+      "raw_correlation_rmse": 0.23088789637011034,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.19036690252389976,
+      "fisher_z_rmse": 0.24288123497222106,
+      "model": "d3_wrong_stock_d2",
+      "oos_r2_vs_persistence": 0.23878149539018667,
+      "raw_correlation_mae": 0.09533722106170156,
+      "raw_correlation_rmse": 0.12934024383143047,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.2035991407236325,
+      "fisher_z_rmse": 0.262406686646218,
+      "model": "d3_wrong_stock_d2",
+      "oos_r2_vs_persistence": 0.2177974194711928,
+      "raw_correlation_mae": 0.11128321682244624,
+      "raw_correlation_rmse": 0.15320543261168862,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37150528340558964,
+      "folds_model_better": 1,
+      "incremental_r2": -0.0012815531393781665,
+      "mean_squared_loss_delta_model_minus_base": 0.0001768750631229229,
+      "model_fisher_z_rmse": 0.37174325906651,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3856818607789348,
+      "folds_model_better": 0,
+      "incremental_r2": -0.0006202652781828188,
+      "mean_squared_loss_delta_model_minus_base": 9.226476885672107e-05,
+      "model_fisher_z_rmse": 0.3858014547701426,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2422208879027448,
+      "folds_model_better": 0,
+      "incremental_r2": -0.005459869298683584,
+      "mean_squared_loss_delta_model_minus_base": 0.0003203357652371792,
+      "model_fisher_z_rmse": 0.24288123497222106,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26250517140710017,
+      "folds_model_better": 2,
+      "incremental_r2": 0.0007502045461423856,
+      "mean_squared_loss_delta_model_minus_base": -5.169581882458233e-05,
+      "model_fisher_z_rmse": 0.262406686646218,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison_label": "Falsification control versus contemporaneous V2-D3",
+  "status": "complete"
+}

@@ -1,0 +1,123 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37093074760929556,
+      "folds_model_better": 0,
+      "incremental_r2": -0.003490127245138419,
+      "mean_squared_loss_delta_model_minus_base": 0.00048020527974190725,
+      "model_fisher_z_rmse": 0.37157748155900516,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3857667800309052,
+      "folds_model_better": 2,
+      "incremental_r2": 0.006083926233361292,
+      "mean_squared_loss_delta_model_minus_base": -0.0009053856185160377,
+      "model_fisher_z_rmse": 0.3845915014101283,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2448421017380565,
+      "folds_model_better": 3,
+      "incremental_r2": 0.021374410248735543,
+      "mean_squared_loss_delta_model_minus_base": -0.0012813457667923002,
+      "model_fisher_z_rmse": 0.24221129002735714,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26339432475218233,
+      "folds_model_better": 2,
+      "incremental_r2": 0.0027488800209996,
+      "mean_squared_loss_delta_model_minus_base": -0.00019070786805519706,
+      "model_fisher_z_rmse": 0.2630320559239936,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "generated_at_utc": "2026-07-28T06:49:56.695501Z",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2934606662964123,
+      "fisher_z_rmse": 0.37157748155900516,
+      "model": "d4_q56_d2_levels_elastic_net",
+      "oos_r2_vs_persistence": 0.4058481107488384,
+      "raw_correlation_mae": 0.14605447258839876,
+      "raw_correlation_rmse": 0.20912455789702436,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.30323951435443847,
+      "fisher_z_rmse": 0.3845915014101283,
+      "model": "d4_q56_d2_levels_elastic_net",
+      "oos_r2_vs_persistence": 0.3863465594503651,
+      "raw_correlation_mae": 0.16223430233221084,
+      "raw_correlation_rmse": 0.2295669808830512,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.18987492894454203,
+      "fisher_z_rmse": 0.24221129002735714,
+      "model": "d4_q56_d2_levels_elastic_net",
+      "oos_r2_vs_persistence": 0.2429750770962954,
+      "raw_correlation_mae": 0.09513029171958055,
+      "raw_correlation_rmse": 0.12916032574449984,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.2041632417367569,
+      "fisher_z_rmse": 0.2630320559239936,
+      "model": "d4_q56_d2_levels_elastic_net",
+      "oos_r2_vs_persistence": 0.21406467652753003,
+      "raw_correlation_mae": 0.11161988257024495,
+      "raw_correlation_rmse": 0.15363847181163634,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison": [
+    {
+      "base_fisher_z_rmse": 0.37150528340558964,
+      "folds_model_better": 1,
+      "incremental_r2": -0.00038871678071661364,
+      "mean_squared_loss_delta_model_minus_base": 5.364920346537704e-05,
+      "model_fisher_z_rmse": 0.37157748155900516,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3856818607789348,
+      "folds_model_better": 3,
+      "incremental_r2": 0.005646198095466848,
+      "mean_squared_loss_delta_model_minus_base": -0.0008398747770048927,
+      "model_fisher_z_rmse": 0.3845915014101283,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2422208879027448,
+      "folds_model_better": 2,
+      "incremental_r2": 7.92473788314707e-05,
+      "mean_squared_loss_delta_model_minus_base": -4.649519677559545e-06,
+      "model_fisher_z_rmse": 0.24221129002735714,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.26250517140710017,
+      "folds_model_better": 1,
+      "incremental_r2": -0.004018307749502625,
+      "mean_squared_loss_delta_model_minus_base": 0.00027689742813185854,
+      "model_fisher_z_rmse": 0.2630320559239936,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "secondary_comparison_label": "D2-Levels sensitivity versus D2-Normalized",
+  "status": "complete"
+}

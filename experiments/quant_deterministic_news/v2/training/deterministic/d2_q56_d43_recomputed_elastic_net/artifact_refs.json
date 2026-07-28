@@ -1,0 +1,18 @@
+{
+  "fits.json": {
+    "path": "outputs/quant_deterministic_news/v2/deterministic/d2_q56_d43_recomputed_elastic_net/fits.json",
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "fold_metrics.json": {
+    "path": "outputs/quant_deterministic_news/v2/deterministic/d2_q56_d43_recomputed_elastic_net/fold_metrics.json",
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "manifest.json": {
+    "path": "outputs/quant_deterministic_news/v2/deterministic/d2_q56_d43_recomputed_elastic_net/manifest.json",
+    "sha256": "52637ed8f6c24ec51c86f678e73cb9787502447830d44393246bc692a071f4c0"
+  },
+  "skip.json": {
+    "path": "outputs/quant_deterministic_news/v2/deterministic/d2_q56_d43_recomputed_elastic_net/skip.json",
+    "sha256": "c22d59d5c3e8517fc85257f757a5427e90aae7854ac61e8ecc76aa6d26f0fae4"
+  }
+}

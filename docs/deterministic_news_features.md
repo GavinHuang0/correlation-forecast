@@ -7,7 +7,10 @@
 > recommended deterministic columns, and 27,510-row Q+D join are documented
 > in [news_provider_experiment_results.md](news_provider_experiment_results.md)
 > and [q_plus_d_massive.md](q_plus_d_massive.md). Those current artifacts are
-> still marked exploratory and non-version-safe.
+> still marked exploratory and non-version-safe. The v2 deterministic contract
+> has since been built and trained, while the semantic contracts remain
+> construction-blocked, in
+> [`experiments/quant_deterministic_news/v2/README.md`](../experiments/quant_deterministic_news/v2/README.md).
 
 ## Decision
 

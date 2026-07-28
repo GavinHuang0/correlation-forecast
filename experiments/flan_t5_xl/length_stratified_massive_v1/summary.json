@@ -1,0 +1,117 @@
+{
+  "experiment_id": "flan-t5-xl-length-stratified-massive-v1",
+  "status": "complete_operational_validation",
+  "extractor_id": "flan-t5-xl-v1.1",
+  "model_id": "google/flan-t5-xl",
+  "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+  "reference_labels": null,
+  "claim_limit": "Operational, distributional, and paired-ablation robustness only; no objective accuracy estimate.",
+  "sample": {
+    "parent_articles": 200,
+    "articles_per_length_stratum": 40,
+    "articles_per_sector_per_length_stratum": 8,
+    "model_inputs": 360,
+    "paired_articles": 160,
+    "cutoff_inclusive_utc": "2022-11-01T00:00:00Z",
+    "source_snapshot_end_utc_date": "2026-07-26"
+  },
+  "operational": {
+    "resolved_inputs": 360,
+    "untruncated_inputs": 360,
+    "maximum_prompt_tokens": 376,
+    "maximum_allowed_prompt_tokens": 512,
+    "passed": true
+  },
+  "headline_only_native": {
+    "shock_scope": {
+      "raw_order_agreement": 0.5,
+      "raw_abstention": 0.025,
+      "calibrated_abstention": 0.1,
+      "largest_calibrated_label": "idiosyncratic",
+      "largest_calibrated_label_share": 0.825
+    },
+    "event_family": {
+      "raw_order_agreement": 0.85,
+      "raw_abstention": 0.0,
+      "calibrated_abstention": 0.0,
+      "largest_calibrated_label": "macro_market",
+      "largest_calibrated_label_share": 0.8
+    },
+    "information_status": {
+      "raw_order_agreement": 0.35,
+      "raw_abstention": 0.65,
+      "calibrated_abstention": 0.0,
+      "calibration_override_rate": 0.65,
+      "largest_calibrated_label": "anticipated",
+      "largest_calibrated_label_share": 0.625
+    }
+  },
+  "sub_150_native": {
+    "shock_scope": {
+      "raw_order_agreement": 0.5,
+      "raw_abstention": 0.1,
+      "calibrated_abstention": 0.225,
+      "largest_calibrated_label": "idiosyncratic",
+      "largest_calibrated_label_share": 0.75
+    },
+    "event_family": {
+      "raw_order_agreement": 0.75,
+      "raw_abstention": 0.025,
+      "calibrated_abstention": 0.025,
+      "largest_calibrated_label": "macro_market",
+      "largest_calibrated_label_share": 0.625
+    },
+    "information_status": {
+      "raw_order_agreement": 0.625,
+      "raw_abstention": 0.725,
+      "calibrated_abstention": 0.0,
+      "calibration_override_rate": 0.75,
+      "largest_calibrated_label": "anticipated",
+      "largest_calibrated_label_share": 0.45
+    }
+  },
+  "sub_150_paired_native_vs_headline_only": {
+    "all_field_calibrated_agreement": 0.475,
+    "field_agreement": {
+      "shock_scope": {
+        "raw": 0.85,
+        "calibrated": 0.775
+      },
+      "event_family": {
+        "raw": 0.85,
+        "calibrated": 0.85
+      },
+      "information_status": {
+        "raw": 0.85,
+        "calibrated": 0.725
+      },
+      "directional_alignment": {
+        "raw": 0.85,
+        "calibrated": 0.85
+      }
+    }
+  },
+  "all_paired_native_vs_headline_only": {
+    "all_field_calibrated_agreement": 0.41875,
+    "field_calibrated_agreement": {
+      "shock_scope": 0.73125,
+      "event_family": 0.8625,
+      "information_status": 0.68125,
+      "directional_alignment": 0.8125
+    }
+  },
+  "decision": {
+    "active_extractor_semantics_changed": false,
+    "active_pointer_hashes_refreshed_for_import_bootstrap": true,
+    "headline_only_primary_feature_eligible": false,
+    "sub_150_information_status_primary_feature_eligible": false,
+    "next_requirement": "Independent length-stratified reference labels."
+  },
+  "artifacts": {
+    "benchmark_manifest_sha256": "d17b7767d9a439a5eabee9f21c34681a4f33611621d72b7fbc526413db18745e",
+    "model_inputs_sha256": "c9f0bf35cd81898734c7e09aa1c96a776e3904dd99ffb31c2707c54db5aad945",
+    "raw_predictions_sha256": "95ef16500f2f24919bb42627cf444632795222f6969caad6b72d5f16e6446286",
+    "calibrated_predictions_sha256": "e12202e39b1dbfa34ee97dfed76bb4fa3cbadd8606c58e5f9112511b5647d09d",
+    "analysis_sha256": "a1ef753dd6e2d5d362168ca6584adf233051369db53480a4781f8a6f387733df"
+  }
+}

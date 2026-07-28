@@ -1,0 +1,98 @@
+{
+  "config_version": "flan-w17-acceptance-v1",
+  "status": "frozen_exploratory_silver_fit",
+  "contract_id": "weak-news-semantics-v1",
+  "extractor_id": "flan-t5-xl-v1.1",
+  "model_id": "google/flan-t5-xl",
+  "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+  "score": "calibrated_adjusted_top1_top2_margin",
+  "quality_weight": 1.0,
+  "human_calibrated": false,
+  "primary_training_eligible": false,
+  "confirmatory_eligible": false,
+  "result_role": "exploratory_silver_fit",
+  "fields": {
+    "shock_scope": {
+      "abstention_labels": [
+        "unclear"
+      ],
+      "classes": {
+        "idiosyncratic": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "common": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "mixed": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        }
+      }
+    },
+    "event_family": {
+      "abstention_labels": [
+        "other_or_unclear"
+      ],
+      "classes": {
+        "earnings_guidance": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "product_demand": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "supply_capacity": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "regulation_legal": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "corporate_analyst": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "macro_market": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        }
+      }
+    },
+    "information_status": {
+      "abstention_labels": [
+        "unclear"
+      ],
+      "classes": {
+        "confirmed": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "anticipated": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        },
+        "rumor_or_opinion": {
+          "enabled_for_exploratory_fit": true,
+          "enabled_by_human_calibration": false,
+          "minimum_adjusted_margin": 0.0
+        }
+      }
+    }
+  },
+  "warning": "This permissive acceptance lock is frozen for the requested silver-only exploratory fit. It is not human calibrated and does not make W17 primary or confirmatory evidence."
+}

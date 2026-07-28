@@ -1,0 +1,524 @@
+{
+  "schema_version": "v2-semantic-construction-readiness-v2",
+  "audit_date": "2026-07-28",
+  "status": "input_corpus_complete_two_requested_pipelines_ready_no_semantic_models_trained",
+  "scope": {
+    "contracts": [
+      "WLLM17",
+      "RLLM70"
+    ],
+    "extractors": [
+      "FLAN-T5-XL",
+      "GPT-5.6 Sol"
+    ],
+    "arm_ids": [
+      "W17__flan_t5_xl",
+      "W17__gpt_5_6_sol",
+      "R70__flan_t5_xl",
+      "R70__gpt_5_6_sol"
+    ],
+    "current_construction_work_scope": [
+      "W17__flan_t5_xl",
+      "R70__gpt_5_6_sol"
+    ],
+    "shared_semantic_input_corpus_constructed": true,
+    "article_level_model_inference_performed": false,
+    "daily_semantic_panel_constructed": false,
+    "training_performed_in_current_construction_pass": false,
+    "downstream_semantic_training_performed": false,
+    "paid_gpt_call_performed": false
+  },
+  "credential_name_audit": {
+    "env_file_present": true,
+    "values_read_recorded_or_exposed": false,
+    "observed_variable_names": [
+      "ALPACA_PUBLIC_KEY",
+      "ALPACA_SECRET_KEY",
+      "ALPHA_VANTAGE_KEY",
+      "MASSIVE_API_KEY",
+      "MASSIVE_FLAT_KEY",
+      "MASSIVE_FLAT_SECRET"
+    ],
+    "openai_api_credential_name_present": false,
+    "openai_api_execution_available_from_repository_env": false,
+    "conclusion": "The offline GPT-5.6 Sol R70 pipeline is ready and its final hash-bound workload preflight passed. No paid pilot or full inference can be launched without an API credential, licensed-text confirmation, an explicit maximum paid-request budget, and separate user authorization."
+  },
+  "corpus_readiness": {
+    "normalized_archive": {
+      "path": "data/features/news_deterministic/massive_v1/normalized_articles.csv.gz",
+      "provider_article_rows": 90290,
+      "unique_provider_articles": 90290,
+      "description_present_articles": 88148
+    },
+    "semantic_common_input_corpus": {
+      "forecast_date_first": "2022-11-01",
+      "forecast_date_last": "2026-06-30",
+      "window_start_utc": "2022-10-31T13:00:00Z",
+      "window_end_exclusive_utc": "2026-06-30T13:00:00Z",
+      "pre_routing_unique_provider_articles": 57181,
+      "description_present_articles": 56264,
+      "reproduction_rule": "Filter published_at_utc >= the previous official session's 09:00 America/New_York cutoff for the first forecast date and published_at_utc < the 09:00 America/New_York cutoff on the last forecast date. For forecast dates 2022-11-01 through 2026-06-30, both cutoffs are 13:00Z because daylight saving time is in effect.",
+      "why_this_is_the_semantic_panel_denominator": "The consecutive [previous official-session 09:00 ET, current official-session 09:00 ET) article windows tile this continuous interval exactly. It includes the first forecast's prior-session news and excludes news published after the final forecast decision cutoff.",
+      "comparison_to_design_audit_calendar_date_count": {
+        "design_audit_unique_provider_articles": 57147,
+        "design_audit_description_present_articles": 56232,
+        "design_audit_reproduction_rule": "Filter published_at_utc >= 2022-11-01T00:00:00Z and published_at_utc < 2026-07-01T00:00:00Z.",
+        "interpretation": "This is a descriptive inclusive UTC-calendar-date count, not the information-time denominator for forecast sessions.",
+        "semantic_only_lead_in_interval": {
+          "start_utc": "2022-10-31T13:00:00Z",
+          "end_exclusive_utc": "2022-11-01T00:00:00Z",
+          "unique_provider_articles": 55,
+          "description_present_articles": 53
+        },
+        "calendar_date_only_final_interval": {
+          "start_utc": "2026-06-30T13:00:00Z",
+          "end_exclusive_utc": "2026-07-01T00:00:00Z",
+          "unique_provider_articles": 21,
+          "description_present_articles": 21
+        },
+        "net_semantic_minus_calendar_date_unique_articles": 34,
+        "net_semantic_minus_calendar_date_description_present_articles": 32
+      },
+      "assigned_unique_articles": 55197,
+      "exact_target_article_inference_record_count": 466902,
+      "stock_day_scope_rows": 27510,
+      "stock_days_without_candidates": 204,
+      "manifest_path": "data/features/news_semantic/massive_v2/manifest.json",
+      "manifest_sha256": "0c37cf044a4e5e9942398f332db4c09f6746ba7cd6a9af2ae2656e3802a30daf",
+      "assignments_path": "data/features/news_semantic/massive_v2/article_target_assignments.jsonl.gz",
+      "assignments_sha256": "52ade4cee38fc56d91556ec0f568f8dfcb16d981102bd23075075735def13d7c",
+      "text_contract": {
+        "complete_trimmed_headline": true,
+        "description_excerpt_max_unicode_codepoints": 512,
+        "preferred_whitespace_boundary_window_codepoints": 64,
+        "silent_runner_side_truncation_allowed": false,
+        "candidate_routing_may_use_complete_source_provider_metadata": true,
+        "provider_tickers_keywords_and_candidate_roles_exposed_to_extractors": false,
+        "extractor_visible_entities_and_roles_recomputed_from_bounded_model_text": true
+      }
+    },
+    "d2_context": {
+      "manifest_path": "data/features/news_deterministic/massive_v2/manifest.json",
+      "status": "complete_exploratory_non_version_safe",
+      "stock_day_rows": 71760,
+      "quant_matched_rows": 27510,
+      "quant_match_fraction": 1.0,
+      "point_in_time_version_safe": false,
+      "primary_training_eligible": false
+    },
+    "semantic_artifact_counts": {
+      "target_article_candidate_assignment_file_count": 2,
+      "shared_hashed_text_view_artifact_count": 2,
+      "full_corpus_wllm17_prediction_file_count": 0,
+      "full_corpus_rllm70_prediction_file_count": 0,
+      "daily_wllm17_panel_file_count": 0,
+      "daily_rllm70_panel_file_count": 0,
+      "semantic_q_l_or_q_d_l_training_output_count": 0
+    }
+  },
+  "available_fragments": {
+    "legacy_fine_gpt_reference": {
+      "path": "annotations/chatgpt_5_6_sol_reference.jsonl",
+      "records": 300,
+      "unique_articles": 300,
+      "target_tickers": [
+        "AMD",
+        "AVGO",
+        "INTC",
+        "MU",
+        "NVDA"
+      ],
+      "target_ticker_count": 5,
+      "schema": "fine stock_sector_news_semantics v0.1.0",
+      "usefulness": "Shape and mapping evidence for RLLM70 and GPT-derived WLLM17; not a full-corpus v2 construction."
+    },
+    "legacy_coarsened_gpt_reference": {
+      "path": "annotations/chatgpt_5_6_sol_reference_coarse_v0_2.jsonl",
+      "records": 300,
+      "unique_articles": 300,
+      "target_ticker_count": 5,
+      "derivation": "deterministic coarsening of the legacy fine GPT reference",
+      "usefulness": "Coarse benchmark evidence only; not an independently prompted GPT WLLM17 corpus."
+    },
+    "legacy_flan_t5_xl_coarse_benchmark": {
+      "development_records": 72,
+      "development_semantic_applicable_records": 62,
+      "development_model_field_calls": 201,
+      "evaluation_records": 228,
+      "evaluation_semantic_applicable_records": 196,
+      "evaluation_reference_relevant_records": 174,
+      "evaluation_model_field_calls": 627,
+      "total_records": 300,
+      "target_ticker_count": 5,
+      "usefulness": "Frozen quality evidence for the active coarse extractor; not v2 full-corpus inference."
+    },
+    "postcutoff_all_stock_description_benchmark": {
+      "input_path": "data/benchmarks/news_text_ablation_300/v1/massive_description.jsonl",
+      "documents": 300,
+      "unique_articles": 300,
+      "target_stock_count": 30,
+      "flan_prediction_path": "outputs/news_provider_fulltext/v1_0/flan_t5_xl/massive_description.jsonl",
+      "flan_predictions": 300,
+      "flan_semantic_applicable_records": 286,
+      "flan_model_field_calls": 952,
+      "gpt_reference_path": "annotations/news_provider_fulltext/v1_0/gpt_5_6_sol_silver.jsonl",
+      "gpt_coarse_silver_records": 300,
+      "fulltext_chunk_path": "data/benchmarks/news_text_ablation_300/v1/fulltext_evidence_chunks.jsonl",
+      "fulltext_chunks": 1675,
+      "fulltext_parent_articles": 300,
+      "usefulness": "All-stock execution evidence for the four-field coarse ontology; benchmark-selected and not a v2 daily semantic panel."
+    }
+  },
+  "runtime_evidence": {
+    "flan_t5_xl": {
+      "model_id": "google/flan-t5-xl",
+      "revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+      "device": "cuda",
+      "precision": "float16",
+      "quantization": null,
+      "observed_device_name": "NVIDIA GeForce RTX 3070 Ti",
+      "legacy_coarse_300_document_model_field_calls": 828,
+      "postcutoff_description_300_document_model_field_calls": 952,
+      "postcutoff_description_batch_size": 32,
+      "wall_clock_duration_recorded": false,
+      "exact_assignment_denominator": 466902,
+      "pipeline_implemented": true,
+      "acceptance_config_path": "config/flan_w17_acceptance_v1.json",
+      "acceptance_config_sha256": "9a1cca6bdf6b0a5bc0c2c5e1f9b6b9dcbb01cca4850e1225aa8449c7650f6072",
+      "acceptance_profile": "permissive_silver_only_q_equals_one_not_primary_or_confirmatory",
+      "full_tokenizer_preflight_status": "passed",
+      "full_tokenizer_preflight_path": "data/features/news_semantic/massive_v2/flan_w17/preflight.json",
+      "full_tokenizer_preflight_sha256": "39cd7a595451d142bca367e99c000a9768ced8d8784e8158187c6cf811bfb1b7",
+      "full_tokenizer_preflight_runtime_sha256": "dfbb8685909d2cd9567e3ca7543dff90f4fd50618855992a469f569ba2415fee",
+      "full_tokenizer_preflight_assignment_count": 466902,
+      "full_tokenizer_preflight_logical_prompt_count": 4202118,
+      "full_tokenizer_preflight_tokenized_prompt_count": 3070758,
+      "full_tokenizer_preflight_violation_count": 0,
+      "maximum_observed_tokens_by_field": {
+        "shock_scope": 398,
+        "event_family": 427,
+        "information_status": 360
+      },
+      "cuda_smoke_status": "smoke_complete",
+      "cuda_smoke_selected_assignment_count": 1,
+      "cuda_smoke_successful_assignment_count": 1,
+      "cuda_smoke_failure_assignment_count": 0,
+      "cuda_smoke_silent_truncation_allowed": false,
+      "cuda_smoke_prediction_path": "data/features/news_semantic/massive_v2/flan_w17/smoke/predictions.jsonl",
+      "cuda_smoke_prediction_sha256": "d1fbc90ba4e612e9c115190b701983845e9f9a4b59591ed6b664c27ed9c6f200",
+      "cuda_smoke_manifest_path": "data/features/news_semantic/massive_v2/flan_w17/smoke/predictions.jsonl.manifest.json",
+      "cuda_smoke_manifest_sha256": "26aa5ade4a01fbde40960a0b617d91f6205ca0f8d034664fc458657357dc1c21",
+      "full_corpus_eta_status": "not_estimable_from_local_artifacts",
+      "reason": "The exact denominator, tokenizer fit, and one-record CUDA execution are known, but a representative full runner throughput record does not yet exist."
+    },
+    "gpt_5_6_sol": {
+      "local_api_runtime_artifact_present": false,
+      "repository_env_api_credential_name_present": false,
+      "offline_pipeline_implemented": true,
+      "preflight_path": "data/features/news_semantic/massive_v2/gpt_r70/preflight.json",
+      "preflight_sha256": "79a8e9aa3e19433d7917371f9e994a2a3ba34f3602da6659a09050c73ab3e96f",
+      "workload_preflight_passed": true,
+      "final_hash_bound_preflight_manifest_status": "ready_for_offline_preparation_not_authorized_for_spend",
+      "runtime_contract_sha256": "8a6aa10f1ecb101024ae112d84e82141dd5d45ebc30926e06a555521d3b6e029",
+      "full_corpus_assignment_count": 466902,
+      "full_corpus_request_count_known": true,
+      "full_corpus_request_count": 933804,
+      "full_corpus_request_bytes": 3613888330,
+      "maximum_request_bytes": 4458,
+      "projected_conservative_file_count": 934,
+      "full_corpus_cost_known": false,
+      "paid_submission_performed": false,
+      "paid_submission_authorized": false,
+      "required_paid_gates": [
+        "OpenAI API credential",
+        "explicit licensed-text-processing confirmation",
+        "hard maximum paid-request budget",
+        "separate user authorization"
+      ],
+      "full_corpus_eta_status": "not_estimable_from_local_artifacts",
+      "reason": "The offline request count and byte size are frozen, but no paid pilot has measured token cost or service latency and no API credential is configured."
+    }
+  },
+  "extractor_quality_evidence": {
+    "flan_t5_xl_active_coarse": {
+      "reference_type": "deterministically coarsened GPT-5.6 Sol silver annotations",
+      "evaluation_records": 228,
+      "semantic_coverage": 0.9942528735632183,
+      "relevance_gate_f1": 0.9351351351351351,
+      "mean_macro_f1": 0.4635347811690556,
+      "field_macro_f1": {
+        "shock_scope": 0.4683627923772493,
+        "event_family": 0.47762299098773714,
+        "information_status": 0.5797354497354498,
+        "directional_alignment": 0.3284178915757863
+      },
+      "all_frozen_field_thresholds_passed": false,
+      "production_ready": false,
+      "approved_use": "exploratory only"
+    },
+    "gpt_5_6_sol": {
+      "human_ground_truth_accuracy_established": false,
+      "available_reference_types": [
+        "300-document fine silver reference across five semiconductor tickers",
+        "300-document coarse full-text silver reference across all thirty target stocks"
+      ],
+      "main_historical_panel_claim_label": "exploratory_future_contaminated_oracle"
+    }
+  },
+  "arms": {
+    "W17__flan_t5_xl": {
+      "contract": "WLLM17",
+      "extractor": "FLAN-T5-XL",
+      "definition_complete": true,
+      "construction_status": "pipeline_ready_tokenizer_preflight_and_cuda_smoke_passed",
+      "construction_complete": false,
+      "input_corpus_complete": true,
+      "pipeline_implemented": true,
+      "acceptance_lock_complete": true,
+      "full_tokenizer_preflight_complete": true,
+      "cuda_smoke_complete": true,
+      "article_prediction_fragment_records": 600,
+      "fragment_count_interpretation": "Two distinct 300-document benchmarks, not 600 full-corpus or mutually exchangeable training records.",
+      "full_corpus_v2_prediction_records": 0,
+      "daily_semantic_panel_rows": 0,
+      "training_status": "not_trained",
+      "exploratory_fit_eligible": false,
+      "primary_training_eligible": false,
+      "confirmatory_eligible": false,
+      "claim_label_after_unlock": "exploratory_silver_fit",
+      "blockers": [
+        "No full-corpus active-coarse FLAN inference output.",
+        "No source-complete daily WLLM17 aggregation or Q/L join."
+      ],
+      "unlock_requirements": [
+        "Run the pinned active coarse extractor over the complete candidate set with resumable output, sidecar hashes, call counts, and truncation audits.",
+        "Aggregate all 17 WLLM fields with source and inference completeness gates, then join to the exact semantic-common Q/D row set.",
+        "Lock feature, panel, protocol, and split hashes before fitting Q+L or Q+D+L."
+      ]
+    },
+    "W17__gpt_5_6_sol": {
+      "contract": "WLLM17",
+      "extractor": "GPT-5.6 Sol",
+      "definition_complete": true,
+      "construction_status": "not_pursued_in_current_construction_pass",
+      "construction_complete": false,
+      "input_corpus_complete": true,
+      "fine_reference_fragment_records": 300,
+      "fine_reference_fragment_target_tickers": 5,
+      "separate_coarse_fulltext_fragment_records": 300,
+      "separate_coarse_fulltext_fragment_target_stocks": 30,
+      "full_corpus_v2_prediction_records": 0,
+      "daily_semantic_panel_rows": 0,
+      "training_status": "not_trained",
+      "exploratory_fit_eligible": false,
+      "primary_training_eligible": false,
+      "confirmatory_eligible": false,
+      "extractor_model_knowledge_contaminated": 1,
+      "claim_label_after_unlock": "exploratory_future_contaminated_oracle",
+      "blockers": [
+        "No OpenAI API credential name is present in the repository environment.",
+        "Only bounded benchmark annotations exist; no complete modeling-corpus fine annotation.",
+        "No daily WLLM17 aggregation derived from the same adjudicated GPT fine labels."
+      ],
+      "unlock_requirements": [
+        "Provide authorized GPT-5.6 Sol API execution and a non-secret credential reference without storing its value in artifacts.",
+        "Complete the separately gated GPT R70 two-view run and deterministically coarsen its accepted fine labels to WLLM17.",
+        "Aggregate all 17 WLLM fields with complete-corpus gates and mark every row and fit as future-contaminated exploratory oracle.",
+        "Lock feature, panel, protocol, and split hashes before fitting Q+L or Q+D+L."
+      ]
+    },
+    "R70__flan_t5_xl": {
+      "contract": "RLLM70",
+      "extractor": "FLAN-T5-XL",
+      "definition_complete": true,
+      "construction_status": "not_pursued_in_current_construction_pass",
+      "construction_complete": false,
+      "input_corpus_complete": true,
+      "active_pinned_fine_schema_prediction_records": 0,
+      "full_corpus_v2_prediction_records": 0,
+      "daily_semantic_panel_rows": 0,
+      "training_status": "not_trained",
+      "exploratory_fit_eligible": false,
+      "primary_training_eligible": false,
+      "confirmatory_eligible": false,
+      "claim_label_after_unlock": "fine_schema_stress_test",
+      "blockers": [
+        "The active pinned FLAN-T5-XL wrapper is coarse-only.",
+        "No locked fine-schema FLAN-T5-XL evaluation exists.",
+        "No independently designed two-view fine extraction and adjudication workflow is pinned for XL.",
+        "No fine inference, evidence/entity QA, or daily RLLM70 panel exists.",
+        "No human-grounded field/class calibration or RLLM70 execution gate has passed."
+      ],
+      "unlock_requirements": [
+        "Create a pinned fine-schema FLAN-T5-XL runner without changing the active coarse W17 arm.",
+        "Freeze two independently designed deterministic prompt views, parsing, validation, evidence/entity grounding, disagreement adjudication, and tokenizer preflight.",
+        "Evaluate the fine XL workflow on an earlier human-labeled calibration sample and preregister field/class acceptance and coverage gates.",
+        "Run the complete shared v2 candidate/text-view corpus with resumable hash-bound outputs.",
+        "Aggregate RLLM70 with applicability, abstention, quality, source-completeness, and all-abstain rules.",
+        "Authorize fitting only if the execution and quality gates pass; otherwise record the arm as a failed stress test."
+      ]
+    },
+    "R70__gpt_5_6_sol": {
+      "contract": "RLLM70",
+      "extractor": "GPT-5.6 Sol",
+      "definition_complete": true,
+      "construction_status": "offline_pipeline_and_final_preflight_ready_paid_inference_blocked",
+      "construction_complete": false,
+      "input_corpus_complete": true,
+      "offline_pipeline_implemented": true,
+      "workload_preflight_passed": true,
+      "final_hash_bound_preflight_manifest_complete": true,
+      "final_hash_bound_preflight_manifest_sha256": "79a8e9aa3e19433d7917371f9e994a2a3ba34f3602da6659a09050c73ab3e96f",
+      "preflight_runtime_contract_sha256": "8a6aa10f1ecb101024ae112d84e82141dd5d45ebc30926e06a555521d3b6e029",
+      "offline_preflight_request_count": 933804,
+      "offline_preflight_request_bytes": 3613888330,
+      "offline_preflight_maximum_request_bytes": 4458,
+      "offline_preflight_projected_file_count": 934,
+      "paid_submission_performed": false,
+      "fine_reference_fragment_records": 300,
+      "fine_reference_fragment_target_tickers": 5,
+      "full_corpus_v2_prediction_records": 0,
+      "daily_semantic_panel_rows": 0,
+      "training_status": "not_trained",
+      "exploratory_fit_eligible": false,
+      "primary_training_eligible": false,
+      "confirmatory_eligible": false,
+      "extractor_model_knowledge_contaminated": 1,
+      "claim_label_after_unlock": "exploratory_future_contaminated_oracle",
+      "blockers": [
+        "No OpenAI API credential name is present in the repository environment.",
+        "The existing 300-document fine reference covers only five semiconductor tickers and is not the v2 modeling corpus.",
+        "No explicit licensed-text-processing confirmation, hard paid-request budget, or separate paid-run authorization has been supplied.",
+        "No full-corpus fine GPT output.",
+        "No human calibration or nonconstant cross-fitted quality weights; without them the pipeline remains q=1 silver-only.",
+        "No daily RLLM70 panel or Q/L join."
+      ],
+      "unlock_requirements": [
+        "Provide a non-secret API credential reference plus explicit licensed-text-processing confirmation, a hard maximum paid-request budget, and separate paid-run authorization.",
+        "Run a separately authorized small paid pilot before budgeting or submitting the complete corpus.",
+        "Run the complete shared v2 candidate/text-view corpus through the frozen two-view pipeline rather than extrapolating the five-ticker fragment.",
+        "Calibrate field/class acceptance and quality weights on an earlier human-labeled sample, or retain q=1 and label the entire result silver-only.",
+        "Aggregate the 70 raw features under the exact applicability, abstention, channel-share, and completeness contract.",
+        "Mark every article, stock-day, model, and comparison as future-contaminated exploratory oracle and never confirmatory."
+      ]
+    }
+  },
+  "completed_global_prerequisites": [
+    "Frozen exact v2 semantic candidate assignments and stock-day row universe.",
+    "Frozen one bounded hash-bound shared model-text view with separate full-source routing and extractor-visible role/entity metadata.",
+    "Implemented FLAN W17 and GPT R70 construction and daily aggregation paths.",
+    "Frozen the requested permissive silver-only FLAN W17 acceptance profile.",
+    "Passed the FLAN W17 full-corpus tokenizer preflight with zero over-512 prompts.",
+    "Passed and hash-bound the one-record FLAN W17 CUDA float16 smoke on the RTX 3070 Ti.",
+    "Passed and hash-bound the final GPT R70 offline workload preflight."
+  ],
+  "remaining_global_unlock_sequence": [
+    "Construct and validate complete article-level outputs for one arm at a time, never mixing partial corpus coverage with valid zeros.",
+    "For GPT, satisfy API-credential, licensed-text, explicit-budget, and separate paid-authorization gates before any pilot or full call.",
+    "Build complete daily WLLM17/RLLM70 panels and exact semantic-common Q/D joins.",
+    "Lock the exploratory protocol, row set, features, imputations, splits, and placebo controls before training.",
+    "Retain ordinary retrospective and GPT-oracle claim labels; neither becomes confirmatory evidence."
+  ],
+  "evidence_files": [
+    {
+      "path": "experiments/quant_deterministic_news/v2/README.md",
+      "sha256": "1dab2a0fbb84a3159f65115f0d66026cd0f6aac45856eef127fab36a1d970464"
+    },
+    {
+      "path": "experiments/quant_deterministic_news/v2/TRAINING_LADDER.md",
+      "sha256": "ad5ab96f8984366456062c9c3c2c99abd441dc9dbbeb51895346c2869c7a2076"
+    },
+    {
+      "path": "experiments/quant_deterministic_news/v2/training/semantic/CONSTRUCTION_RUNBOOK.md",
+      "sha256": "b6ad507a0209caa742dcd88fbbd1cd247df6552b88bca298025cc5e51f4b272b"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/manifest.json",
+      "sha256": "0c37cf044a4e5e9942398f332db4c09f6746ba7cd6a9af2ae2656e3802a30daf"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/article_target_assignments.jsonl.gz",
+      "sha256": "52ade4cee38fc56d91556ec0f568f8dfcb16d981102bd23075075735def13d7c"
+    },
+    {
+      "path": "config/flan_w17_acceptance_v1.json",
+      "sha256": "9a1cca6bdf6b0a5bc0c2c5e1f9b6b9dcbb01cca4850e1225aa8449c7650f6072"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/flan_w17/preflight.json",
+      "sha256": "39cd7a595451d142bca367e99c000a9768ced8d8784e8158187c6cf811bfb1b7"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/flan_w17/smoke/predictions.jsonl",
+      "sha256": "d1fbc90ba4e612e9c115190b701983845e9f9a4b59591ed6b664c27ed9c6f200"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/flan_w17/smoke/predictions.jsonl.manifest.json",
+      "sha256": "26aa5ade4a01fbde40960a0b617d91f6205ca0f8d034664fc458657357dc1c21"
+    },
+    {
+      "path": "data/features/news_semantic/massive_v2/gpt_r70/preflight.json",
+      "sha256": "79a8e9aa3e19433d7917371f9e994a2a3ba34f3602da6659a09050c73ab3e96f"
+    },
+    {
+      "path": "scripts/build_v2_semantic_corpus.py",
+      "sha256": "6c98139dc59d568d61b9e88a927958166be4a22368393dedce8e65c62bc4d5d4"
+    },
+    {
+      "path": "scripts/semantic_news_v2/flan_w17.py",
+      "sha256": "fd6f198ec9f941332df2be2d1dfdfdbd4128804c3fa4fd5c14ada4c3e1f48e92"
+    },
+    {
+      "path": "scripts/semantic_news_v2/gpt_r70.py",
+      "sha256": "7b73855f1f3547fd3316fb20b5cffbee03ce7054853d26ca8c61073d3e99228f"
+    },
+    {
+      "path": "data/features/news_deterministic/massive_v2/manifest.json",
+      "sha256": "2d43247e51d9c28e91d9ee70379b33e3ab88400239d862cb72768dcf8a4bc686"
+    },
+    {
+      "path": "data/features/news_deterministic/massive_v1/normalized_articles.csv.gz",
+      "sha256": "9d20803816f8cf63fe02b0b4d6e95ce3f3df735f3ef71a930904e80c6928d220"
+    },
+    {
+      "path": "experiments/active_extractor.json",
+      "sha256": "101d33c2b99ab0f8680cd23c299c2786a6356077a45190a740fe247319f8509d"
+    },
+    {
+      "path": "experiments/flan_t5_xl/v1_1/evaluation_summary.json",
+      "sha256": "6387c7a8b23feabede33214d17a46908be6ab4b54cd75ebae4b6158d175734da"
+    },
+    {
+      "path": "outputs/flan_t5_xl/v1_1/development_predictions.jsonl.manifest.json",
+      "sha256": "509cc7d03252e977f5048922b69063449a1489bf141f53100759f89ee88d766a"
+    },
+    {
+      "path": "outputs/flan_t5_xl/v1_1/evaluation_predictions.jsonl.manifest.json",
+      "sha256": "ff5a37174442a60dca72f7a1e8a01be820e7a0c5c4e8299459233b12c0c4189a"
+    },
+    {
+      "path": "annotations/chatgpt_5_6_sol_reference.jsonl",
+      "sha256": "94ae2481611fc2a88ce3ff2a16c6c2945c4083be2ef787810c1d1bb1f50967b7"
+    },
+    {
+      "path": "annotations/chatgpt_5_6_sol_reference_coarse_v0_2.jsonl",
+      "sha256": "d765d236c423a7f3ccebcc1c9b3336462458b40862c69f554e01a6fa4bd97ce1"
+    },
+    {
+      "path": "data/benchmarks/news_text_ablation_300/v1/manifest.json",
+      "sha256": "dc3b8fcefe3c48effff901d3b1cfd2b461f1bd4db0b44f1bcc9ea2e367145857"
+    },
+    {
+      "path": "outputs/news_provider_fulltext/v1_0/flan_t5_xl/massive_description.jsonl.manifest.json",
+      "sha256": "0846c7a53e1d7fbe6405a3aa77ad00d4c4412d68c0f849f77ef3e2f839920923"
+    },
+    {
+      "path": "annotations/news_provider_fulltext/v1_0/gpt_5_6_sol_silver.jsonl",
+      "sha256": "6536f25228706ce5d70c9556a266bdae74f21be613573c3fc2a2ba5a8bd0fb70"
+    },
+    {
+      "path": "annotations/news_provider_fulltext/v1_0/gpt_5_6_sol_silver.manifest.json",
+      "sha256": "190f9b77ee8a67c8995bb5288ae63761d078e40a54cdbf4c576246eb7873845c"
+    }
+  ]
+}

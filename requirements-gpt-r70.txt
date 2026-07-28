@@ -1,0 +1,4 @@
+# Optional runtime for paid GPT-5.6 Sol Batch submission/collection only.
+# Offline preflight, request preparation, merge, adjudication, and daily
+# aggregation do not import this package.
+openai==2.45.0

@@ -1,0 +1,8 @@
+{
+  "outer_evaluation_excluded_from_tuning": true,
+  "prediction_bounds_valid": null,
+  "prediction_keys_unique": null,
+  "predictions_finite": null,
+  "skip_was_predeclared_in_locked_protocol": true,
+  "status": "passed"
+}

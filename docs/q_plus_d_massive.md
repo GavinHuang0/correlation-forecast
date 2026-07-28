@@ -1,5 +1,15 @@
 # Massive quant + deterministic-news panel
 
+> **Completed v1 artifact.** This document preserves the exact deterministic
+> feature construction used by the completed Q+D v1 experiment. The proposed
+> normalized deterministic redesign and the two semantic feature contracts are
+> documented separately in
+> [`experiments/quant_deterministic_news/v2/README.md`](../experiments/quant_deterministic_news/v2/README.md).
+> Their matched Q+D, Q+L, and Q+D+L ladder is in the
+> [v2 training ladder](../experiments/quant_deterministic_news/v2/TRAINING_LADDER.md).
+> The v2 D2 panel and available-data deterministic branch are complete; the
+> semantic panels remain construction-blocked and untrained.
+
 `scripts/join_quant_deterministic_news.py` joins the frozen quant modeling
 panel to the Massive deterministic stock-day features on:
 

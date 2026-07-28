@@ -3,10 +3,16 @@
 Status: **complete exploratory development experiment**. See
 [`STATUS.md`](STATUS.md) for the live bundle ledger.
 
+> **Frozen historical design.** This document records the exact D43 features
+> and models that were actually trained. The proposed redesign is separate in
+> [v2](../v2/README.md); it does not revise this experiment's protocol,
+> artifacts, or conclusions. Forward-looking language below is retained as
+> historical methodology unless the completed-outcome section says otherwise.
+
 This is a separate exploratory experiment. It does not add rungs to, overwrite,
 or reinterpret the completed
-[quant-only v1 ladder](../../quant_training/v1/README.md). The proposed
-machine-readable protocol is
+[quant-only v1 ladder](../../quant_training/v1/README.md). The
+machine-readable protocol that was proposed and then locked before training is
 [`config/quant_deterministic_news_protocol_v1.json`](../../../config/quant_deterministic_news_protocol_v1.json).
 Training artifacts are written only to this experiment's bundle directories
 and `outputs/quant_deterministic_news/v1`; quant-only v1 remains read-only.

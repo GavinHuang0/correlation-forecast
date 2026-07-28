@@ -1,0 +1,51 @@
+{
+  "cuda_confirmed_all_final_fits": true,
+  "eligible_targets_only": true,
+  "expected_folds_present": true,
+  "expected_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    }
+  },
+  "feature_name_leakage_scan_passed": true,
+  "observed_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    }
+  },
+  "outer_evaluation_excluded_from_gate_and_tuning": true,
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "requested_device": "cuda",
+  "row_counts_match": true,
+  "source_timing_contract_bound_by_verified_manifest": true,
+  "status": "passed",
+  "validation_gate_applied_per_target": true,
+  "validation_prediction_review": {
+    "eligible_targets_only": true,
+    "expected_folds_present": true,
+    "expected_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      }
+    },
+    "observed_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      }
+    },
+    "prediction_bounds_valid": true,
+    "prediction_keys_unique": true,
+    "predictions_finite": true,
+    "row_counts_match": true
+  }
+}

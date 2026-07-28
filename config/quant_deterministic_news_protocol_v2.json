@@ -1,0 +1,397 @@
+{
+  "bundle_availability": {
+    "D0": {
+      "available": true
+    },
+    "D1": {
+      "available": true
+    },
+    "D2": {
+      "available": false,
+      "reason": "The exact D43 comparator was not materialized by the v2 builder; no 43-name contract is fabricated from the historical v1 panel."
+    },
+    "D3": {
+      "available": true
+    },
+    "D4": {
+      "available": true
+    }
+  },
+  "claim_scope": "Exploratory development only: retrospective ordinary Massive news is not historical-version safe, primary-training eligible, or confirmatory.",
+  "deterministic_rungs": [
+    {
+      "construction_available": true,
+      "estimator": "elastic_net",
+      "features": "q56_target_specific",
+      "name": "V2-D0",
+      "raw_feature_count": 56
+    },
+    {
+      "construction_available": true,
+      "estimator": "elastic_net",
+      "features": "d2_normalized_30",
+      "name": "V2-D1",
+      "raw_feature_count": 30
+    },
+    {
+      "blocked_reason": "The exact D43 comparator was not materialized by the v2 builder; no 43-name contract is fabricated from the historical v1 panel.",
+      "construction_available": false,
+      "estimator": "elastic_net",
+      "features": "q56_target_specific + d43_recomputed_43",
+      "name": "V2-D2",
+      "raw_feature_count": 99
+    },
+    {
+      "construction_available": true,
+      "estimator": "elastic_net",
+      "features": "q56_target_specific + d2_normalized_30",
+      "name": "V2-D3",
+      "raw_feature_count": 86
+    },
+    {
+      "construction_available": true,
+      "estimator": "elastic_net",
+      "features": "q56_target_specific + d2_normalized_30 + d2_levels_5",
+      "name": "V2-D4",
+      "raw_feature_count": 91,
+      "role": "provider-level sensitivity"
+    },
+    {
+      "construction_available": true,
+      "eligibility": "validation gated after the corresponding linear endpoint",
+      "estimator": "shallow_xgboost",
+      "features": "q56_target_specific + d2_normalized_30",
+      "name": "V2-D5",
+      "raw_feature_count": 86
+    }
+  ],
+  "experiment_id": "quant-deterministic-news-v2",
+  "feature_blocks": {
+    "d2_levels_5": [
+      "d2_log1p_target_idio_article_count",
+      "d2_log1p_target_common_article_count",
+      "d2_log1p_peer_idio_article_count",
+      "d2_log1p_sector_common_article_count",
+      "d2_log1p_macro_common_article_count"
+    ],
+    "d2_normalized_30": [
+      "d2_target_direct_intensity_midrank_126",
+      "d2_peer_idio_intensity_midrank_126",
+      "d2_common_intensity_midrank_126",
+      "d2_observed_no_direct_target_article",
+      "d2_common_article_share",
+      "d2_target_common_share",
+      "d2_observed_no_peer_set_entity_mention",
+      "d2_peer_set_entity_hhi",
+      "d2_peer_coverage_ratio",
+      "d2_target_peer_co_mention_share",
+      "d2_target_attention_share_delta_63",
+      "d2_macro_share_of_common",
+      "d2_target_mean_recency_weight_12h",
+      "d2_common_mean_recency_weight_12h",
+      "d2_target_premarket_article_share",
+      "d2_common_premarket_article_share",
+      "d2_target_earnings_guidance_article_share",
+      "d2_common_earnings_guidance_article_share",
+      "d2_target_product_demand_article_share",
+      "d2_common_product_demand_article_share",
+      "d2_target_supply_capacity_article_share",
+      "d2_common_supply_capacity_article_share",
+      "d2_target_regulation_legal_article_share",
+      "d2_common_regulation_legal_article_share",
+      "d2_target_corporate_analyst_article_share",
+      "d2_common_corporate_analyst_article_share",
+      "d2_target_positive_surprise_article_share",
+      "d2_target_negative_surprise_article_share",
+      "d2_common_positive_surprise_article_share",
+      "d2_common_negative_surprise_article_share"
+    ],
+    "d43_recomputed_43": [],
+    "q56_etf": [
+      "etf_rc_d",
+      "etf_rc_w",
+      "etf_rc_m",
+      "etf_rc_negative_d",
+      "etf_rc_negative_w",
+      "etf_rc_negative_m",
+      "etf_exp_rc_d",
+      "etf_exp_rc_w",
+      "etf_exp_rc_m",
+      "etf_exp_rc_q",
+      "etf_exp_rc_negative_d",
+      "etf_exp_rc_negative_w",
+      "etf_exp_rc_negative_m",
+      "etf_exp_rc_negative_q",
+      "sector_exp_rc_d",
+      "sector_exp_rc_w",
+      "sector_exp_rc_m",
+      "sector_exp_rc_q",
+      "sector_exp_rc_negative_d",
+      "sector_exp_rc_negative_w",
+      "sector_exp_rc_negative_m",
+      "sector_exp_rc_negative_q",
+      "lagged_relative_daily_volume_20d",
+      "sector_lagged_relative_daily_volume_20d",
+      "lagged_sector_return_dispersion",
+      "vix_lag1",
+      "vix_change_lag1",
+      "treasury_2y_lag2",
+      "treasury_2y_change_lag2",
+      "treasury_5y_lag2",
+      "treasury_5y_change_lag2",
+      "treasury_10y_lag2",
+      "treasury_10y_change_lag2",
+      "scheduled_macro_event_count",
+      "scheduled_preopen_macro_count",
+      "bls_release_day",
+      "fomc_decision_day",
+      "lagged_realized_volatility",
+      "sector_lagged_realized_volatility",
+      "stock_overnight_return",
+      "premarket_return",
+      "premarket_volume",
+      "relative_premarket_volume_20d",
+      "premarket_bar_count",
+      "sector_overnight_return",
+      "sector_premarket_return",
+      "sector_premarket_volume",
+      "sector_relative_premarket_volume_20d",
+      "sector_premarket_bar_count",
+      "stock_minus_sector_overnight_return",
+      "prior_aftermarket_return",
+      "prior_aftermarket_volume",
+      "prior_relative_aftermarket_volume_20d",
+      "stock_premarket_available",
+      "sector_premarket_available",
+      "stock_prior_aftermarket_available"
+    ],
+    "q56_loo": [
+      "loo_rc_d",
+      "loo_rc_w",
+      "loo_rc_m",
+      "loo_rc_negative_d",
+      "loo_rc_negative_w",
+      "loo_rc_negative_m",
+      "loo_exp_rc_d",
+      "loo_exp_rc_w",
+      "loo_exp_rc_m",
+      "loo_exp_rc_q",
+      "loo_exp_rc_negative_d",
+      "loo_exp_rc_negative_w",
+      "loo_exp_rc_negative_m",
+      "loo_exp_rc_negative_q",
+      "sector_exp_rc_d",
+      "sector_exp_rc_w",
+      "sector_exp_rc_m",
+      "sector_exp_rc_q",
+      "sector_exp_rc_negative_d",
+      "sector_exp_rc_negative_w",
+      "sector_exp_rc_negative_m",
+      "sector_exp_rc_negative_q",
+      "lagged_relative_daily_volume_20d",
+      "sector_lagged_relative_daily_volume_20d",
+      "lagged_sector_return_dispersion",
+      "vix_lag1",
+      "vix_change_lag1",
+      "treasury_2y_lag2",
+      "treasury_2y_change_lag2",
+      "treasury_5y_lag2",
+      "treasury_5y_change_lag2",
+      "treasury_10y_lag2",
+      "treasury_10y_change_lag2",
+      "scheduled_macro_event_count",
+      "scheduled_preopen_macro_count",
+      "bls_release_day",
+      "fomc_decision_day",
+      "lagged_realized_volatility",
+      "sector_lagged_realized_volatility",
+      "stock_overnight_return",
+      "premarket_return",
+      "premarket_volume",
+      "relative_premarket_volume_20d",
+      "premarket_bar_count",
+      "sector_overnight_return",
+      "sector_premarket_return",
+      "sector_premarket_volume",
+      "sector_relative_premarket_volume_20d",
+      "sector_premarket_bar_count",
+      "stock_minus_sector_overnight_return",
+      "prior_aftermarket_return",
+      "prior_aftermarket_volume",
+      "prior_relative_aftermarket_volume_20d",
+      "stock_premarket_available",
+      "sector_premarket_available",
+      "stock_prior_aftermarket_available"
+    ]
+  },
+  "feature_list_sha256": {
+    "d2_levels_5": "ff1639c136db81f8545c4429976513592125fda988740a68e712ce1ec7eb5b64",
+    "d2_normalized_30": "063b9ae69956f74857bb054b2af7eba3d39b255b42f1f06cb15c46654ca8ea96",
+    "d43_recomputed_43": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "q56_etf": "70d453aeeb97616e12652648f91a2e9bf26247dfa38f4e3371392cb27a8b09c5",
+    "q56_loo": "467fe7c45a2c3d621dabba052840a99c83fee4ef30a2b3f24ff55ecd7c6ae303"
+  },
+  "folds": [
+    {
+      "name": "fold_1",
+      "test_end": "2025-06-30",
+      "test_start": "2025-01-01",
+      "train_end": "2024-06-30",
+      "train_start": "2022-11-01",
+      "validation_end": "2024-12-31",
+      "validation_start": "2024-07-01"
+    },
+    {
+      "name": "fold_2",
+      "test_end": "2025-12-31",
+      "test_start": "2025-07-01",
+      "train_end": "2024-12-31",
+      "train_start": "2022-11-01",
+      "validation_end": "2025-06-30",
+      "validation_start": "2025-01-01"
+    },
+    {
+      "name": "fold_3",
+      "test_end": "2026-06-30",
+      "test_start": "2026-01-01",
+      "train_end": "2025-06-30",
+      "train_start": "2022-11-01",
+      "validation_end": "2025-12-31",
+      "validation_start": "2025-07-01"
+    }
+  ],
+  "generated_at_utc": "2026-07-28T06:35:48.330409Z",
+  "inference": {
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "whole forecast dates with all stocks",
+    "moving_block_sessions": 10,
+    "seed": 1729
+  },
+  "join_keys": [
+    "forecast_date",
+    "sector",
+    "stock",
+    "benchmark"
+  ],
+  "metrics": [
+    "fisher_z_rmse",
+    "fisher_z_mae",
+    "raw_correlation_rmse",
+    "raw_correlation_mae",
+    "oos_r2_vs_persistence",
+    "incremental_r2_vs_exact_matched_base"
+  ],
+  "model_tuning": {
+    "elastic_net_l1_ratio_grid": [
+      0.1,
+      0.5,
+      0.9,
+      1.0
+    ],
+    "linear_alpha_grid": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003,
+      0.01,
+      0.03,
+      0.1
+    ],
+    "reuse_quant_v1_shallow_xgboost_candidates": true,
+    "reuse_quant_v1_validation_only_boundary_rule": true
+  },
+  "preprocessing": {
+    "d2_complete_case_contract": true,
+    "elastic_net_imputation": "training-partition median only",
+    "elastic_net_scaling": "training-partition mean and standard deviation only",
+    "fixed_log1p_features": [
+      "lagged_relative_daily_volume_20d",
+      "sector_lagged_relative_daily_volume_20d",
+      "scheduled_macro_event_count",
+      "scheduled_preopen_macro_count",
+      "premarket_volume",
+      "relative_premarket_volume_20d",
+      "premarket_bar_count",
+      "sector_premarket_volume",
+      "sector_relative_premarket_volume_20d",
+      "sector_premarket_bar_count",
+      "prior_aftermarket_volume",
+      "prior_relative_aftermarket_volume_20d"
+    ],
+    "xgboost_missing_policy": "native missing branches"
+  },
+  "protocol_version": "2.0",
+  "row_eligibility": {
+    "required_equalities": {
+      "d2_row_matched": 1
+    }
+  },
+  "semantic_construction_status": {
+    "rllm70": "not_constructed",
+    "semantic_rungs_locked": false,
+    "wllm17": "not_constructed"
+  },
+  "source_artifacts": {
+    "date_count": 917,
+    "first_date": "2022-11-01",
+    "last_date": "2026-06-30",
+    "panel_manifest_path": "data\\features\\q_plus_d\\massive_v2\\manifest.json",
+    "panel_manifest_sha256": "ea832948f3bf22dcdc2097a3a4a263bd56c6a6f66b9beeaf6e4bf615b344f457",
+    "panel_path": "data\\features\\q_plus_d\\massive_v2\\modeling_panel_q_d2.parquet",
+    "panel_sha256": "deeb473a922c82483ad2a554e6f10b5c0d0415784b89f5d25259e46496458d63",
+    "row_count": 27510,
+    "sector_count": 5,
+    "stock_count": 30
+  },
+  "source_profile": "ordinary_massive_retrospective",
+  "status": "locked_before_training",
+  "target_row_eligibility": {
+    "expected_rows": {
+      "fold_1": {
+        "t1_train_validation_test": [
+          12480,
+          3840,
+          3660
+        ],
+        "t2_train_validation_test": [
+          12360,
+          3720,
+          3540
+        ]
+      },
+      "fold_2": {
+        "t1_train_validation_test": [
+          16320,
+          3660,
+          3840
+        ],
+        "t2_train_validation_test": [
+          16200,
+          3540,
+          3720
+        ]
+      },
+      "fold_3": {
+        "t1_train_validation_test": [
+          19980,
+          3840,
+          3690
+        ],
+        "t2_train_validation_test": [
+          19860,
+          3720,
+          3570
+        ]
+      }
+    },
+    "t1": "forecast_date lies within the current partition",
+    "t2": "forecast_date lies within the current partition and the target-specific end-date column is <= partition end",
+    "t2_effect": "purge the final four forecast sessions from each train, validation, and development-evaluation partition"
+  },
+  "targets": [
+    "t1_etf",
+    "t1_loo",
+    "t2_etf",
+    "t2_loo"
+  ]
+}

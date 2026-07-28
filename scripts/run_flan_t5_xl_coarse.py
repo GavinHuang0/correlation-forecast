@@ -5,6 +5,13 @@ import sys
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+# The repository's Windows embedded-Python environments run in isolated mode,
+# which omits the launched script directory from sys.path. Make sibling imports
+# explicit without changing any model, prompt, or scoring behavior.
+SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+if str(SCRIPT_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIRECTORY))
+
 import extract_flan_t5 as base
 import extract_flan_t5_coarse as coarse_runner
 
