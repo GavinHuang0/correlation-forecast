@@ -1,0 +1,33 @@
+{
+  "schema_name": "flan_w17_lite_event_group",
+  "schema_version": "1.0.0",
+  "contract_id": "weak-news-semantics-lite-v1",
+  "description": "Target-invariant four-way event grouping for the exploratory FLAN-T5-XL W17-Lite K-16 construction.",
+  "closed_label_fields": {
+    "event_family": [
+      "firm_operating_financial",
+      "policy_corporate",
+      "macro_market",
+      "other_or_unclear"
+    ]
+  },
+  "field_definitions": {
+    "event_family": {
+      "firm_operating_financial": "The primary event concerns company earnings, guidance, products, technology, customers, demand, contracts, supply chains, production, capacity, manufacturing, or inventory.",
+      "policy_corporate": "The primary event concerns regulation, trade policy, litigation, governance, operations, an analyst action, or a corporate action such as financing, restructuring, management change, or M&A.",
+      "macro_market": "The primary event is a macroeconomic, monetary-policy, cross-sector, or broad-market development.",
+      "other_or_unclear": "No listed group is supported by the supplied text, or the primary event group is unclear."
+    }
+  },
+  "inference_field": "event_family",
+  "output_field": "event_group",
+  "prompt_profile": "zero_shot",
+  "decoding": "canonical_and_reversed_letter_score",
+  "acceptance": {
+    "requires_order_agreement": true,
+    "abstention_labels": [
+      "other_or_unclear"
+    ],
+    "inherits_v1_1_calibration": false
+  }
+}

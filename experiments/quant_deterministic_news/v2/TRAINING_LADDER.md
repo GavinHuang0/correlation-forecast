@@ -5,6 +5,12 @@ exploratory protocol. The shared semantic corpus and the requested FLAN W17
 and GPT R70 construction pipelines are ready, but complete semantic inference,
 daily L panels, and downstream semantic training have not run**.
 
+Execution disposition (2026-07-29): do not launch the full semantic arms as
+the default next step. They are preserved as unrun references. The separate
+[cost-bounded v3 design](../v3/README.md) defines the current W17-Lite and
+global-only G40 designs plus a later schema-incomplete R70-Lite proposal; no
+v3 construction or training has run.
+
 This is a new experiment namespace. It does not extend, renumber, overwrite,
 or reinterpret either the completed
 [quant-only v1 ladder](../../quant_training/v1/README.md) or the completed

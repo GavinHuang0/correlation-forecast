@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Sequence
 
 import pandas as pd
 
@@ -26,11 +28,34 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def main() -> int:
+def parser() -> argparse.ArgumentParser:
+    output = argparse.ArgumentParser(description=__doc__)
+    output.add_argument("--panel", type=Path)
+    output.add_argument("--protocol", type=Path, default=common.PROTOCOL_PATH)
+    output.add_argument("--experiment-root", type=Path)
+    output.add_argument("--output-root", type=Path)
+    return output
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parser().parse_args(argv)
+    protocol = common.load_protocol(args.protocol)
+    paths = common.resolve_training_paths(
+        protocol,
+        panel=args.panel,
+        experiment_root=args.experiment_root,
+        output_root=args.output_root,
+    )
     rows = []
     for rung in ("rung_01", "rung_02", "rung_03", "rung_04"):
-        path = common.EXPERIMENT_ROOT / rung / "summary.json"
+        path = paths.experiment_root / rung / "summary.json"
         payload = json.loads(path.read_text(encoding="utf-8"))
+        if payload.get("status") != "complete":
+            raise ValueError(f"{rung} summary is not complete")
+        review_path = paths.experiment_root / rung / "review.json"
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        if review.get("status") != "passed":
+            raise ValueError(f"{rung} review did not pass")
         for record in payload["metrics"]:
             rows.append({"rung": rung, **record})
     metrics = pd.DataFrame(rows)
@@ -47,24 +72,39 @@ def main() -> int:
         .first()
     )
     artifact_paths = [
-        common.PANEL_PATH,
-        common.PROTOCOL_PATH,
+        paths.panel,
+        paths.dcc_history_panel,
+        paths.dcc_calendar,
+        args.protocol,
         *(
             path
             for rung in ("rung_01", "rung_02", "rung_03", "rung_04")
             for path in (
-                common.OUTPUT_ROOT / rung / "predictions.parquet",
-                common.OUTPUT_ROOT / rung / "fold_metrics.json",
-                common.OUTPUT_ROOT / rung / "fits.json",
-                common.EXPERIMENT_ROOT / rung / "review.json",
-                common.EXPERIMENT_ROOT / rung / "summary.json",
+                paths.output_root / rung / "predictions.parquet",
+                paths.output_root / rung / "fold_metrics.json",
+                paths.output_root / rung / "fits.json",
+                paths.experiment_root / rung / "review.json",
+                paths.experiment_root / rung / "summary.json",
             )
         ),
+        paths.output_root / "rung_03" / "ensemble_diagnostics.json",
+        paths.output_root / "rung_04" / "failures.json",
     ]
+    missing_artifacts = [path for path in artifact_paths if not path.is_file()]
+    if missing_artifacts:
+        raise FileNotFoundError(
+            "Required ladder artifacts are missing: "
+            + ", ".join(str(path) for path in missing_artifacts)
+        )
+    failures = json.loads(
+        (paths.output_root / "rung_04" / "failures.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if failures:
+        raise ValueError("Rung 4 failure artifact is not empty")
     artifact_hashes = {
-        path.as_posix(): sha256_file(path)
-        for path in artifact_paths
-        if path.exists()
+        path.as_posix(): sha256_file(path) for path in artifact_paths
     }
     payload = {
         "status": "complete",
@@ -88,10 +128,10 @@ def main() -> int:
             "DCC uses daily RTH returns as an established conditional-correlation benchmark and does not directly model intraday realized covariance.",
         ],
     }
-    output = common.EXPERIMENT_ROOT / "comparisons" / "summary.json"
+    output = paths.experiment_root / "comparisons" / "summary.json"
     common.write_json(output, payload)
     common.write_parquet(
-        common.OUTPUT_ROOT / "comparisons" / "all_metrics.parquet", metrics
+        paths.output_root / "comparisons" / "all_metrics.parquet", metrics
     )
     print(best.to_string(index=False))
     return 0

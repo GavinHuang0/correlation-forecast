@@ -17,8 +17,54 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts import build_bollerslev_core_features as core  # noqa: E402
 from scripts.correlation_training import dcc  # noqa: E402
 from scripts.correlation_training import training_common as common  # noqa: E402
+
+
+def validate_dcc_history_panel(
+    evaluation_panel: pd.DataFrame,
+    history_panel: pd.DataFrame,
+    official_sessions: pd.DatetimeIndex,
+) -> bool:
+    """Require dense daily history while allowing filtered evaluation rows."""
+
+    keys = ["stock", "forecast_date"]
+    if history_panel.duplicated(keys).any():
+        raise ValueError("DCC history panel contains duplicate stock-date rows")
+    evaluation_stocks = set(evaluation_panel["stock"])
+    history_stocks = set(history_panel["stock"])
+    if evaluation_stocks != history_stocks:
+        raise ValueError("DCC history and evaluation stock universes differ")
+    stock_count = len(history_stocks)
+    stocks_per_date = history_panel.groupby("forecast_date")["stock"].nunique()
+    if stocks_per_date.empty or not stocks_per_date.eq(stock_count).all():
+        raise ValueError("DCC history panel is not cross-sectionally dense")
+    history_dates = pd.DatetimeIndex(
+        sorted(pd.to_datetime(history_panel["forecast_date"]).unique())
+    ).normalize()
+    official_sessions = pd.DatetimeIndex(official_sessions).normalize()
+    expected_dates = official_sessions[
+        official_sessions.to_series(index=official_sessions).between(
+            history_dates.min(), history_dates.max(), inclusive="both"
+        ).to_numpy()
+    ]
+    if not history_dates.equals(expected_dates):
+        raise ValueError(
+            "DCC history panel is not complete on the official-session calendar"
+        )
+    evaluation_keys = pd.MultiIndex.from_frame(evaluation_panel[keys])
+    history_keys = pd.MultiIndex.from_frame(history_panel[keys])
+    if not evaluation_keys.isin(history_keys).all():
+        raise ValueError("DCC history panel does not cover every evaluation row")
+    if (
+        history_panel["forecast_date"].min()
+        > evaluation_panel["forecast_date"].min()
+        or history_panel["forecast_date"].max()
+        < evaluation_panel["forecast_date"].max()
+    ):
+        raise ValueError("DCC history panel does not span the evaluation period")
+    return True
 
 
 def fit_pair_forecasts(
@@ -96,7 +142,14 @@ def fit_pair_forecasts(
 def run_rung_04(
     panel: pd.DataFrame,
     protocol: dict[str, object],
+    *,
+    history_panel: pd.DataFrame | None = None,
+    official_sessions: pd.DatetimeIndex,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, object]]:
+    history_panel = panel if history_panel is None else history_panel
+    dense_history_passed = validate_dcc_history_panel(
+        panel, history_panel, official_sessions
+    )
     predictions: list[pd.DataFrame] = []
     fit_records: list[dict[str, object]] = []
     failures: list[dict[str, str]] = []
@@ -107,8 +160,8 @@ def run_rung_04(
     forecast_cache: dict[tuple[str, str, str], pd.DataFrame] = {}
     common_stock_history = bool(
         np.allclose(
-            panel["history_etf_stock_rth_log_return_lag1"],
-            panel["history_loo_stock_rth_log_return_lag1"],
+            history_panel["history_etf_stock_rth_log_return_lag1"],
+            history_panel["history_loo_stock_rth_log_return_lag1"],
             equal_nan=True,
         )
     )
@@ -128,7 +181,9 @@ def run_rung_04(
         first_test_forecast_date = pd.Timestamp(actual_test_dates.min())
         for benchmark in ("etf", "loo"):
             representative = specs[f"t1_{benchmark}"]
-            for stock, stock_frame in panel.groupby("stock", sort=True):
+            for stock, stock_frame in history_panel.groupby(
+                "stock", sort=True
+            ):
                 cache_key = (fold["name"], benchmark, stock)
                 left_key = (fold["name"], stock)
                 try:
@@ -147,6 +202,12 @@ def run_rung_04(
                             "stock": stock,
                             "parameters": parameters,
                         }
+                    )
+                    print(
+                        f"[{len(fit_records)}/"
+                        f"{len(protocol['folds']) * 2 * panel['stock'].nunique()}] "
+                        f"fit {fold['name']} {benchmark} {stock}",
+                        flush=True,
                     )
                 except (ValueError, RuntimeError, FloatingPointError) as exc:
                     failures.append(
@@ -274,6 +335,18 @@ def run_rung_04(
             "official session's lagged RTH return; states then update "
             "sequentially"
         ),
+        "dense_daily_history_panel_passed": dense_history_passed,
+        "official_session_calendar_complete": dense_history_passed,
+        "history_panel_rows": int(len(history_panel)),
+        "history_panel_session_count": int(
+            history_panel["forecast_date"].nunique()
+        ),
+        "history_panel_first_date": (
+            history_panel["forecast_date"].min().date().isoformat()
+        ),
+        "history_panel_last_date": (
+            history_panel["forecast_date"].max().date().isoformat()
+        ),
         "etf_loo_stock_history_identical": common_stock_history,
         "t2_forecast": (
             "sum five recursively forecast covariance/variance matrices, "
@@ -288,6 +361,8 @@ def run_rung_04(
         "predictions_finite",
         "prediction_bounds_valid",
         "prediction_keys_unique",
+        "dense_daily_history_panel_passed",
+        "official_session_calendar_complete",
         "etf_loo_stock_history_identical",
     ]
     if not all(bool(review[key]) for key in required):
@@ -303,18 +378,33 @@ def run_rung_04(
 
 def parser() -> argparse.ArgumentParser:
     output = argparse.ArgumentParser(description=__doc__)
-    output.add_argument("--panel", type=Path, default=common.PANEL_PATH)
+    output.add_argument("--panel", type=Path)
+    output.add_argument("--dcc-history-panel", type=Path)
     output.add_argument("--protocol", type=Path, default=common.PROTOCOL_PATH)
+    output.add_argument("--experiment-root", type=Path)
+    output.add_argument("--output-root", type=Path)
     return output
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
-    predictions, metrics, details = run_rung_04(
-        common.load_panel(args.panel), common.load_protocol(args.protocol)
+    protocol = common.load_protocol(args.protocol)
+    paths = common.resolve_training_paths(
+        protocol,
+        panel=args.panel,
+        experiment_root=args.experiment_root,
+        output_root=args.output_root,
     )
-    output_root = common.OUTPUT_ROOT / "rung_04"
-    experiment_root = common.EXPERIMENT_ROOT / "rung_04"
+    predictions, metrics, details = run_rung_04(
+        common.load_panel(paths.panel),
+        protocol,
+        history_panel=common.load_panel(
+            args.dcc_history_panel or paths.dcc_history_panel
+        ),
+        official_sessions=core.load_official_sessions(paths.dcc_calendar),
+    )
+    output_root = paths.output_root / "rung_04"
+    experiment_root = paths.experiment_root / "rung_04"
     common.write_parquet(output_root / "predictions.parquet", predictions)
     common.write_json(output_root / "fits.json", details["fits"])
     common.write_json(output_root / "failures.json", details["failures"])

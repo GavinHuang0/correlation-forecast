@@ -1,0 +1,114 @@
+{
+  "protocol_version": "1.0",
+  "experiment_id": "stock_etf_spread_quant_full_history_v2",
+  "strategy_name": "stock_etf_correlation_gated_convergence",
+  "status": "exploratory_post_selection_economic_backtest_on_quant_v2_winner",
+  "new_v2_economic_results_inspected_before_protocol_freeze": false,
+  "protocol_inheritance": {
+    "source": "config/stock_etf_spread_backtest_v1.json",
+    "source_sha256": "190f4a469499937b8b9f8ce5edaee5d5df227a2cde1e3724d1fe4870dcf3d875",
+    "unchanged": [
+      "signal construction and beta window",
+      "correlation gate and controls",
+      "portfolio construction and gross normalization",
+      "five-session RTH-only overlapping sleeves",
+      "transaction-cost ladder",
+      "inference and primary metric"
+    ],
+    "changed": [
+      "prediction experiment and selected model",
+      "outer-test sample",
+      "output namespace"
+    ]
+  },
+  "model_selection": {
+    "summary": "experiments/quant_training/v2/comparisons/summary.json",
+    "summary_sha256": "36f6d8054defe9be617e2cb670b6be70536689c2a773577e6028bb03301da6d9",
+    "selection_metric": "pooled outer-test Fisher-z RMSE",
+    "target": "t2_etf",
+    "winning_rung": "rung_03",
+    "winning_model": "elastic_xgboost_ensemble",
+    "fisher_z_rmse": 0.23298548645110306,
+    "rows": 42030
+  },
+  "claim_boundary": [
+    "The T2 ETF ensemble was selected using pooled forecast loss on the same 13 outer periods used for this economic backtest.",
+    "The trading protocol is an exact carry-forward from v1; v1 economic results on the final three folds were already known before this run.",
+    "The earlier ten folds add previously unbacktested economic periods but remain retrospective development evidence, not an untouched confirmation.",
+    "The strategy uses quant-only forecasts; retrospective news features are excluded."
+  ],
+  "inputs": {
+    "price_universe": "config/price_universe.json",
+    "regular_bar_dir": "data/prices/alpaca/15min/sip/all",
+    "calendar": "data/prices/alpaca/calendar/2016-01-01_2026-06-30.json",
+    "predictions": "outputs/quant_training/v2/rung_03/t2_etf/predictions.parquet",
+    "prediction_target": "t2_etf",
+    "prediction_model": "elastic_xgboost_ensemble"
+  },
+  "signal": {
+    "divergence_lookback_sessions": 5,
+    "beta_window_sessions": 252,
+    "beta_minimum_sessions": 126,
+    "beta_clip_lower": 0.0,
+    "beta_clip_upper": 3.0,
+    "predicted_correlation_floor": 0.5,
+    "primary_variant": "ml_strengthening",
+    "variants": [
+      "unconditional",
+      "historical_level",
+      "ml_level",
+      "ml_strengthening",
+      "ml_weakening"
+    ]
+  },
+  "portfolio": {
+    "sector_neutral_stock_weights": true,
+    "equal_active_sector_stock_gross": true,
+    "minimum_eligible_names_per_sector": 2,
+    "sleeve_combined_gross": 1.0,
+    "holding_sessions": 5,
+    "overlapping_sleeves": true,
+    "daily_sleeve_fraction": 0.2
+  },
+  "execution": {
+    "forecast_cutoff": "09:00 America/New_York",
+    "entry": "official_regular_session_open",
+    "exit": "official_regular_session_close",
+    "overnight_exposure": false,
+    "cost_bps_per_side": [0.0, 1.0, 2.0, 5.0],
+    "primary_cost_bps_per_side": 2.0,
+    "short_borrow_cost": "omitted_for_intraday_positions"
+  },
+  "inference": {
+    "annualization_sessions": 252,
+    "moving_block_sessions": 10,
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 1729,
+    "comparators": [
+      "unconditional",
+      "historical_level",
+      "ml_level",
+      "ml_weakening"
+    ]
+  },
+  "reporting_subsamples": {
+    "balanced_2023_plus": [
+      "fold_07",
+      "fold_08",
+      "fold_09",
+      "fold_10",
+      "fold_11",
+      "fold_12",
+      "fold_13"
+    ],
+    "matched_recent": [
+      "fold_11",
+      "fold_12",
+      "fold_13"
+    ]
+  },
+  "outputs": {
+    "directory": "outputs/stock_etf_spread/v2",
+    "experiment_summary": "experiments/stock_etf_spread/v2/summary.json"
+  }
+}

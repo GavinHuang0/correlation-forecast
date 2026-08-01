@@ -5,6 +5,13 @@ training ladder are complete. The shared semantic input corpus and the FLAN
 W17 and GPT R70 construction pipelines are ready; full semantic inference,
 daily L panels, and downstream semantic training have not run**.
 
+Execution disposition (2026-07-29): the full v2 FLAN W17 and GPT R70
+workloads are deferred because their compute/cost exceeds the desired budget.
+Their definitions and ready pipelines remain frozen. The separately named
+[cost-bounded v3 design](../v3/README.md) proposes W17-Lite, ordered
+global-only G40, and a later schema-incomplete factorized R70-Lite without
+reinterpreting v2 or authorizing inference/training.
+
 This document is the canonical design contract for the next news experiment.
 It does not change the inputs, protocol, artifacts, or conclusions of the
 completed [Q+D v1 experiment](../v1/README.md). The exact v1 construction

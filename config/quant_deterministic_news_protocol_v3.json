@@ -1,0 +1,839 @@
+{
+  "arm_id": "WL17__flan_t5_xl",
+  "claim_flags": {
+    "confirmatory_eligible": false,
+    "exploratory_fit_authorized": true,
+    "human_reference_labels": false,
+    "point_in_time_version_safe": false,
+    "primary_training_eligible": false,
+    "semantic_gate_passed": false
+  },
+  "claim_scope": "Exploratory failed-semantic-gate development diagnostic only. The retrospective Massive text is not version-safe and FLAN W17-Lite choice-order agreement missed its frozen threshold.",
+  "contract_id": "weak-news-semantics-lite-v1",
+  "controls": {
+    "coverage_text_only": {
+      "features": [
+        "wlite_selection_weight_coverage",
+        "wlite_selected_headline_only_weight_share",
+        "wlite_selected_sub150_weight_share",
+        "wlite_event_order_disagreement_weight_share",
+        "wlite_observed_no_selected_article",
+        "wlite_selected_weight_hhi"
+      ],
+      "rule": "remove all 11 event/routing/status-content fields"
+    },
+    "date_sector_permutation": {
+      "aggregation_config_path": "config/flan_w17_lite_aggregation_v1.json",
+      "aggregation_config_sha256": "3fcedf09a618c76cf4000bf1defa8ac3c8532e69e050e72bea8c7f3cb598a3ec",
+      "features_permuted_together": [
+        "wlite_event_share_firm_operating_financial",
+        "wlite_event_share_policy_corporate",
+        "wlite_event_share_macro_market",
+        "wlite_event_entropy_accepted"
+      ],
+      "features_retained_contemporaneously": [
+        "wlite_route_share_target_idiosyncratic",
+        "wlite_route_share_peer_idiosyncratic",
+        "wlite_rule_status_cue_share_confirmed_action",
+        "wlite_rule_status_cue_share_scheduled_expected",
+        "wlite_rule_status_cue_share_rumor_unconfirmed",
+        "wlite_rule_status_cue_share_analysis_opinion",
+        "wlite_rule_status_cue_conflict_weight_share",
+        "wlite_selection_weight_coverage",
+        "wlite_selected_headline_only_weight_share",
+        "wlite_selected_sub150_weight_share",
+        "wlite_event_order_disagreement_weight_share",
+        "wlite_observed_no_selected_article",
+        "wlite_selected_weight_hhi"
+      ],
+      "invariants": "acceptance, disagreement, abstention/other mass, routing, rule cues, selection, and text-quality fields remain contemporaneous",
+      "panel": "data/features/q_plus_d/massive_v3/modeling_panel_q_d2_wlite_permuted.parquet",
+      "permutation_mapping_sha256": "bdd94580d93f9540de0d2e7cc2d01c49546810348d62c06f4a107123599a8586",
+      "permutation_unit": "accepted predictive event-label identity within forecast_date and sector",
+      "permuted_daily_manifest_sha256": "62f42b9413b7eb5f508c1c72db605e68d373263579b28a875b94720b31288d93",
+      "seed": "wlite-date-sector-event-permutation-v1"
+    },
+    "full_history_vs_quota": {
+      "reason": "No full-55,197-article W17-Lite inference exists.",
+      "status": "skipped"
+    },
+    "long_description": {
+      "panel": "data/features/q_plus_d/massive_v3/modeling_panel_q_d2_wlite_long_description.parquet",
+      "role": "sensitivity_not_required_to_beat",
+      "selection": "selected articles with nonempty retained description length at least 150 characters"
+    },
+    "stale_event_lag20": {
+      "contemporaneous_features": [
+        "wlite_route_share_target_idiosyncratic",
+        "wlite_route_share_peer_idiosyncratic",
+        "wlite_rule_status_cue_share_confirmed_action",
+        "wlite_rule_status_cue_share_scheduled_expected",
+        "wlite_rule_status_cue_share_rumor_unconfirmed",
+        "wlite_rule_status_cue_share_analysis_opinion",
+        "wlite_rule_status_cue_conflict_weight_share",
+        "wlite_selection_weight_coverage",
+        "wlite_selected_headline_only_weight_share",
+        "wlite_selected_sub150_weight_share",
+        "wlite_event_order_disagreement_weight_share",
+        "wlite_observed_no_selected_article",
+        "wlite_selected_weight_hhi"
+      ],
+      "features_shifted_within_stock": [
+        "wlite_event_share_firm_operating_financial",
+        "wlite_event_share_policy_corporate",
+        "wlite_event_share_macro_market",
+        "wlite_event_entropy_accepted"
+      ],
+      "initial_missing_values": "retained and imputed from the current training partition",
+      "sessions": 20,
+      "wrap": false
+    },
+    "wrong_stock": {
+      "features_retained_contemporaneously": [
+        "wlite_selection_weight_coverage",
+        "wlite_selected_headline_only_weight_share",
+        "wlite_selected_sub150_weight_share",
+        "wlite_event_order_disagreement_weight_share",
+        "wlite_observed_no_selected_article",
+        "wlite_selected_weight_hhi"
+      ],
+      "features_rotated": [
+        "wlite_event_share_firm_operating_financial",
+        "wlite_event_share_policy_corporate",
+        "wlite_event_share_macro_market",
+        "wlite_route_share_target_idiosyncratic",
+        "wlite_route_share_peer_idiosyncratic",
+        "wlite_rule_status_cue_share_confirmed_action",
+        "wlite_rule_status_cue_share_scheduled_expected",
+        "wlite_rule_status_cue_share_rumor_unconfirmed",
+        "wlite_rule_status_cue_share_analysis_opinion",
+        "wlite_rule_status_cue_conflict_weight_share",
+        "wlite_event_entropy_accepted"
+      ],
+      "mapping": "alphabetically next stock within the same fixed sector, with wraparound; constant across all dates"
+    }
+  },
+  "coverage": {
+    "all_quant_rows_matched": true,
+    "candidate_bearing_stock_days": 27306,
+    "date_count": 917,
+    "first_date": "2022-11-01",
+    "last_date": "2026-06-30",
+    "no_candidate_stock_days": 204,
+    "row_count": 27510,
+    "sector_count": 5,
+    "stock_count": 30
+  },
+  "experiment_id": "quant-deterministic-news-v3-w17-lite",
+  "extractor": {
+    "model_id": "google/flan-t5-xl",
+    "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+    "selected_articles": 50488,
+    "selected_assignment_rows": 438522,
+    "selected_weight_fraction": 0.9732613743014124,
+    "selector": "K16"
+  },
+  "feature_blocks": {
+    "coverage_text_6": [
+      "wlite_selection_weight_coverage",
+      "wlite_selected_headline_only_weight_share",
+      "wlite_selected_sub150_weight_share",
+      "wlite_event_order_disagreement_weight_share",
+      "wlite_observed_no_selected_article",
+      "wlite_selected_weight_hhi"
+    ],
+    "d2_normalized_30": [
+      "d2_target_direct_intensity_midrank_126",
+      "d2_peer_idio_intensity_midrank_126",
+      "d2_common_intensity_midrank_126",
+      "d2_observed_no_direct_target_article",
+      "d2_common_article_share",
+      "d2_target_common_share",
+      "d2_observed_no_peer_set_entity_mention",
+      "d2_peer_set_entity_hhi",
+      "d2_peer_coverage_ratio",
+      "d2_target_peer_co_mention_share",
+      "d2_target_attention_share_delta_63",
+      "d2_macro_share_of_common",
+      "d2_target_mean_recency_weight_12h",
+      "d2_common_mean_recency_weight_12h",
+      "d2_target_premarket_article_share",
+      "d2_common_premarket_article_share",
+      "d2_target_earnings_guidance_article_share",
+      "d2_common_earnings_guidance_article_share",
+      "d2_target_product_demand_article_share",
+      "d2_common_product_demand_article_share",
+      "d2_target_supply_capacity_article_share",
+      "d2_common_supply_capacity_article_share",
+      "d2_target_regulation_legal_article_share",
+      "d2_common_regulation_legal_article_share",
+      "d2_target_corporate_analyst_article_share",
+      "d2_common_corporate_analyst_article_share",
+      "d2_target_positive_surprise_article_share",
+      "d2_target_negative_surprise_article_share",
+      "d2_common_positive_surprise_article_share",
+      "d2_common_negative_surprise_article_share"
+    ],
+    "event_content_4": [
+      "wlite_event_share_firm_operating_financial",
+      "wlite_event_share_policy_corporate",
+      "wlite_event_share_macro_market",
+      "wlite_event_entropy_accepted"
+    ],
+    "q56_by_target": {
+      "t1_etf": [
+        "etf_rc_d",
+        "etf_rc_w",
+        "etf_rc_m",
+        "etf_rc_negative_d",
+        "etf_rc_negative_w",
+        "etf_rc_negative_m",
+        "etf_exp_rc_d",
+        "etf_exp_rc_w",
+        "etf_exp_rc_m",
+        "etf_exp_rc_q",
+        "etf_exp_rc_negative_d",
+        "etf_exp_rc_negative_w",
+        "etf_exp_rc_negative_m",
+        "etf_exp_rc_negative_q",
+        "sector_exp_rc_d",
+        "sector_exp_rc_w",
+        "sector_exp_rc_m",
+        "sector_exp_rc_q",
+        "sector_exp_rc_negative_d",
+        "sector_exp_rc_negative_w",
+        "sector_exp_rc_negative_m",
+        "sector_exp_rc_negative_q",
+        "lagged_relative_daily_volume_20d",
+        "sector_lagged_relative_daily_volume_20d",
+        "lagged_sector_return_dispersion",
+        "vix_lag1",
+        "vix_change_lag1",
+        "treasury_2y_lag2",
+        "treasury_2y_change_lag2",
+        "treasury_5y_lag2",
+        "treasury_5y_change_lag2",
+        "treasury_10y_lag2",
+        "treasury_10y_change_lag2",
+        "scheduled_macro_event_count",
+        "scheduled_preopen_macro_count",
+        "bls_release_day",
+        "fomc_decision_day",
+        "lagged_realized_volatility",
+        "sector_lagged_realized_volatility",
+        "stock_overnight_return",
+        "premarket_return",
+        "premarket_volume",
+        "relative_premarket_volume_20d",
+        "premarket_bar_count",
+        "sector_overnight_return",
+        "sector_premarket_return",
+        "sector_premarket_volume",
+        "sector_relative_premarket_volume_20d",
+        "sector_premarket_bar_count",
+        "stock_minus_sector_overnight_return",
+        "prior_aftermarket_return",
+        "prior_aftermarket_volume",
+        "prior_relative_aftermarket_volume_20d",
+        "stock_premarket_available",
+        "sector_premarket_available",
+        "stock_prior_aftermarket_available"
+      ],
+      "t1_loo": [
+        "loo_rc_d",
+        "loo_rc_w",
+        "loo_rc_m",
+        "loo_rc_negative_d",
+        "loo_rc_negative_w",
+        "loo_rc_negative_m",
+        "loo_exp_rc_d",
+        "loo_exp_rc_w",
+        "loo_exp_rc_m",
+        "loo_exp_rc_q",
+        "loo_exp_rc_negative_d",
+        "loo_exp_rc_negative_w",
+        "loo_exp_rc_negative_m",
+        "loo_exp_rc_negative_q",
+        "sector_exp_rc_d",
+        "sector_exp_rc_w",
+        "sector_exp_rc_m",
+        "sector_exp_rc_q",
+        "sector_exp_rc_negative_d",
+        "sector_exp_rc_negative_w",
+        "sector_exp_rc_negative_m",
+        "sector_exp_rc_negative_q",
+        "lagged_relative_daily_volume_20d",
+        "sector_lagged_relative_daily_volume_20d",
+        "lagged_sector_return_dispersion",
+        "vix_lag1",
+        "vix_change_lag1",
+        "treasury_2y_lag2",
+        "treasury_2y_change_lag2",
+        "treasury_5y_lag2",
+        "treasury_5y_change_lag2",
+        "treasury_10y_lag2",
+        "treasury_10y_change_lag2",
+        "scheduled_macro_event_count",
+        "scheduled_preopen_macro_count",
+        "bls_release_day",
+        "fomc_decision_day",
+        "lagged_realized_volatility",
+        "sector_lagged_realized_volatility",
+        "stock_overnight_return",
+        "premarket_return",
+        "premarket_volume",
+        "relative_premarket_volume_20d",
+        "premarket_bar_count",
+        "sector_overnight_return",
+        "sector_premarket_return",
+        "sector_premarket_volume",
+        "sector_relative_premarket_volume_20d",
+        "sector_premarket_bar_count",
+        "stock_minus_sector_overnight_return",
+        "prior_aftermarket_return",
+        "prior_aftermarket_volume",
+        "prior_relative_aftermarket_volume_20d",
+        "stock_premarket_available",
+        "sector_premarket_available",
+        "stock_prior_aftermarket_available"
+      ],
+      "t2_etf": [
+        "etf_rc_d",
+        "etf_rc_w",
+        "etf_rc_m",
+        "etf_rc_negative_d",
+        "etf_rc_negative_w",
+        "etf_rc_negative_m",
+        "etf_exp_rc_d",
+        "etf_exp_rc_w",
+        "etf_exp_rc_m",
+        "etf_exp_rc_q",
+        "etf_exp_rc_negative_d",
+        "etf_exp_rc_negative_w",
+        "etf_exp_rc_negative_m",
+        "etf_exp_rc_negative_q",
+        "sector_exp_rc_d",
+        "sector_exp_rc_w",
+        "sector_exp_rc_m",
+        "sector_exp_rc_q",
+        "sector_exp_rc_negative_d",
+        "sector_exp_rc_negative_w",
+        "sector_exp_rc_negative_m",
+        "sector_exp_rc_negative_q",
+        "lagged_relative_daily_volume_20d",
+        "sector_lagged_relative_daily_volume_20d",
+        "lagged_sector_return_dispersion",
+        "vix_lag1",
+        "vix_change_lag1",
+        "treasury_2y_lag2",
+        "treasury_2y_change_lag2",
+        "treasury_5y_lag2",
+        "treasury_5y_change_lag2",
+        "treasury_10y_lag2",
+        "treasury_10y_change_lag2",
+        "scheduled_macro_event_count",
+        "scheduled_preopen_macro_count",
+        "bls_release_day",
+        "fomc_decision_day",
+        "lagged_realized_volatility",
+        "sector_lagged_realized_volatility",
+        "stock_overnight_return",
+        "premarket_return",
+        "premarket_volume",
+        "relative_premarket_volume_20d",
+        "premarket_bar_count",
+        "sector_overnight_return",
+        "sector_premarket_return",
+        "sector_premarket_volume",
+        "sector_relative_premarket_volume_20d",
+        "sector_premarket_bar_count",
+        "stock_minus_sector_overnight_return",
+        "prior_aftermarket_return",
+        "prior_aftermarket_volume",
+        "prior_relative_aftermarket_volume_20d",
+        "stock_premarket_available",
+        "sector_premarket_available",
+        "stock_prior_aftermarket_available"
+      ],
+      "t2_loo": [
+        "loo_rc_d",
+        "loo_rc_w",
+        "loo_rc_m",
+        "loo_rc_negative_d",
+        "loo_rc_negative_w",
+        "loo_rc_negative_m",
+        "loo_exp_rc_d",
+        "loo_exp_rc_w",
+        "loo_exp_rc_m",
+        "loo_exp_rc_q",
+        "loo_exp_rc_negative_d",
+        "loo_exp_rc_negative_w",
+        "loo_exp_rc_negative_m",
+        "loo_exp_rc_negative_q",
+        "sector_exp_rc_d",
+        "sector_exp_rc_w",
+        "sector_exp_rc_m",
+        "sector_exp_rc_q",
+        "sector_exp_rc_negative_d",
+        "sector_exp_rc_negative_w",
+        "sector_exp_rc_negative_m",
+        "sector_exp_rc_negative_q",
+        "lagged_relative_daily_volume_20d",
+        "sector_lagged_relative_daily_volume_20d",
+        "lagged_sector_return_dispersion",
+        "vix_lag1",
+        "vix_change_lag1",
+        "treasury_2y_lag2",
+        "treasury_2y_change_lag2",
+        "treasury_5y_lag2",
+        "treasury_5y_change_lag2",
+        "treasury_10y_lag2",
+        "treasury_10y_change_lag2",
+        "scheduled_macro_event_count",
+        "scheduled_preopen_macro_count",
+        "bls_release_day",
+        "fomc_decision_day",
+        "lagged_realized_volatility",
+        "sector_lagged_realized_volatility",
+        "stock_overnight_return",
+        "premarket_return",
+        "premarket_volume",
+        "relative_premarket_volume_20d",
+        "premarket_bar_count",
+        "sector_overnight_return",
+        "sector_premarket_return",
+        "sector_premarket_volume",
+        "sector_relative_premarket_volume_20d",
+        "sector_premarket_bar_count",
+        "stock_minus_sector_overnight_return",
+        "prior_aftermarket_return",
+        "prior_aftermarket_volume",
+        "prior_relative_aftermarket_volume_20d",
+        "stock_premarket_available",
+        "sector_premarket_available",
+        "stock_prior_aftermarket_available"
+      ]
+    },
+    "semantic_content_11": [
+      "wlite_event_share_firm_operating_financial",
+      "wlite_event_share_policy_corporate",
+      "wlite_event_share_macro_market",
+      "wlite_route_share_target_idiosyncratic",
+      "wlite_route_share_peer_idiosyncratic",
+      "wlite_rule_status_cue_share_confirmed_action",
+      "wlite_rule_status_cue_share_scheduled_expected",
+      "wlite_rule_status_cue_share_rumor_unconfirmed",
+      "wlite_rule_status_cue_share_analysis_opinion",
+      "wlite_rule_status_cue_conflict_weight_share",
+      "wlite_event_entropy_accepted"
+    ],
+    "wlite_17": [
+      "wlite_event_share_firm_operating_financial",
+      "wlite_event_share_policy_corporate",
+      "wlite_event_share_macro_market",
+      "wlite_route_share_target_idiosyncratic",
+      "wlite_route_share_peer_idiosyncratic",
+      "wlite_rule_status_cue_share_confirmed_action",
+      "wlite_rule_status_cue_share_scheduled_expected",
+      "wlite_rule_status_cue_share_rumor_unconfirmed",
+      "wlite_rule_status_cue_share_analysis_opinion",
+      "wlite_rule_status_cue_conflict_weight_share",
+      "wlite_selection_weight_coverage",
+      "wlite_selected_headline_only_weight_share",
+      "wlite_selected_sub150_weight_share",
+      "wlite_event_order_disagreement_weight_share",
+      "wlite_observed_no_selected_article",
+      "wlite_event_entropy_accepted",
+      "wlite_selected_weight_hhi"
+    ]
+  },
+  "folds": [
+    {
+      "name": "fold_1",
+      "test_end": "2025-06-30",
+      "test_start": "2025-01-01",
+      "train_end": "2024-06-30",
+      "train_start": "2022-11-01",
+      "validation_end": "2024-12-31",
+      "validation_start": "2024-07-01"
+    },
+    {
+      "name": "fold_2",
+      "test_end": "2025-12-31",
+      "test_start": "2025-07-01",
+      "train_end": "2024-12-31",
+      "train_start": "2022-11-01",
+      "validation_end": "2025-06-30",
+      "validation_start": "2025-01-01"
+    },
+    {
+      "name": "fold_3",
+      "test_end": "2026-06-30",
+      "test_start": "2026-01-01",
+      "train_end": "2025-06-30",
+      "train_start": "2022-11-01",
+      "validation_end": "2025-12-31",
+      "validation_start": "2025-07-01"
+    }
+  ],
+  "gates": {
+    "q_plus_l_gate": {
+      "bootstrap_upper_bound_below_zero": true,
+      "candidate": "S2",
+      "long_description_is_sensitivity_only": true,
+      "minimum_improved_development_folds": 2,
+      "must_beat": [
+        "S0",
+        "C-S2-COV",
+        "C-S2-L20",
+        "C-S2-WS",
+        "C-S2-PERM"
+      ]
+    },
+    "s4_validation_gate": "S3 must beat S1 validation MSE in at least two of three validation blocks, applied separately by target.",
+    "useful_semantic_gate": {
+      "bootstrap_upper_bound_below_zero": true,
+      "candidate": "S3",
+      "long_description_is_sensitivity_only": true,
+      "minimum_improved_development_folds": 2,
+      "must_beat": [
+        "S1",
+        "C-S3-COV",
+        "C-S3-L20",
+        "C-S3-WS",
+        "C-S3-PERM"
+      ]
+    }
+  },
+  "generated_at_utc": "2026-07-30T14:06:11.984751Z",
+  "implementation": {
+    "scripts/correlation_training/build_modeling_panel.py": "07a6e261c0c408ab171b62acd42865635b974ae78f080356c1b9937c631c2f5b",
+    "scripts/correlation_training/training_common.py": "bfb97c91401bd72d23eabf33a5986bb1d05ec71ae17aa2f4fcd49afe40b35715",
+    "scripts/quant_deterministic_news_training_v2/common.py": "59cf797247a5b886bc5d9d253e80aa75f5d484745b9986fd8b5e36f2ef63d9bc",
+    "scripts/quant_deterministic_news_training_v3/common.py": "e09afc329149a81fcf82542c67abf5dfed2e8834e425163e3f4114532100085a",
+    "scripts/quant_deterministic_news_training_v3/contract.py": "63d590dd65e432d98e5b345fb63816043087be0747a01895737bed82ac8baa45",
+    "scripts/quant_deterministic_news_training_v3/lock_protocol.py": "9463ed51507737cf20acac4f6a6701c0680cfb00cc181c2b2c63a7908f9576fa",
+    "scripts/quant_deterministic_news_training_v3/run_final_comparison.py": "f99f6e25cb981cb6c929cac69f8ff5b5930eb4a8bc3dc694c69d1b3f7e4d5645",
+    "scripts/quant_deterministic_news_training_v3/run_linear.py": "fde4ac2c8739716bd7fa8af35767b3b976025bc5461e8e943801bc85d7aaff3a",
+    "scripts/quant_deterministic_news_training_v3/run_xgboost.py": "94b5b222de5efb4d13614b949988f89e865b39fdf98c5ad75ea8fe36d71a23b8"
+  },
+  "inference": {
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "whole forecast dates with all stocks",
+    "moving_block_sessions": 10,
+    "seed": 1729
+  },
+  "join_keys": [
+    "forecast_date",
+    "sector",
+    "stock",
+    "benchmark"
+  ],
+  "metrics": [
+    "fisher_z_rmse",
+    "fisher_z_mae",
+    "raw_correlation_rmse",
+    "raw_correlation_mae",
+    "oos_r2_vs_persistence",
+    "incremental_r2_vs_exact_matched_base"
+  ],
+  "model_tuning": {
+    "elastic_net_l1_ratio_grid": [
+      0.1,
+      0.5,
+      0.9,
+      1.0
+    ],
+    "linear_alpha_grid": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003,
+      0.01,
+      0.03,
+      0.1
+    ],
+    "reuse_quant_v1_shallow_xgboost_candidates": true,
+    "reuse_quant_v1_validation_only_boundary_rule": true,
+    "shallow_xgboost": {
+      "candidate_configs": [
+        {
+          "colsample_bytree": 0.8,
+          "learning_rate": 0.05,
+          "max_depth": 2,
+          "min_child_weight": 20,
+          "reg_lambda": 10,
+          "subsample": 0.8
+        },
+        {
+          "colsample_bytree": 1.0,
+          "learning_rate": 0.05,
+          "max_depth": 3,
+          "min_child_weight": 50,
+          "reg_lambda": 10,
+          "subsample": 0.8
+        },
+        {
+          "colsample_bytree": 0.8,
+          "learning_rate": 0.02,
+          "max_depth": 4,
+          "min_child_weight": 50,
+          "reg_lambda": 10,
+          "subsample": 1.0
+        },
+        {
+          "colsample_bytree": 1.0,
+          "learning_rate": 0.02,
+          "max_depth": 3,
+          "min_child_weight": 20,
+          "reg_lambda": 1,
+          "subsample": 1.0
+        }
+      ],
+      "candidate_configs_ordered_sha256": "668bc96273ccdbc585702d9576be0f81617dcee9fbee98f4113ffce1b910f854",
+      "early_stopping_rounds": 75,
+      "n_estimators": 2000,
+      "random_seed": 1729,
+      "source_implementation": {
+        "path": "scripts/correlation_training/run_rung_03.py",
+        "sha256": "258dc47cd25f1c89f4586696e3ed42be6e181694bde4761cd1356e8a2e48da4e"
+      },
+      "source_protocol": {
+        "path": "config/quant_training_protocol_v1.json",
+        "sha256": "fa7b81659a939d3bdc563005afae62cabd70478d268af3c4a534750f9e673f39"
+      }
+    }
+  },
+  "preprocessing": {
+    "elastic_net_imputation": "training-partition median only",
+    "elastic_net_scaling": "training-partition mean and standard deviation only",
+    "extra_missingness_indicators": [],
+    "fixed_log1p_features": [
+      "lagged_relative_daily_volume_20d",
+      "sector_lagged_relative_daily_volume_20d",
+      "scheduled_macro_event_count",
+      "scheduled_preopen_macro_count",
+      "premarket_volume",
+      "relative_premarket_volume_20d",
+      "premarket_bar_count",
+      "sector_premarket_volume",
+      "sector_relative_premarket_volume_20d",
+      "sector_premarket_bar_count",
+      "prior_aftermarket_volume",
+      "prior_relative_aftermarket_volume_20d"
+    ],
+    "wlite_missingness": "Sixteen nullable fields are missing exactly on the 204 no-selected rows; preserve the observed-no-selected feature.",
+    "xgboost_missing_policy": "native missing branches"
+  },
+  "protocol_version": "3.0",
+  "rungs": {
+    "C-S2-COV": {
+      "architecture": "ql_cov",
+      "control": "coverage_text_only",
+      "label": "V3-S2 coverage/text-quality-only control"
+    },
+    "C-S2-L20": {
+      "architecture": "ql",
+      "control": "stale_event_lag20",
+      "label": "V3-S2 20-session stale-event control"
+    },
+    "C-S2-LONG": {
+      "architecture": "ql",
+      "control": "long_description",
+      "label": "V3-S2 description-length-at-least-150 sensitivity"
+    },
+    "C-S2-PERM": {
+      "architecture": "ql",
+      "control": "date_sector_permutation",
+      "label": "V3-S2 date-sector semantic permutation control"
+    },
+    "C-S2-WS": {
+      "architecture": "ql",
+      "control": "wrong_stock",
+      "label": "V3-S2 fixed wrong-stock semantic control"
+    },
+    "C-S3-COV": {
+      "architecture": "qdl_cov",
+      "control": "coverage_text_only",
+      "label": "V3-S3 coverage/text-quality-only control"
+    },
+    "C-S3-L20": {
+      "architecture": "qdl",
+      "control": "stale_event_lag20",
+      "label": "V3-S3 20-session stale-event control"
+    },
+    "C-S3-LONG": {
+      "architecture": "qdl",
+      "control": "long_description",
+      "label": "V3-S3 description-length-at-least-150 sensitivity"
+    },
+    "C-S3-PERM": {
+      "architecture": "qdl",
+      "control": "date_sector_permutation",
+      "label": "V3-S3 date-sector semantic permutation control"
+    },
+    "C-S3-WS": {
+      "architecture": "qdl",
+      "control": "wrong_stock",
+      "label": "V3-S3 fixed wrong-stock semantic control"
+    },
+    "S0": {
+      "architecture": "q",
+      "control": null,
+      "label": "V3-S0 matched Q56"
+    },
+    "S1": {
+      "architecture": "qd",
+      "control": null,
+      "label": "V3-S1 matched Q56 plus D2-Normalized"
+    },
+    "S2": {
+      "architecture": "ql",
+      "control": null,
+      "label": "V3-S2 Q56 plus FLAN W17-Lite"
+    },
+    "S3": {
+      "architecture": "qdl",
+      "control": null,
+      "label": "V3-S3 Q56 plus D2-Normalized plus FLAN W17-Lite"
+    },
+    "S4": {
+      "architecture": "qdl",
+      "control": null,
+      "label": "V3-S4 validation-gated shallow XGBoost"
+    }
+  },
+  "semantic_gate": {
+    "accepted_predictive_count": 32490,
+    "agreed_abstention_count": 390,
+    "agreement_count": 32880,
+    "disagreement_count": 17608,
+    "observed_choice_order_agreement": 0.6512438599271114,
+    "observed_choice_order_agreement_percent": 65.12438599271114,
+    "override": {
+      "authorization_basis": "User explicitly requested feature construction and training after completing FLAN W17-Lite inference on 2026-07-30.",
+      "authorized": true,
+      "confirmatory_eligible": false,
+      "exact_observed_percent": 65.12438599271114,
+      "primary_training_eligible": false,
+      "reported_approximation": "65.125% < 85%",
+      "result_role": "exploratory_failed_semantic_gate_diagnostic"
+    },
+    "passed": false,
+    "required_choice_order_agreement": 0.85,
+    "terminal_count": 50488
+  },
+  "source_artifacts": {
+    "canonical_daily_wlite": {
+      "bytes": 1382151,
+      "manifest_path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features.manifest.json",
+      "manifest_sha256": "a2779ef7f7d7e294259ae126d4cd97af66cd39ecc6dbf133e62b274fb9a967f9",
+      "path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features.parquet",
+      "rows": 27510,
+      "sha256": "6e451ddfdb09d92506e91713387e804315b11b4fb348d0e27c57303f08cf4c67"
+    },
+    "canonical_joined_panel": {
+      "bytes": 20329336,
+      "manifest_path": "data/features/q_plus_d/massive_v3/manifest.json",
+      "manifest_sha256": "b5f22a52623ebe70d91812d02a1a82781114637265c665731d025402b1c74398",
+      "path": "data/features/q_plus_d/massive_v3/modeling_panel_q_d2_wlite.parquet",
+      "rows": 27510,
+      "sha256": "725a725818b668941b9b8930d80489cc066499d716568e4a413d771ee25f260b"
+    },
+    "flan_predictions": {
+      "bytes": 129586353,
+      "manifest_path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/predictions.jsonl.manifest.json",
+      "manifest_sha256": "2baecf63aded40be67cb7372688ff8da98a2480a8579d7fd5de19c6a0adbfb98",
+      "path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/predictions.jsonl",
+      "rows": 50488,
+      "sha256": "9496cc382fa77c68edc05768af22ffd55a92e3721d6d4ddd2b846a41b09059e1"
+    },
+    "long_description_daily_wlite": {
+      "bytes": 1281701,
+      "manifest_path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features_long_description.manifest.json",
+      "manifest_sha256": "62090d0954fc62765ba0b34e65a1ca1e694967d55aef135c586707780c5d64af",
+      "path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features_long_description.parquet",
+      "rows": 27510,
+      "sha256": "b72746e54940f519dc8b122bc13c40ef6617d0d03e633f911c2e77c483aaa290"
+    },
+    "long_description_joined_panel": {
+      "bytes": 20231627,
+      "manifest_path": "data/features/q_plus_d/massive_v3/manifest.json",
+      "manifest_sha256": "b5f22a52623ebe70d91812d02a1a82781114637265c665731d025402b1c74398",
+      "path": "data/features/q_plus_d/massive_v3/modeling_panel_q_d2_wlite_long_description.parquet",
+      "rows": 27510,
+      "sha256": "aa7da20d3060ee81a2bbc6bbf9ba305519fb11cc9fa6e43358d74ddc0d058cbe"
+    },
+    "permuted_daily_wlite": {
+      "bytes": 1381687,
+      "manifest_path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features_permuted.manifest.json",
+      "manifest_sha256": "62f42b9413b7eb5f508c1c72db605e68d373263579b28a875b94720b31288d93",
+      "path": "data/features/news_semantic/massive_v3/flan_w17_lite_k16/daily_features_permuted.parquet",
+      "rows": 27510,
+      "sha256": "e02a3a035cdbf17c283ebf51d7182ef7ec13b7beb18e36fdb65707303825c8d9"
+    },
+    "permuted_joined_panel": {
+      "bytes": 20328879,
+      "manifest_path": "data/features/q_plus_d/massive_v3/manifest.json",
+      "manifest_sha256": "b5f22a52623ebe70d91812d02a1a82781114637265c665731d025402b1c74398",
+      "path": "data/features/q_plus_d/massive_v3/modeling_panel_q_d2_wlite_permuted.parquet",
+      "rows": 27510,
+      "sha256": "3a58fa1db962dd29693ce461dbf8d0b1dda213c7be47ca67ad79e62bcb307e06"
+    }
+  },
+  "source_profile": "ordinary_massive_retrospective",
+  "source_protocol": {
+    "path": "config/quant_deterministic_news_protocol_v2.json",
+    "sha256": "2e8f8b8534dc9e29f46e10551d8a67d62673194c72135cb5217b556443718467"
+  },
+  "status": "locked_before_training",
+  "target_row_eligibility": {
+    "expected_rows": {
+      "fold_1": {
+        "t1_train_validation_test": [
+          12480,
+          3840,
+          3660
+        ],
+        "t2_train_validation_test": [
+          12360,
+          3720,
+          3540
+        ]
+      },
+      "fold_2": {
+        "t1_train_validation_test": [
+          16320,
+          3660,
+          3840
+        ],
+        "t2_train_validation_test": [
+          16200,
+          3540,
+          3720
+        ]
+      },
+      "fold_3": {
+        "t1_train_validation_test": [
+          19980,
+          3840,
+          3690
+        ],
+        "t2_train_validation_test": [
+          19860,
+          3720,
+          3570
+        ]
+      }
+    },
+    "t1": "forecast_date lies within the current partition",
+    "t2": "forecast_date lies within the current partition and the target-specific end-date column is <= partition end",
+    "t2_effect": "purge the final four forecast sessions from each train, validation, and development-evaluation partition"
+  },
+  "targets": [
+    "t1_etf",
+    "t1_loo",
+    "t2_etf",
+    "t2_loo"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "base_comparison": [
+    {
+      "base_fisher_z_rmse": 0.3720135143405643,
+      "folds_model_better": 1,
+      "incremental_r2": 0.002189980427156013,
+      "mean_squared_loss_delta_model_minus_base": -0.0003030802713606943,
+      "model_fisher_z_rmse": 0.3716059399157346,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.3863550710262185,
+      "folds_model_better": 1,
+      "incremental_r2": 0.0027053503518313926,
+      "mean_squared_loss_delta_model_minus_base": -0.00040382829875753337,
+      "model_fisher_z_rmse": 0.38583210417086455,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base_fisher_z_rmse": 0.2419346345622499,
+      "folds_model_better": 2,
+      "incremental_r2": -5.471016091274095e-06,
+      "mean_squared_loss_delta_model_minus_base": 3.202315238921952e-07,
+      "model_fisher_z_rmse": 0.24193529637548405,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base_fisher_z_rmse": 0.2643179535716966,
+      "folds_model_better": 2,
+      "incremental_r2": 0.00030989427039462836,
+      "mean_squared_loss_delta_model_minus_base": -2.16504472888132e-05,
+      "model_fisher_z_rmse": 0.2642769950885638,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "base_key": "S3",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.293446332592389,
+      "fisher_z_rmse": 0.3716059399157346,
+      "model": "s3_stale_event_lag20",
+      "oos_r2_vs_persistence": 0.40575709751605693,
+      "raw_correlation_mae": 0.14603033446773092,
+      "raw_correlation_rmse": 0.20893417337762366,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.3042635974363172,
+      "fisher_z_rmse": 0.38583210417086455,
+      "model": "s3_stale_event_lag20",
+      "oos_r2_vs_persistence": 0.38238116740022954,
+      "raw_correlation_mae": 0.1628467703418375,
+      "raw_correlation_rmse": 0.23074848407824375,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.18939291720184936,
+      "fisher_z_rmse": 0.24193529637548405,
+      "model": "s3_stale_event_lag20",
+      "oos_r2_vs_persistence": 0.24469931575962156,
+      "raw_correlation_mae": 0.09498470638733807,
+      "raw_correlation_rmse": 0.1288776565273703,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.2050242219053222,
+      "fisher_z_rmse": 0.2642769950885638,
+      "model": "s3_stale_event_lag20",
+      "oos_r2_vs_persistence": 0.20660735609204184,
+      "raw_correlation_mae": 0.1119399742329473,
+      "raw_correlation_rmse": 0.15385865129660903,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_failed_semantic_gate_diagnostic",
+  "semantic_gate_passed": false,
+  "status": "complete"
+}

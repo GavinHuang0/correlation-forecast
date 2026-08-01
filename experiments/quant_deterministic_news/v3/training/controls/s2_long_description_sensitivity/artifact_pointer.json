@@ -1,0 +1,6 @@
+{
+  "bundle": "C-S2-LONG",
+  "manifest_path": "outputs/quant_deterministic_news/v3/controls/s2_long_description_sensitivity/manifest.json",
+  "manifest_sha256": "1dffe7b9812c3cafc0617e77e97cd012af8e6d4cf25617f09a3d0851ee86105d",
+  "protocol_sha256": "2455e3a1bbef5ac9b358e7f0aaa92ed209f51cee2a0936de4093e23799c53def"
+}

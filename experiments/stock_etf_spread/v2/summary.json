@@ -1,0 +1,297 @@
+{
+  "artifacts": {
+    "comparisons": {
+      "path": "outputs\\stock_etf_spread\\v2\\paired_bootstrap.parquet",
+      "sha256": "b229c3b5ed29b634aae365d3df414116be5a6b8e9a361a5faebf8eae51eb3ccf"
+    },
+    "daily_positions": {
+      "path": "outputs\\stock_etf_spread\\v2\\daily_positions.parquet",
+      "sha256": "d1b6a592ea9ef0f2dd86ee7adfd2f0ec4f6bb667706f1ccecf230a8f56ebd8b0"
+    },
+    "daily_returns": {
+      "path": "outputs\\stock_etf_spread\\v2\\daily_returns.parquet",
+      "sha256": "bb9815dc30d8757587214ca0995e8a9e1b39da07ab29a66e9fe20ca3c39b5211"
+    },
+    "metrics": {
+      "path": "outputs\\stock_etf_spread\\v2\\metrics.parquet",
+      "sha256": "a4159cb866947dd57af8fc7d9eac29b6d4f7dd5f84eff96be543349bcd4c5b6b"
+    },
+    "signals": {
+      "path": "outputs\\stock_etf_spread\\v2\\signals.parquet",
+      "sha256": "aefb37eabd65338bff045144eb7724765cd43cb265b47271d6c5f70550d6a892"
+    },
+    "sleeve_positions": {
+      "path": "outputs\\stock_etf_spread\\v2\\sleeve_positions.parquet",
+      "sha256": "f2a9929e24216e2206be80c74bacbefdfd4f8f455fdefb1cc28b4b449cfb9519"
+    },
+    "subsample_comparisons": {
+      "path": "outputs\\stock_etf_spread\\v2\\subsample_paired_bootstrap.parquet",
+      "sha256": "290f84fc0f5b6aed3ed4d6e6b0edc1b5ff4bd6ff13422bb85c2ecd0c28574a70"
+    },
+    "subsample_metrics": {
+      "path": "outputs\\stock_etf_spread\\v2\\subsample_metrics.parquet",
+      "sha256": "7c4191feb789ad1d1e31da722db742bb9b7099a9dfea5a8ecf535eacf550f558"
+    }
+  },
+  "claim_boundary": [
+    "The T2 ETF ensemble was selected using pooled forecast loss on the same 13 outer periods used for this economic backtest.",
+    "The trading protocol is an exact carry-forward from v1; v1 economic results on the final three folds were already known before this run.",
+    "The earlier ten folds add previously unbacktested economic periods but remain retrospective development evidence, not an untouched confirmation.",
+    "The strategy uses quant-only forecasts; retrospective news features are excluded."
+  ],
+  "experiment_id": "stock_etf_spread_quant_full_history_v2",
+  "forecast_selection": {
+    "model": "elastic_xgboost_ensemble",
+    "selection_record": {
+      "fisher_z_rmse": 0.23298548645110306,
+      "rows": 42030,
+      "selection_metric": "pooled outer-test Fisher-z RMSE",
+      "summary": "experiments/quant_training/v2/comparisons/summary.json",
+      "summary_sha256": "36f6d8054defe9be617e2cb670b6be70536689c2a773577e6028bb03301da6d9",
+      "target": "t2_etf",
+      "winning_model": "elastic_xgboost_ensemble",
+      "winning_rung": "rung_03"
+    },
+    "target": "t2_etf"
+  },
+  "generated_at_utc": "2026-07-30T10:28:40.082706Z",
+  "inputs": {
+    "predictions": {
+      "path": "outputs/quant_training/v2/rung_03/t2_etf/predictions.parquet",
+      "sha256": "63ac53ed6fe6d27f3193bfbfedd31b99088d73e19db9553e07fdaa790c3804bc"
+    },
+    "protocol": {
+      "path": "config\\stock_etf_spread_backtest_quant_v2.json",
+      "sha256": "5795943491e5c580185a9f466012bc84a39dde489376525bf6beab5f463cc488"
+    },
+    "regular_bar_hashes_verified": true
+  },
+  "paired_bootstrap": [
+    {
+      "annualized_mean_return_difference": 0.007771337558315685,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.014207541978417771,
+      "bootstrap_ci_upper": 0.03145990174462878,
+      "bootstrap_probability_primary_better": 0.7495,
+      "comparator": "unconditional",
+      "cost_bps_per_side": 2.0,
+      "dates": 1631,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.004945078154518915,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.024021653602223293,
+      "bootstrap_ci_upper": 0.03719790851185105,
+      "bootstrap_probability_primary_better": 0.631,
+      "comparator": "historical_level",
+      "cost_bps_per_side": 2.0,
+      "dates": 1631,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.011054139722166536,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.015162043119741756,
+      "bootstrap_ci_upper": 0.04135757546754839,
+      "bootstrap_probability_primary_better": 0.82,
+      "comparator": "ml_level",
+      "cost_bps_per_side": 2.0,
+      "dates": 1631,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.0036347559747611645,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.03369617273650839,
+      "bootstrap_ci_upper": 0.042681402522740206,
+      "bootstrap_probability_primary_better": 0.609,
+      "comparator": "ml_weakening",
+      "cost_bps_per_side": 2.0,
+      "dates": 1631,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    }
+  ],
+  "primary_cost_bps_per_side": 2.0,
+  "primary_cost_metrics": [
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.10274361506576946,
+      "annualized_sharpe": -2.366924754240318,
+      "annualized_transaction_cost": 0.07319176752767952,
+      "annualized_turnover": 365.9588376383976,
+      "annualized_volatility": 0.04340806140191212,
+      "compounded_return": -0.4889166830809196,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.41630901287553645,
+      "dates": 1631,
+      "maximum_drawdown": -0.5063091985492401,
+      "mean_daily_return": -0.00040771275819749786,
+      "mean_gross_exposure": 0.7261088048380905,
+      "newey_west_t_stat": -6.527557739276129,
+      "scope": "pooled",
+      "variant": "historical_level"
+    },
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.10885267663341706,
+      "annualized_sharpe": -2.464241530812502,
+      "annualized_transaction_cost": 0.07397309335544501,
+      "annualized_turnover": 369.86546677722515,
+      "annualized_volatility": 0.04417289266183518,
+      "compounded_return": -0.5088463867261627,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.41569589209074187,
+      "dates": 1631,
+      "maximum_drawdown": -0.5335613304811052,
+      "mean_daily_return": -0.00043195506600562326,
+      "mean_gross_exposure": 0.7338600531294149,
+      "newey_west_t_stat": -6.456384694724057,
+      "scope": "pooled",
+      "variant": "ml_level"
+    },
+    {
+      "active_day_fraction": 0.9748620478234212,
+      "annualized_arithmetic_return": -0.09779853691125054,
+      "annualized_sharpe": -2.1611259545896386,
+      "annualized_transaction_cost": 0.07046627466240134,
+      "annualized_turnover": 352.3313733120066,
+      "annualized_volatility": 0.04525351088563501,
+      "compounded_return": -0.4725641962911584,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.4248927038626609,
+      "dates": 1631,
+      "maximum_drawdown": -0.5047375711259852,
+      "mean_daily_return": -0.00038808943218750214,
+      "mean_gross_exposure": 0.6990701851428702,
+      "newey_west_t_stat": -6.008022811020253,
+      "scope": "pooled",
+      "variant": "ml_strengthening"
+    },
+    {
+      "active_day_fraction": 0.9828326180257511,
+      "annualized_arithmetic_return": -0.1014332928860117,
+      "annualized_sharpe": -2.435604410891091,
+      "annualized_transaction_cost": 0.07037714411203949,
+      "annualized_turnover": 351.88572056019757,
+      "annualized_volatility": 0.04164604581615998,
+      "compounded_return": -0.4843096212383139,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.41569589209074187,
+      "dates": 1631,
+      "maximum_drawdown": -0.4945680022195077,
+      "mean_daily_return": -0.00040251306700798294,
+      "mean_gross_exposure": 0.6981859534924555,
+      "newey_west_t_stat": -6.330922243634733,
+      "scope": "pooled",
+      "variant": "ml_weakening"
+    },
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.10556987446956623,
+      "annualized_sharpe": -2.4619721369498246,
+      "annualized_transaction_cost": 0.07408760643532256,
+      "annualized_turnover": 370.43803217661275,
+      "annualized_volatility": 0.042880206841153935,
+      "compounded_return": -0.49810931163855343,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.42611894543225015,
+      "dates": 1631,
+      "maximum_drawdown": -0.5219577982795791,
+      "mean_daily_return": -0.0004189280732919295,
+      "mean_gross_exposure": 0.7349960955885174,
+      "newey_west_t_stat": -6.683194710676259,
+      "scope": "pooled",
+      "variant": "unconditional"
+    }
+  ],
+  "primary_variant": "ml_strengthening",
+  "protocol_inheritance": {
+    "changed": [
+      "prediction experiment and selected model",
+      "outer-test sample",
+      "output namespace"
+    ],
+    "source": "config/stock_etf_spread_backtest_v1.json",
+    "source_sha256": "190f4a469499937b8b9f8ce5edaee5d5df227a2cde1e3724d1fe4870dcf3d875",
+    "unchanged": [
+      "signal construction and beta window",
+      "correlation gate and controls",
+      "portfolio construction and gross normalization",
+      "five-session RTH-only overlapping sleeves",
+      "transaction-cost ladder",
+      "inference and primary metric"
+    ]
+  },
+  "protocol_version": "1.0",
+  "reporting_subsamples": [
+    {
+      "active_day_fraction": 0.9965714285714286,
+      "annualized_arithmetic_return": -0.07103556762465642,
+      "annualized_sharpe": -1.825923876487417,
+      "annualized_transaction_cost": 0.0745751395628944,
+      "annualized_turnover": 372.87569781447195,
+      "annualized_volatility": 0.038903904231379904,
+      "compounded_return": -0.2206635664732961,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.44457142857142856,
+      "dates": 875,
+      "fold": null,
+      "maximum_drawdown": -0.2659948924611919,
+      "mean_daily_return": -0.00028188717311371594,
+      "mean_gross_exposure": 0.7398327337588729,
+      "newey_west_t_stat": -3.5200445104568483,
+      "sample": "balanced_2023_plus",
+      "scope": "pooled",
+      "variant": "ml_strengthening"
+    },
+    {
+      "active_day_fraction": 0.9919571045576407,
+      "annualized_arithmetic_return": -0.03447651591544087,
+      "annualized_sharpe": -0.844607915168134,
+      "annualized_transaction_cost": 0.07369338438853698,
+      "annualized_turnover": 368.46692194268496,
+      "annualized_volatility": 0.04081955105592127,
+      "compounded_return": -0.05092219692457234,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.4584450402144772,
+      "dates": 373,
+      "fold": null,
+      "maximum_drawdown": -0.11189865917080766,
+      "mean_daily_return": -0.0001368115710930193,
+      "mean_gross_exposure": 0.7310851625846924,
+      "newey_west_t_stat": -1.0420564020563203,
+      "sample": "matched_recent",
+      "scope": "pooled",
+      "variant": "ml_strengthening"
+    }
+  ],
+  "sample": {
+    "first_forecast_date": "2020-01-02",
+    "folds": [
+      "fold_01",
+      "fold_02",
+      "fold_03",
+      "fold_04",
+      "fold_05",
+      "fold_06",
+      "fold_07",
+      "fold_08",
+      "fold_09",
+      "fold_10",
+      "fold_11",
+      "fold_12",
+      "fold_13"
+    ],
+    "forecast_dates": 1579,
+    "last_forecast_date": "2026-06-24",
+    "stocks": 30,
+    "trading_dates": 1631,
+    "unique_stock_date_forecasts": 42030
+  },
+  "status": "complete_exploratory_development_backtest"
+}

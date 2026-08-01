@@ -1,0 +1,6 @@
+{
+  "bundle": "C-S2-COV",
+  "manifest_path": "outputs/quant_deterministic_news/v3/controls/s2_coverage_text_only/manifest.json",
+  "manifest_sha256": "91b4e2225e83fdf07152bfd1810291e7c8ae46711eb6f85760b37c7fb4bc5039",
+  "protocol_sha256": "2455e3a1bbef5ac9b358e7f0aaa92ed209f51cee2a0936de4093e23799c53def"
+}

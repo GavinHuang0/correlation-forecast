@@ -23,6 +23,13 @@ a daily panel is ready, or training is authorized.
 | `R70__flan_t5_xl` | Fine contract and historical runner concept | Pinned fine XL workflow, validation, complete inference, daily R70 | Not pursued in this construction pass |
 | `R70__gpt_5_6_sol` | Passed final hash-bound full-corpus workload preflight plus offline two-view Batch/retry/merge/adjudication/aggregation pipeline | API credential, licensed-text confirmation, explicit request budget, separate paid-run authorization, full inference, daily R70 and Q/L join | Offline pipeline ready; paid inference blocked; not trained |
 
+Execution disposition (2026-07-29): the ready full W17/R70 pipelines are
+deferred rather than launched. The separate
+[cost-bounded v3 design](../../../v3/README.md) proposes a four-way,
+unique-article FLAN contract, an ordered global-only GPT block, and a later
+schema-incomplete factorized GPT contract. This status remains the factual
+readiness record for the unchanged v2 pipelines.
+
 No partial benchmark was promoted into a stock-day feature panel. That is the
 important fail-closed result: the local fragments establish schemas and
 execution mechanics, but they do not cover the historical modeling corpus.

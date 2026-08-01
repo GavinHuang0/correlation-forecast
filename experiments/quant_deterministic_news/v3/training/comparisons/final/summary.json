@@ -1,0 +1,875 @@
+{
+  "comparison_specs": [
+    {
+      "base": "S0",
+      "candidate": "S1",
+      "family": "deterministic_increment",
+      "key": "S1_vs_S0",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": null
+    },
+    {
+      "base": "S0",
+      "candidate": "S2",
+      "family": "q_plus_l_increment",
+      "key": "S2_vs_S0",
+      "primary": true,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "S1",
+      "candidate": "S3",
+      "family": "semantic_beyond_qd",
+      "key": "S3_vs_S1",
+      "primary": true,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "S2",
+      "candidate": "S3",
+      "family": "deterministic_after_semantics",
+      "key": "S3_vs_S2",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": null
+    },
+    {
+      "base": "C-S2-COV",
+      "candidate": "S2",
+      "family": "coverage_text_only_falsification",
+      "key": "S2_vs_C-S2-COV",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S2-L20",
+      "candidate": "S2",
+      "family": "stale_event_falsification",
+      "key": "S2_vs_C-S2-L20",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S2-WS",
+      "candidate": "S2",
+      "family": "wrong_stock_falsification",
+      "key": "S2_vs_C-S2-WS",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S2-PERM",
+      "candidate": "S2",
+      "family": "date_sector_permutation_falsification",
+      "key": "S2_vs_C-S2-PERM",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "S2",
+      "candidate": "C-S2-LONG",
+      "family": "long_description_sensitivity",
+      "key": "C-S2-LONG_vs_S2",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": null
+    },
+    {
+      "base": "C-S3-COV",
+      "candidate": "S3",
+      "family": "coverage_text_only_falsification",
+      "key": "S3_vs_C-S3-COV",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S3-L20",
+      "candidate": "S3",
+      "family": "stale_event_falsification",
+      "key": "S3_vs_C-S3-L20",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S3-WS",
+      "candidate": "S3",
+      "family": "wrong_stock_falsification",
+      "key": "S3_vs_C-S3-WS",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "C-S3-PERM",
+      "candidate": "S3",
+      "family": "date_sector_permutation_falsification",
+      "key": "S3_vs_C-S3-PERM",
+      "primary": false,
+      "required_for_useful_gate": true,
+      "targets": null
+    },
+    {
+      "base": "S3",
+      "candidate": "C-S3-LONG",
+      "family": "long_description_sensitivity",
+      "key": "C-S3-LONG_vs_S3",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": null
+    },
+    {
+      "base": "S1",
+      "candidate": "S4",
+      "family": "validation_gated_xgb_vs_qd",
+      "key": "S4_vs_S1",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": [
+        "t2_etf"
+      ]
+    },
+    {
+      "base": "S3",
+      "candidate": "S4",
+      "family": "validation_gated_xgb_vs_linear",
+      "key": "S4_vs_S3",
+      "primary": false,
+      "required_for_useful_gate": false,
+      "targets": [
+        "t2_etf"
+      ]
+    }
+  ],
+  "elastic_net_wlite_stability_summary": [
+    {
+      "bundle": "S2",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.41508491508491513,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t1_etf",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 3,
+      "wlite_selected_all_folds_count": 3,
+      "wlite_stable_sign_all_folds_count": 3,
+      "wlite_union_selected_count": 14
+    },
+    {
+      "bundle": "S2",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.19607843137254902,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t1_loo",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 0,
+      "wlite_selected_all_folds_count": 0,
+      "wlite_stable_sign_all_folds_count": 0,
+      "wlite_union_selected_count": 17
+    },
+    {
+      "bundle": "S2",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.19444444444444442,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t2_etf",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 1,
+      "wlite_selected_all_folds_count": 1,
+      "wlite_stable_sign_all_folds_count": 1,
+      "wlite_union_selected_count": 16
+    },
+    {
+      "bundle": "S2",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.37254901960784315,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t2_loo",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 0,
+      "wlite_selected_all_folds_count": 1,
+      "wlite_stable_sign_all_folds_count": 1,
+      "wlite_union_selected_count": 17
+    },
+    {
+      "bundle": "S3",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.27342657342657345,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t1_etf",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 4,
+      "wlite_selected_all_folds_count": 1,
+      "wlite_stable_sign_all_folds_count": 1,
+      "wlite_union_selected_count": 13
+    },
+    {
+      "bundle": "S3",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.2888888888888889,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t1_loo",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 2,
+      "wlite_selected_all_folds_count": 0,
+      "wlite_stable_sign_all_folds_count": 0,
+      "wlite_union_selected_count": 15
+    },
+    {
+      "bundle": "S3",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.0588235294117647,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t2_etf",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 0,
+      "wlite_selected_all_folds_count": 0,
+      "wlite_stable_sign_all_folds_count": 0,
+      "wlite_union_selected_count": 17
+    },
+    {
+      "bundle": "S3",
+      "mean_pairwise_wlite_selected_set_jaccard": 0.19281045751633985,
+      "nonzero_coefficient_tolerance": 1e-12,
+      "target": "t2_loo",
+      "wlite_feature_count": 17,
+      "wlite_never_selected_count": 0,
+      "wlite_selected_all_folds_count": 1,
+      "wlite_stable_sign_all_folds_count": 1,
+      "wlite_union_selected_count": 17
+    }
+  ],
+  "generated_at_utc": "2026-07-30T14:09:22.003818Z",
+  "primary_comparison_keys": [
+    "S2_vs_S0",
+    "S3_vs_S1"
+  ],
+  "primary_comparisons": [
+    {
+      "base": "S0",
+      "base_fisher_z_rmse": 0.37093074760929556,
+      "base_mse": 0.13758961952199092,
+      "bootstrap_ci_lower": -0.0005291558380741016,
+      "bootstrap_ci_upper": 0.0008683865951251282,
+      "bootstrap_probability_candidate_better": 0.326,
+      "candidate": "S2",
+      "candidate_fisher_z_rmse": 0.3712404565407064,
+      "candidate_minus_base_mse": 0.00022985705056117027,
+      "candidate_mse": 0.1378194765725521,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S2_vs_S0",
+      "dates": 373,
+      "family": "q_plus_l_increment",
+      "fold_count": 3,
+      "improved_development_folds": 1,
+      "incremental_r2_vs_base": -0.0016705987803422584,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base": "S0",
+      "base_fisher_z_rmse": 0.3857667800309052,
+      "base_mse": 0.1488160085754128,
+      "bootstrap_ci_lower": -0.00020019203381426134,
+      "bootstrap_ci_upper": 0.0010168989518866463,
+      "bootstrap_probability_candidate_better": 0.1175,
+      "candidate": "S2",
+      "candidate_fisher_z_rmse": 0.3862769086701477,
+      "candidate_minus_base_mse": 0.00039384159635283124,
+      "candidate_mse": 0.1492098501717656,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S2_vs_S0",
+      "dates": 373,
+      "family": "q_plus_l_increment",
+      "fold_count": 3,
+      "improved_development_folds": 0,
+      "incremental_r2_vs_base": -0.0026465001992930226,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base": "S0",
+      "base_fisher_z_rmse": 0.2448421017380565,
+      "base_mse": 0.05994765478350881,
+      "bootstrap_ci_lower": -0.0011957130932188696,
+      "bootstrap_ci_upper": -0.00033154942229257124,
+      "bootstrap_probability_candidate_better": 1.0,
+      "candidate": "S2",
+      "candidate_fisher_z_rmse": 0.2433667596546204,
+      "candidate_minus_base_mse": -0.0007202750787190412,
+      "candidate_mse": 0.05922737970478977,
+      "ci_excludes_zero_in_candidate_direction": true,
+      "comparison": "S2_vs_S0",
+      "dates": 361,
+      "family": "q_plus_l_increment",
+      "fold_count": 3,
+      "improved_development_folds": 3,
+      "incremental_r2_vs_base": 0.012015066833226395,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base": "S0",
+      "base_fisher_z_rmse": 0.26339432475218233,
+      "base_mse": 0.0693765703116581,
+      "bootstrap_ci_lower": 2.55319392592813e-05,
+      "bootstrap_ci_upper": 0.0013822125748275745,
+      "bootstrap_probability_candidate_better": 0.0205,
+      "candidate": "S2",
+      "candidate_fisher_z_rmse": 0.2646873348407416,
+      "candidate_minus_base_mse": 0.0006828149134367492,
+      "candidate_mse": 0.07005938522509485,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S2_vs_S0",
+      "dates": 361,
+      "family": "q_plus_l_increment",
+      "fold_count": 3,
+      "improved_development_folds": 1,
+      "incremental_r2_vs_base": -0.009842154352245336,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 10830,
+      "target": "t2_loo"
+    },
+    {
+      "base": "S1",
+      "base_fisher_z_rmse": 0.37150528340558964,
+      "base_mse": 0.13801617559826745,
+      "bootstrap_ci_lower": -0.0003143592502062285,
+      "bootstrap_ci_upper": 0.0010782244753566527,
+      "bootstrap_probability_candidate_better": 0.169,
+      "candidate": "S3",
+      "candidate_fisher_z_rmse": 0.3720135143405643,
+      "candidate_minus_base_mse": 0.00037787925374979013,
+      "candidate_mse": 0.13839405485201725,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S3_vs_S1",
+      "dates": 373,
+      "family": "semantic_beyond_qd",
+      "fold_count": 3,
+      "improved_development_folds": 1,
+      "incremental_r2_vs_base": -0.002737934536381381,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "base": "S1",
+      "base_fisher_z_rmse": 0.3856818607789348,
+      "base_mse": 0.14875049773390164,
+      "bootstrap_ci_lower": -8.293916410497643e-05,
+      "bootstrap_ci_upper": 0.0011702151229496494,
+      "bootstrap_probability_candidate_better": 0.0515,
+      "candidate": "S3",
+      "candidate_fisher_z_rmse": 0.3863550710262185,
+      "candidate_minus_base_mse": 0.0005197431737727338,
+      "candidate_mse": 0.14927024090767438,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S3_vs_S1",
+      "dates": 373,
+      "family": "semantic_beyond_qd",
+      "fold_count": 3,
+      "improved_development_folds": 1,
+      "incremental_r2_vs_base": -0.003494060064945126,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "base": "S1",
+      "base_fisher_z_rmse": 0.2422208879027448,
+      "base_mse": 0.058670958536394056,
+      "bootstrap_ci_lower": -0.0005466699492477332,
+      "bootstrap_ci_upper": 0.0002830893596902624,
+      "bootstrap_probability_candidate_better": 0.7775,
+      "candidate": "S3",
+      "candidate_fisher_z_rmse": 0.2419346345622499,
+      "candidate_minus_base_mse": -0.00013859113562466,
+      "candidate_mse": 0.0585323674007694,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S3_vs_S1",
+      "dates": 361,
+      "family": "semantic_beyond_qd",
+      "fold_count": 3,
+      "improved_development_folds": 3,
+      "incremental_r2_vs_base": 0.0023621760932828195,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "base": "S1",
+      "base_fisher_z_rmse": 0.26250517140710017,
+      "base_mse": 0.06890896501547104,
+      "bootstrap_ci_lower": 0.000466025195484321,
+      "bootstrap_ci_upper": 0.0016854810896476456,
+      "bootstrap_probability_candidate_better": 0.0,
+      "candidate": "S3",
+      "candidate_fisher_z_rmse": 0.2643179535716966,
+      "candidate_minus_base_mse": 0.0009550155648585107,
+      "candidate_mse": 0.06986398058032955,
+      "ci_excludes_zero_in_candidate_direction": false,
+      "comparison": "S3_vs_S1",
+      "dates": 361,
+      "family": "semantic_beyond_qd",
+      "fold_count": 3,
+      "improved_development_folds": 0,
+      "incremental_r2_vs_base": -0.013859090245283756,
+      "primary": true,
+      "required_for_useful_gate": true,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_failed_semantic_gate_diagnostic",
+  "s4_skip_reason": null,
+  "s4_targets": [
+    "t2_etf"
+  ],
+  "semantic_gate_passed": false,
+  "status": "complete",
+  "useful_gate_pass_count": 0,
+  "useful_semantic_gates": [
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S2",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S2_vs_C-S2-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": true
+        },
+        "S2_vs_C-S2-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": true
+        },
+        "S2_vs_S0": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S0",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S2_vs_S0",
+        "S2_vs_C-S2-COV",
+        "S2_vs_C-S2-L20",
+        "S2_vs_C-S2-WS",
+        "S2_vs_C-S2-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t1_etf"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S2",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S2_vs_C-S2-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_S0": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S0",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S2_vs_S0",
+        "S2_vs_C-S2-COV",
+        "S2_vs_C-S2-L20",
+        "S2_vs_C-S2-WS",
+        "S2_vs_C-S2-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t1_loo"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S2",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S2_vs_C-S2-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": true
+        },
+        "S2_vs_C-S2-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": true
+        },
+        "S2_vs_S0": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": true,
+          "improved_at_least_two_folds": true,
+          "passed": true,
+          "point_improved": true
+        }
+      },
+      "matched_base": "S0",
+      "matched_base_passed": true,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S2_vs_S0",
+        "S2_vs_C-S2-COV",
+        "S2_vs_C-S2-L20",
+        "S2_vs_C-S2-WS",
+        "S2_vs_C-S2-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t2_etf"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S2",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S2_vs_C-S2-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S2_vs_C-S2-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": true
+        },
+        "S2_vs_S0": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S0",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S2_vs_S0",
+        "S2_vs_C-S2-COV",
+        "S2_vs_C-S2-L20",
+        "S2_vs_C-S2-WS",
+        "S2_vs_C-S2-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t2_loo"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S3",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S3_vs_C-S3-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": true
+        },
+        "S3_vs_S1": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S1",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S3_vs_S1",
+        "S3_vs_C-S3-COV",
+        "S3_vs_C-S3-L20",
+        "S3_vs_C-S3-WS",
+        "S3_vs_C-S3-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t1_etf"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S3",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S3_vs_C-S3-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_S1": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S1",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S3_vs_S1",
+        "S3_vs_C-S3-COV",
+        "S3_vs_C-S3-L20",
+        "S3_vs_C-S3-WS",
+        "S3_vs_C-S3-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t1_loo"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S3",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S3_vs_C-S3-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": true
+        },
+        "S3_vs_C-S3-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": true
+        },
+        "S3_vs_C-S3-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_S1": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": true,
+          "passed": false,
+          "point_improved": true
+        }
+      },
+      "matched_base": "S1",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S3_vs_S1",
+        "S3_vs_C-S3-COV",
+        "S3_vs_C-S3-L20",
+        "S3_vs_C-S3-WS",
+        "S3_vs_C-S3-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t2_etf"
+    },
+    {
+      "all_falsification_controls_passed": false,
+      "architecture": "S3",
+      "claim_if_passed": "exploratory downstream usefulness only; the FLAN choice-order semantic-quality gate still failed",
+      "comparison_checks": {
+        "S3_vs_C-S3-COV": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-L20": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-PERM": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_C-S3-WS": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        },
+        "S3_vs_S1": {
+          "all_three_folds_present": true,
+          "bootstrap_upper_below_zero": false,
+          "improved_at_least_two_folds": false,
+          "passed": false,
+          "point_improved": false
+        }
+      },
+      "matched_base": "S1",
+      "matched_base_passed": false,
+      "passed_all_required": false,
+      "required_comparisons": [
+        "S3_vs_S1",
+        "S3_vs_C-S3-COV",
+        "S3_vs_C-S3-L20",
+        "S3_vs_C-S3-WS",
+        "S3_vs_C-S3-PERM"
+      ],
+      "semantic_quality_gate_passed": false,
+      "target": "t2_loo"
+    }
+  ]
+}

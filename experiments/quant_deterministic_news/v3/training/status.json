@@ -1,0 +1,128 @@
+{
+  "bundles": [
+    {
+      "key": "S0",
+      "label": "V3-S0 matched Q56",
+      "order": 0,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.370931; t1_loo RMSE=0.385767; t2_etf RMSE=0.244842; t2_loo RMSE=0.263394",
+      "updated_at_utc": "2026-07-30T14:06:25.941970Z"
+    },
+    {
+      "key": "S1",
+      "label": "V3-S1 matched Q56 plus D2-Normalized",
+      "order": 1,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371505; t1_loo RMSE=0.385682; t2_etf RMSE=0.242221; t2_loo RMSE=0.262505",
+      "updated_at_utc": "2026-07-30T14:06:39.451663Z"
+    },
+    {
+      "key": "S2",
+      "label": "V3-S2 Q56 plus FLAN W17-Lite",
+      "order": 2,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371240; t1_loo RMSE=0.386277; t2_etf RMSE=0.243367; t2_loo RMSE=0.264687",
+      "updated_at_utc": "2026-07-30T14:06:52.101307Z"
+    },
+    {
+      "key": "S3",
+      "label": "V3-S3 Q56 plus D2-Normalized plus FLAN W17-Lite",
+      "order": 3,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.372014; t1_loo RMSE=0.386355; t2_etf RMSE=0.241935; t2_loo RMSE=0.264318",
+      "updated_at_utc": "2026-07-30T14:07:10.764784Z"
+    },
+    {
+      "key": "S4",
+      "label": "V3-S4 validation-gated shallow XGBoost",
+      "order": 4,
+      "status": "complete",
+      "summary": "t2_etf RMSE=0.233668",
+      "updated_at_utc": "2026-07-30T14:09:10.043948Z"
+    },
+    {
+      "key": "C-S2-COV",
+      "label": "V3-S2 coverage/text-quality-only control",
+      "order": 10,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371255; t1_loo RMSE=0.385785; t2_etf RMSE=0.243377; t2_loo RMSE=0.262395",
+      "updated_at_utc": "2026-07-30T14:07:28.800414Z"
+    },
+    {
+      "key": "C-S3-COV",
+      "label": "V3-S3 coverage/text-quality-only control",
+      "order": 11,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371671; t1_loo RMSE=0.385844; t2_etf RMSE=0.242233; t2_loo RMSE=0.263120",
+      "updated_at_utc": "2026-07-30T14:07:37.842975Z"
+    },
+    {
+      "key": "C-S2-L20",
+      "label": "V3-S2 20-session stale-event control",
+      "order": 12,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.370993; t1_loo RMSE=0.385823; t2_etf RMSE=0.242728; t2_loo RMSE=0.264172",
+      "updated_at_utc": "2026-07-30T14:07:45.720188Z"
+    },
+    {
+      "key": "C-S3-L20",
+      "label": "V3-S3 20-session stale-event control",
+      "order": 13,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371606; t1_loo RMSE=0.385832; t2_etf RMSE=0.241935; t2_loo RMSE=0.264277",
+      "updated_at_utc": "2026-07-30T14:07:55.962466Z"
+    },
+    {
+      "key": "C-S2-WS",
+      "label": "V3-S2 fixed wrong-stock semantic control",
+      "order": 14,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371264; t1_loo RMSE=0.386264; t2_etf RMSE=0.243445; t2_loo RMSE=0.264694",
+      "updated_at_utc": "2026-07-30T14:08:04.246883Z"
+    },
+    {
+      "key": "C-S3-WS",
+      "label": "V3-S3 fixed wrong-stock semantic control",
+      "order": 15,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.372083; t1_loo RMSE=0.386347; t2_etf RMSE=0.241913; t2_loo RMSE=0.264238",
+      "updated_at_utc": "2026-07-30T14:08:14.871563Z"
+    },
+    {
+      "key": "C-S2-PERM",
+      "label": "V3-S2 date-sector semantic permutation control",
+      "order": 16,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.370796; t1_loo RMSE=0.385722; t2_etf RMSE=0.243117; t2_loo RMSE=0.264104",
+      "updated_at_utc": "2026-07-30T14:08:23.521767Z"
+    },
+    {
+      "key": "C-S3-PERM",
+      "label": "V3-S3 date-sector semantic permutation control",
+      "order": 17,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371453; t1_loo RMSE=0.385750; t2_etf RMSE=0.241630; t2_loo RMSE=0.263773",
+      "updated_at_utc": "2026-07-30T14:08:34.464400Z"
+    },
+    {
+      "key": "C-S2-LONG",
+      "label": "V3-S2 description-length-at-least-150 sensitivity",
+      "order": 18,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371315; t1_loo RMSE=0.385551; t2_etf RMSE=0.243604; t2_loo RMSE=0.262567",
+      "updated_at_utc": "2026-07-30T14:08:43.229226Z"
+    },
+    {
+      "key": "C-S3-LONG",
+      "label": "V3-S3 description-length-at-least-150 sensitivity",
+      "order": 19,
+      "status": "complete",
+      "summary": "t1_etf RMSE=0.371695; t1_loo RMSE=0.386000; t2_etf RMSE=0.242355; t2_loo RMSE=0.263122",
+      "updated_at_utc": "2026-07-30T14:08:54.499271Z"
+    }
+  ],
+  "experiment_id": "quant-deterministic-news-v3-w17-lite",
+  "failed_gate_override": true,
+  "protocol_sha256": "2455e3a1bbef5ac9b358e7f0aaa92ed209f51cee2a0936de4093e23799c53def",
+  "semantic_gate_passed": false
+}

@@ -472,18 +472,39 @@ CUDA float16 smoke completed on the RTX 3070 Ti with no failure or truncation.
 The GPT-5.6 Sol R70 offline Batch, adjudication, and aggregation pipeline has a
 final hash-bound full-corpus preflight covering 933,804 requests in 934
 conservative files.
-Neither pipeline has produced a complete article-inference corpus or daily
-semantic panel, so no FLAN/GPT downstream semantic model was trained. GPT
-remains an explicitly future-contaminated oracle design rather than OOS
-evidence. No paid call has been made, and any pilot/full run remains gated by an API
-credential, licensed-text confirmation, an explicit request budget, and
-separate user authorization. The redesign separates direct,
+Neither full v2 pipeline has produced a complete article-inference corpus or
+daily semantic panel, so no full-v2 FLAN/GPT downstream semantic model was
+trained. GPT remains an explicitly future-contaminated oracle design rather
+than OOS evidence. No paid call has been made, and any pilot/full run remains
+gated by an API credential, licensed-text confirmation, an explicit request
+budget, and separate user authorization. The redesign separates direct,
 peer-idiosyncratic, sector-common, and macro-common articles; removes raw
 coverage/source proxies from the primary matrix; and keeps ordinary Massive,
 retrospective Benzinga, and prospective versioned panels distinct. See the
 [final v2 comparison](experiments/quant_deterministic_news/v2/training/comparisons/final/RESULTS.md).
 The exact construction commands and fail-closed completion gates are in the
 [semantic construction runbook](experiments/quant_deterministic_news/v2/training/semantic/CONSTRUCTION_RUNBOOK.md).
+
+The full v2 workloads are now deferred on compute/cost grounds. The separate
+[cost-bounded semantic v3 design](experiments/quant_deterministic_news/v3/README.md)
+keeps all prior contracts intact while defining `WL17__flan_t5_xl`,
+`G40__gpt_5_6_sol`, and a later `R70-Lite__gpt_5_6_sol`. The exact K-16 FLAN
+arm has now completed all 50,488 article inferences with zero failures and
+retains 97.3261% of assignment weight. Canonical/reversed event labels agreed
+for only 65.1244% of articles, below the frozen 85% stability gate, so its
+27,510-row daily panel and every downstream fit remain exploratory.
+
+The complete matched S0-S4 ladder and ten controls/sensitivities are recorded
+in the
+[v3 training report](experiments/quant_deterministic_news/v3/training/comparisons/final/RESULTS.md).
+Q+WL17 improved matched Q56 only for T2 ETF (1.20% incremental MSE
+\(R^2\)) and worsened the other three targets. That one gain failed the
+coverage, stale, wrong-stock, and date-sector-permutation usefulness gate.
+The validation-gated shallow XGBoost model ran only for T2 ETF and improved
+MSE by 6.94% versus linear Q+D2, but it cannot isolate semantic value without
+a matched Q+D2-only XGBoost. No linear target passed every useful-semantic
+gate. GPT G40 and R70-Lite remain unconstructed, paid, future-contaminated
+oracle designs.
 
 The separate full-text benchmark retrieved 399 documents in 554 attempts
 covering 553 unique public URLs from a 5,180-document queue, then selected 300

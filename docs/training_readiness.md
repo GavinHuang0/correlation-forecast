@@ -33,6 +33,9 @@ Large Parquet panels, predictions, and fit records are generated locally under
 | `W17__gpt_5_6_sol` | Not pursued in the current construction pass | Its future design remains deterministic coarsening from accepted GPT R70 fine labels; no daily panel or training exists |
 | `R70__flan_t5_xl` | Not pursued in the current construction pass | Fine taxonomy exists, but no pinned fine-XL workflow, calibration, daily panel, or training exists |
 | `R70__gpt_5_6_sol` | Offline construction pipeline ready; paid inference blocked | Final hash-bound preflight passed at 933,804 two-view requests, 3,613,888,330 bytes, maximum request size 4,458 bytes, and 934 conservative files; no paid call or authorization gates satisfied |
+| `WL17__flan_t5_xl` v3 | Complete exploratory failed-gate run | 50,488/50,488 articles inferred with zero failures; 65.1244% choice-order agreement missed the 85% gate; 27,510 daily rows built; S0-S4 plus ten controls/sensitivities trained; no linear target passed every useful-semantic gate |
+| `G40__gpt_5_6_sol` v3 | Ordered global-only design; construction contract incomplete | Forty named article-global semantic columns; request/acceptance/aggregation rules still require a freeze and paid pilot |
+| `R70-Lite__gpt_5_6_sol` v3 | Cost plan only; schema incomplete | Factorized target projection remains blocked on an ordered feature contract, projection/conflict rules, and universal grounding |
 | Economic hedge evaluation and dependence-aware inference | Not yet run | Forecast metrics are complete; economic/statistical follow-up remains |
 
 ## Target design
@@ -353,7 +356,13 @@ has now produced and trained the available D2-Normalized deterministic branch.
 No target passed every final falsification gate. The shared semantic input
 corpus and the FLAN W17 and GPT R70 construction pipelines now exist, but
 full-corpus semantic inference, daily W17/R70 panels, and downstream semantic
-training have not occurred.
+training have not occurred for the full v2 contracts. Those full workloads
+remain deferred. The
+[v3 cost-bounded semantic design](../experiments/quant_deterministic_news/v3/README.md)
+preserves v2 and specifies separately named W17-Lite, ordered global-only G40,
+and schema-incomplete factorized R70-Lite arms. The FLAN W17-Lite arm is now
+complete through inference, daily aggregation, matched training, ten controls,
+and final comparison; the GPT arms remain unconstructed.
 
 ## V2 news ladder
 
@@ -419,6 +428,43 @@ evaluation, preserves T1/T2 × ETF/LOO, and refits matched Q controls on each
 eligible row set. It repeats the 20-session stale, fixed within-sector
 wrong-stock, semantic coverage-only, and label-permutation controls. Residual
 correction remains deferred.
+
+## V3 cost-bounded semantic execution
+
+V3 is a separately versioned, cost-bounded successor to the unexecuted full v2
+semantic arms.
+Its machine-readable design is
+[`config/news_semantic_lite_design_v1.json`](../config/news_semantic_lite_design_v1.json).
+
+| V3 design | Primary workload | Fallback / audit | State |
+|---|---|---|---|
+| `WL17__flan_t5_xl` | Materialized role-balanced top-16 direct/sector/macro union: 50,488 unique articles | Canonical, long-description, stale, wrong-stock, coverage-only, and date-sector permutation comparisons | Inference, 17 daily features, joins, training, and final comparison complete |
+| `G40__gpt_5_6_sol` | One global semantic annotation for 55,197 unique articles | Fixed 5,520-item second-view audit | Designed only |
+| `R70-Lite__gpt_5_6_sol` | Future factorized article graph plus target projection | Schema, count, projection, and grounding rules still TBD | Design incomplete |
+
+The FLAN all-history nominal estimate is 12.945 hours and 14.239 hours after
+the required 10% reserve, so it currently fails the 13.5-hour
+gate. Top-21 is the largest profiled selector below it at 13.44 reserved hours
+and 98.57% of aggregation weight; top-16 and top-8 provide 13.03- and
+11.66-hour headroom modes. All preserve 917 dates and every candidate-bearing
+stock-day. Scope is derived from the
+mutually exclusive C/I/P roles. The new FLAN field is a four-way event group
+with `other_or_unclear` as abstention; calibrated low-text information status
+is excluded. GPT remains `gpt-5.6-sol` only and retains the
+future-knowledge-contaminated oracle label. Neither G40 nor future factorized
+R70-Lite is semantically equivalent to exact v2 R70.
+
+W17-Lite's canonical/reversed event-label agreement was 65.1244%, below its
+frozen 85% gate, so the user-authorized training is exploratory only. Q+WL17
+improved matched Q56 only for T2 ETF (1.2015% incremental MSE \(R^2\), paired
+95% interval `[-0.001196, -0.000332]`) and worsened the other three targets.
+That T2 ETF gain did not beat the stale-event or date-sector permutation
+controls and did not decisively beat coverage-only or wrong-stock controls.
+Q+D2+WL17 passed no complete useful-semantic gate. The validation-gated
+Q+D2+WL17 XGBoost fit ran only for T2 ETF and improved MSE by 6.9374% versus
+linear Q+D2, but it does not isolate semantic value because there is no
+matched Q+D2-only XGBoost. See the
+[final v3 report](../experiments/quant_deterministic_news/v3/training/comparisons/final/RESULTS.md).
 
 ## Model definitions
 

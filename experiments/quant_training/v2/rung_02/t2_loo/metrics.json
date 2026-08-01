@@ -1,0 +1,62 @@
+[
+  {
+    "fisher_z_mae": 0.19598775151419245,
+    "fisher_z_rmse": 0.25015284397279397,
+    "model": "core_dense_elastic_net",
+    "oos_r2_vs_persistence": 0.19288668613082383,
+    "raw_correlation_mae": 0.10377811967861347,
+    "raw_correlation_rmse": 0.14131113544549306,
+    "rows": 42030,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.1965212297714865,
+    "fisher_z_rmse": 0.2513431448846845,
+    "model": "core_dense_lasso",
+    "oos_r2_vs_persistence": 0.18518744623142436,
+    "raw_correlation_mae": 0.10384165241665626,
+    "raw_correlation_rmse": 0.14128028363204448,
+    "rows": 42030,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.19605649769494854,
+    "fisher_z_rmse": 0.2502518065183801,
+    "model": "core_dense_volatility_elastic_net",
+    "oos_r2_vs_persistence": 0.19224795833340858,
+    "raw_correlation_mae": 0.10381407735563562,
+    "raw_correlation_rmse": 0.14136307616476027,
+    "rows": 42030,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.19610547704080564,
+    "fisher_z_rmse": 0.250174688546778,
+    "model": "core_dense_volatility_extended_elastic_net",
+    "oos_r2_vs_persistence": 0.19274571778496752,
+    "raw_correlation_mae": 0.10403029616848841,
+    "raw_correlation_rmse": 0.1414956441812911,
+    "rows": 42030,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.1969947594224086,
+    "fisher_z_rmse": 0.25172816903158024,
+    "model": "core_dense_volatility_extended_lasso",
+    "oos_r2_vs_persistence": 0.1826891660492359,
+    "raw_correlation_mae": 0.10443028878178594,
+    "raw_correlation_rmse": 0.1418811765828297,
+    "rows": 42030,
+    "target": "t2_loo"
+  },
+  {
+    "fisher_z_mae": 0.19659179192551837,
+    "fisher_z_rmse": 0.2514167456498617,
+    "model": "core_dense_volatility_lasso",
+    "oos_r2_vs_persistence": 0.1847101735524035,
+    "raw_correlation_mae": 0.10389127640238442,
+    "raw_correlation_rmse": 0.14134971471895158,
+    "rows": 42030,
+    "target": "t2_loo"
+  }
+]

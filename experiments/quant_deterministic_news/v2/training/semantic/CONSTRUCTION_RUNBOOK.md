@@ -7,6 +7,13 @@ This runbook covers only `W17__flan_t5_xl` and `R70__gpt_5_6_sol`. It does not
 promote the retrospective archive to point-in-time evidence, authorize a paid
 GPT request, or authorize Q+L/Q+D+L training.
 
+> **Execution disposition (2026-07-29):** retain this runbook for
+> reproducibility, but do not use the full commands as the default next run.
+> The workloads are deferred on compute/cost grounds. Use the separately named
+> [cost-bounded v3 design](../../../v3/README.md) for the current W17-Lite,
+> global-only G40, and later schema-incomplete R70-Lite proposals. No v3
+> inference or training is authorized by that design.
+
 ## Frozen inputs and completed gates
 
 - Shared assignments:

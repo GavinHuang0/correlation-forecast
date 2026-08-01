@@ -1,0 +1,112 @@
+{
+  "expected_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "failed_semantic_gate_override_confirmed": true,
+  "folds_exact": true,
+  "observed_rows": {
+    "t1_etf": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t1_loo": {
+      "fold_1": 3660,
+      "fold_2": 3840,
+      "fold_3": 3690
+    },
+    "t2_etf": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    },
+    "t2_loo": {
+      "fold_1": 3540,
+      "fold_2": 3720,
+      "fold_3": 3570
+    }
+  },
+  "outer_evaluation_excluded_from_tuning": true,
+  "prediction_bounds_valid": true,
+  "prediction_keys_unique": true,
+  "predictions_finite": true,
+  "row_counts_match": true,
+  "semantic_gate_passed": false,
+  "source_hashes_verified": true,
+  "status": "passed",
+  "targets_exact": true,
+  "train_validation_only_final_preprocessing": true,
+  "training_fitted_preprocessing_for_validation_selection": true,
+  "validation_loss_hyperparameter_selection": true,
+  "validation_prediction_review": {
+    "expected_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t1_loo": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t2_etf": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      },
+      "t2_loo": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      }
+    },
+    "folds_exact": true,
+    "observed_rows": {
+      "t1_etf": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t1_loo": {
+        "fold_1": 3840,
+        "fold_2": 3660,
+        "fold_3": 3840
+      },
+      "t2_etf": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      },
+      "t2_loo": {
+        "fold_1": 3720,
+        "fold_2": 3540,
+        "fold_3": 3720
+      }
+    },
+    "prediction_bounds_valid": true,
+    "prediction_keys_unique": true,
+    "predictions_finite": true,
+    "row_counts_match": true,
+    "targets_exact": true
+  }
+}

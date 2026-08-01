@@ -1,0 +1,45 @@
+{
+  "metrics": [
+    {
+      "fisher_z_mae": 0.3777690312462344,
+      "fisher_z_rmse": 0.47083335578988045,
+      "model": "dcc_garch",
+      "oos_r2_vs_persistence": -0.053157638505098026,
+      "raw_correlation_mae": 0.1766851603095128,
+      "raw_correlation_rmse": 0.21135767300036612,
+      "rows": 44058,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.3627280163777919,
+      "fisher_z_rmse": 0.4522110817516176,
+      "model": "dcc_garch",
+      "oos_r2_vs_persistence": 0.06567336308275917,
+      "raw_correlation_mae": 0.18812040946997372,
+      "raw_correlation_rmse": 0.22843835226215806,
+      "rows": 44058,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.27782555113279045,
+      "fisher_z_rmse": 0.3499485565189695,
+      "model": "dcc_garch",
+      "oos_r2_vs_persistence": -0.7596979386587348,
+      "raw_correlation_mae": 0.13191571075020567,
+      "raw_correlation_rmse": 0.15456343265426709,
+      "rows": 42030,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.2633159714897322,
+      "fisher_z_rmse": 0.32955133789369595,
+      "model": "dcc_garch",
+      "oos_r2_vs_persistence": -0.400779508937509,
+      "raw_correlation_mae": 0.13905206532955167,
+      "raw_correlation_rmse": 0.16546099617179552,
+      "rows": 42030,
+      "target": "t2_loo"
+    }
+  ],
+  "status": "complete"
+}

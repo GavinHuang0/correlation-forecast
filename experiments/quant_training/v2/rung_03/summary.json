@@ -1,0 +1,55 @@
+{
+  "metrics": [
+    {
+      "fisher_z_mae": 0.28373068563760306,
+      "fisher_z_rmse": 0.3577253443613233,
+      "model": "xgboost",
+      "oos_r2_vs_persistence": 0.39206330536017353,
+      "raw_correlation_mae": 0.13218104183808121,
+      "raw_correlation_rmse": 0.18944826359809896,
+      "rows": 44058,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.2897732439448452,
+      "fisher_z_rmse": 0.36566550792023256,
+      "model": "xgboost",
+      "oos_r2_vs_persistence": 0.3890800296288647,
+      "raw_correlation_mae": 0.15056929210479214,
+      "raw_correlation_rmse": 0.21176363780266802,
+      "rows": 44058,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.18339695219110416,
+      "fisher_z_rmse": 0.23298548645110306,
+      "model": "elastic_xgboost_ensemble",
+      "oos_r2_vs_persistence": 0.22001284908617713,
+      "raw_correlation_mae": 0.0866117928877945,
+      "raw_correlation_rmse": 0.11798172642513312,
+      "rows": 42030,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.1845443689774235,
+      "fisher_z_rmse": 0.2338264171467329,
+      "model": "xgboost",
+      "oos_r2_vs_persistence": 0.21437216418827454,
+      "raw_correlation_mae": 0.08766676896987992,
+      "raw_correlation_rmse": 0.11999195226408879,
+      "rows": 42030,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.1923876972490069,
+      "fisher_z_rmse": 0.24441985385823953,
+      "model": "xgboost",
+      "oos_r2_vs_persistence": 0.22945752757117233,
+      "raw_correlation_mae": 0.1026697296125475,
+      "raw_correlation_rmse": 0.1404786614701804,
+      "rows": 42030,
+      "target": "t2_loo"
+    }
+  ],
+  "status": "complete"
+}

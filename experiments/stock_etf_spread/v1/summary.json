@@ -1,0 +1,202 @@
+{
+  "artifacts": {
+    "comparisons": {
+      "path": "outputs\\stock_etf_spread\\v1\\paired_bootstrap.parquet",
+      "sha256": "a83f1334f592fd23a0d637ffd70320771297575114dc3117483271b8a3a1e858"
+    },
+    "daily_positions": {
+      "path": "outputs\\stock_etf_spread\\v1\\daily_positions.parquet",
+      "sha256": "deddf23fb3a20f495ce557dd6c692653f2eef9a7c91e608ad727267c46eac19b"
+    },
+    "daily_returns": {
+      "path": "outputs\\stock_etf_spread\\v1\\daily_returns.parquet",
+      "sha256": "061f5fca1a6741b1b59bcba4e62b958bcf02e0a0ff6761220eff6d78bcd9a4a4"
+    },
+    "metrics": {
+      "path": "outputs\\stock_etf_spread\\v1\\metrics.parquet",
+      "sha256": "f02895beb4981f6b2beb615c797d0a6aca9d8a715c780898106e1c40d200823a"
+    },
+    "signals": {
+      "path": "outputs\\stock_etf_spread\\v1\\signals.parquet",
+      "sha256": "794489002e901e564475eba6492a7dbf6d9c9b980ae91c09783db3d98d7b7c2b"
+    },
+    "sleeve_positions": {
+      "path": "outputs\\stock_etf_spread\\v1\\sleeve_positions.parquet",
+      "sha256": "8762c0c1182fa4436e400404f9927bb179ff46365b584c4178b0895030422ea9"
+    }
+  },
+  "claim_boundary": [
+    "The correlation models were selected on the same outer periods used here.",
+    "Results are development evidence, not an untouched confirmatory test.",
+    "The strategy uses quant-only forecasts; retrospective news features are excluded."
+  ],
+  "generated_at_utc": "2026-07-30T04:53:02.667359Z",
+  "inputs": {
+    "predictions": {
+      "path": "outputs/quant_training/v1/rung_03/predictions.parquet",
+      "sha256": "9c5355aad392c4902838d407748ba8daf39a8ae7cef02d3c4577f604898a857e"
+    },
+    "protocol": {
+      "path": "config\\stock_etf_spread_backtest_v1.json",
+      "sha256": "190f4a469499937b8b9f8ce5edaee5d5df227a2cde1e3724d1fe4870dcf3d875"
+    },
+    "regular_bar_hashes_verified": true
+  },
+  "paired_bootstrap": [
+    {
+      "annualized_mean_return_difference": 0.037775152276173174,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.008602290264615802,
+      "bootstrap_ci_upper": 0.09772842224943186,
+      "bootstrap_probability_primary_better": 0.95,
+      "comparator": "unconditional",
+      "cost_bps_per_side": 2.0,
+      "dates": 373,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.04710069822160728,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.015376137902475166,
+      "bootstrap_ci_upper": 0.1227534277168308,
+      "bootstrap_probability_primary_better": 0.93,
+      "comparator": "historical_level",
+      "cost_bps_per_side": 2.0,
+      "dates": 373,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.04176400009857773,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.009898144812511145,
+      "bootstrap_ci_upper": 0.10203104033129709,
+      "bootstrap_probability_primary_better": 0.938,
+      "comparator": "ml_level",
+      "cost_bps_per_side": 2.0,
+      "dates": 373,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    },
+    {
+      "annualized_mean_return_difference": 0.0620678590018934,
+      "block_sessions": 10,
+      "bootstrap_ci_lower": -0.025554502059153092,
+      "bootstrap_ci_upper": 0.1734130694673323,
+      "bootstrap_probability_primary_better": 0.927,
+      "comparator": "ml_weakening",
+      "cost_bps_per_side": 2.0,
+      "dates": 373,
+      "primary": "ml_strengthening",
+      "resamples": 2000
+    }
+  ],
+  "primary_cost_bps_per_side": 2.0,
+  "primary_cost_metrics": [
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.039412288878279175,
+      "annualized_sharpe": -1.2038208594006383,
+      "annualized_transaction_cost": 0.0721714208203628,
+      "annualized_turnover": 360.857104101814,
+      "annualized_volatility": 0.03273933041657202,
+      "compounded_return": -0.0574178698700647,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.46112600536193027,
+      "dates": 373,
+      "maximum_drawdown": -0.08893599614417036,
+      "mean_daily_return": -0.0001563979717392031,
+      "mean_gross_exposure": 0.7159863176623293,
+      "newey_west_t_stat": -1.3641839964913816,
+      "scope": "pooled",
+      "variant": "historical_level"
+    },
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.03407559075524964,
+      "annualized_sharpe": -1.0326762752014,
+      "annualized_transaction_cost": 0.07243269943617917,
+      "annualized_turnover": 362.1634971808959,
+      "annualized_volatility": 0.03299735994090111,
+      "compounded_return": -0.04995337373567532,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.46648793565683644,
+      "dates": 373,
+      "maximum_drawdown": -0.0996403703042753,
+      "mean_daily_return": -0.00013522059823511764,
+      "mean_gross_exposure": 0.7185783674224124,
+      "newey_west_t_stat": -1.132530903714869,
+      "scope": "pooled",
+      "variant": "ml_level"
+    },
+    {
+      "active_day_fraction": 0.9919571045576407,
+      "annualized_arithmetic_return": 0.007688409343328113,
+      "annualized_sharpe": 0.179984805502214,
+      "annualized_transaction_cost": 0.0719344212746593,
+      "annualized_turnover": 359.6721063732965,
+      "annualized_volatility": 0.04271699114753072,
+      "compounded_return": 0.010083575627104047,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.48257372654155495,
+      "dates": 373,
+      "maximum_drawdown": -0.07201594667243272,
+      "mean_daily_return": 3.050956088622267e-05,
+      "mean_gross_exposure": 0.7136351316930486,
+      "newey_west_t_stat": 0.21351108714513187,
+      "scope": "pooled",
+      "variant": "ml_strengthening"
+    },
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.0543794496585653,
+      "annualized_sharpe": -1.3356276904915785,
+      "annualized_transaction_cost": 0.07359423166466113,
+      "annualized_turnover": 367.97115832330564,
+      "annualized_volatility": 0.0407145269940839,
+      "compounded_return": -0.0784726638426646,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.45308310991957107,
+      "dates": 373,
+      "maximum_drawdown": -0.10348152493573215,
+      "mean_daily_return": -0.00021579146689906865,
+      "mean_gross_exposure": 0.7301015046097334,
+      "newey_west_t_stat": -1.4434079518214005,
+      "scope": "pooled",
+      "variant": "ml_weakening"
+    },
+    {
+      "active_day_fraction": 1.0,
+      "annualized_arithmetic_return": -0.030086742932845068,
+      "annualized_sharpe": -0.9348606022792681,
+      "annualized_transaction_cost": 0.07283618708219367,
+      "annualized_turnover": 364.1809354109683,
+      "annualized_volatility": 0.032183132821611136,
+      "compounded_return": -0.04428974112564843,
+      "cost_bps_per_side": 2.0,
+      "daily_hit_rate": 0.4718498659517426,
+      "dates": 373,
+      "maximum_drawdown": -0.08865040630998267,
+      "mean_daily_return": -0.00011939183703509947,
+      "mean_gross_exposure": 0.7225812210535085,
+      "newey_west_t_stat": -1.0706721262224093,
+      "scope": "pooled",
+      "variant": "unconditional"
+    }
+  ],
+  "primary_variant": "ml_strengthening",
+  "protocol_version": "1.0",
+  "sample": {
+    "first_forecast_date": "2025-01-02",
+    "folds": [
+      "fold_1",
+      "fold_2",
+      "fold_3"
+    ],
+    "forecast_dates": 361,
+    "last_forecast_date": "2026-06-24",
+    "stocks": 30
+  },
+  "status": "complete_exploratory_development_backtest"
+}

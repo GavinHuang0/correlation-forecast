@@ -1,0 +1,72 @@
+{
+  "RESULTS.md": {
+    "bytes": 8221,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/RESULTS.md",
+    "sha256": "d38490c3286369d964055ec08d9ea240a52395a327f20508cdaa309ea1fcfca7"
+  },
+  "bootstrap_loss_deltas.parquet": {
+    "bytes": 1207655,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/bootstrap_loss_deltas.parquet",
+    "sha256": "1c8874d0530eba3348e77fc6a56aebaf6022ebb3c5fc6947460e5d0b0d7f1b6b"
+  },
+  "comparison_specs.json": {
+    "bytes": 3341,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/comparison_specs.json",
+    "sha256": "d0eeaa57abf5e4c87268cbcd351e673c62c9a76be29ca45ac26aee7a0329e7b3"
+  },
+  "dependencies.json": {
+    "bytes": 72128,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/dependencies.json",
+    "sha256": "df86e8dead8bd24bb967ba0684e6a4f46babfd22ccf25d7b014a0725118e3e4f"
+  },
+  "elastic_net_wlite_coefficient_stability.parquet": {
+    "bytes": 19708,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/elastic_net_wlite_coefficient_stability.parquet",
+    "sha256": "92ea12ae42880695f3c71a62827c4fe520a514020faed1d8a4a3101559350e1d"
+  },
+  "elastic_net_wlite_stability_summary.json": {
+    "bytes": 2849,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/elastic_net_wlite_stability_summary.json",
+    "sha256": "ebbdd9a93b82eb2cda22e565177af0ff28b0072bb2c11503ddae8aa4768bdda1"
+  },
+  "fold_comparisons.parquet": {
+    "bytes": 14344,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/fold_comparisons.parquet",
+    "sha256": "0611b4f47d0ecb818cb5c6d996e181925a2810a2dd78ad5aba24d49a68b5a34b"
+  },
+  "manifest.json": {
+    "bytes": 83984,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/manifest.json",
+    "sha256": "055f6646ab57756a5c3a440c40ed9c0bc754119629be663e9a11630add4c595b"
+  },
+  "model_metrics.parquet": {
+    "bytes": 8046,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/model_metrics.parquet",
+    "sha256": "a0e9c12f7069ed88e0b4867c72cb16985d058265fb4e6bb5cfa1f7d6122fa434"
+  },
+  "paired_comparisons.parquet": {
+    "bytes": 17695,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/paired_comparisons.parquet",
+    "sha256": "ea753d2316e1ae5fd9a8b6bc9d6c0a87d3316889b820abe1b6ba5d82bb4fa142"
+  },
+  "review.json": {
+    "bytes": 1018,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/review.json",
+    "sha256": "aa6af4bdd932dbb69f3d41597f283ac9a751dd459bd7376f517ffb8107895a3c"
+  },
+  "summary.json": {
+    "bytes": 27912,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/summary.json",
+    "sha256": "70da2592d1fbd7f320406950006c48df6294b09ec508fc426ada9fe9cc69d613"
+  },
+  "useful_semantic_gates.json": {
+    "bytes": 13285,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/useful_semantic_gates.json",
+    "sha256": "147ab78ffe4eff19752d2b2848131d25ea447fd1814a802f0c57217c5d5a63aa"
+  },
+  "xgboost_validation_gate_audit.json": {
+    "bytes": 4063,
+    "path": "outputs/quant_deterministic_news/v3/comparisons/final/xgboost_validation_gate_audit.json",
+    "sha256": "0861919378fd652f58fdff582e07dd0c202fb3d0fb7a199c4386f9d9fcc326a0"
+  }
+}

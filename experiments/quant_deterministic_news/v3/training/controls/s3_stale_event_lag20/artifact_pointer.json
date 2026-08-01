@@ -1,0 +1,6 @@
+{
+  "bundle": "C-S3-L20",
+  "manifest_path": "outputs/quant_deterministic_news/v3/controls/s3_stale_event_lag20/manifest.json",
+  "manifest_sha256": "51998715367d99a439c100b86a5e5323b595328eadc0fcfb3a27211590ca9c91",
+  "protocol_sha256": "2455e3a1bbef5ac9b358e7f0aaa92ed209f51cee2a0936de4093e23799c53def"
+}

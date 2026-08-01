@@ -17,6 +17,14 @@ Current FLAN prompt/parser contract: `flan-stock-sector-news-v0.2.0`
 > articles, and 27,510 stock-days. It is an input/assignment corpus, not a
 > labeled semantic panel: no complete W17 or R70 article inference, daily L
 > panel, or semantic downstream model exists.
+>
+> The unexecuted full workloads remain frozen in v2. A separately named,
+> documentation-only
+> [cost-bounded v3 design](../experiments/quant_deterministic_news/v3/README.md)
+> proposes a four-way FLAN event-group contract, an ordered 40-column GPT
+> global-semantic subset, and a later factorized GPT R70-Lite event graph.
+> R70-Lite's ordered target-relative contract is not frozen, and neither Lite
+> arm modifies this schema or claims to be exact R70.
 
 This protocol measures semantic properties of a supplied financial-news headline and summary for stock-sector coupling research. It does not ask either language model to forecast returns, volatility, correlation, beta, or trading outcomes.
 

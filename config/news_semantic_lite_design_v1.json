@@ -1,0 +1,559 @@
+{
+  "design_version": "news-semantic-lite-design-v1",
+  "status": "documentation_only_no_inference_no_feature_panel_no_training",
+  "design_date": "2026-07-29",
+  "preserved_contracts": {
+    "flan_full_arm": "W17__flan_t5_xl",
+    "gpt_full_arm": "R70__gpt_5_6_sol",
+    "full_contracts_modified": false,
+    "full_artifacts_modified": false
+  },
+  "evidence": {
+    "length_experiment_summary": {
+      "path": "experiments/flan_t5_xl/length_stratified_massive_v1/summary.json",
+      "sha256": "fb9d3171e86316880ad04afb25adaea88784e115a1d3d10370d5452aac07aff7",
+      "has_independent_reference_labels": false
+    },
+    "length_experiment_analysis": {
+      "path": "outputs/flan_t5_xl/length_stratified_massive_v1/analysis.json",
+      "sha256": "a1ef753dd6e2d5d362168ca6584adf233051369db53480a4781f8a6f387733df"
+    },
+    "semantic_corpus_manifest": {
+      "path": "data/features/news_semantic/massive_v2/manifest.json",
+      "sha256": "0c37cf044a4e5e9942398f332db4c09f6746ba7cd6a9af2ae2656e3802a30daf"
+    },
+    "gpt_r70_preflight": {
+      "path": "data/features/news_semantic/massive_v2/gpt_r70/preflight.json",
+      "sha256": "79a8e9aa3e19433d7917371f9e994a2a3ba34f3602da6659a09050c73ab3e96f"
+    }
+  },
+  "corpus_profile": {
+    "article_target_assignments": 466902,
+    "assigned_unique_articles": 55197,
+    "forecast_dates": 917,
+    "stocks": 30,
+    "stock_days": 27510,
+    "stock_days_without_candidates": 204,
+    "headline_only_unique_articles": 848,
+    "description_1_149_unique_articles": 21776,
+    "description_ge_150_unique_articles": 32573
+  },
+  "flan_w17_lite": {
+    "arm_id": "WL17__flan_t5_xl",
+    "contract_id": "weak-news-semantics-lite-v1",
+    "model_id": "google/flan-t5-xl",
+    "model_revision": "7d6315df2c2fb742f0f5b556879d730926ca9001",
+    "target_feature_count": 17,
+    "inference_fields": [
+      "event_group"
+    ],
+    "event_group": {
+      "target_invariant": true,
+      "choice_order_averaging": true,
+      "labels": {
+        "firm_operating_financial": [
+          "earnings_guidance",
+          "product_demand",
+          "supply_capacity"
+        ],
+        "policy_corporate": [
+          "regulation_legal",
+          "corporate_analyst"
+        ],
+        "macro_market": [
+          "macro_market"
+        ],
+        "other_or_unclear": [
+          "other_or_unclear"
+        ]
+      },
+      "abstention_labels": [
+        "other_or_unclear"
+      ],
+      "acceptance": "canonical_and_reversed_predictions_must_agree_and_be_predictive",
+      "inherits_v1_1_calibration": false
+    },
+    "deterministic_scope": {
+      "source": "complete_pre_cutoff_v2_candidate_roles",
+      "classes": [
+        "target_idiosyncratic",
+        "peer_idiosyncratic",
+        "common_reference_category"
+      ],
+      "predictive_classes": [
+        "target_idiosyncratic",
+        "peer_idiosyncratic"
+      ],
+      "llm_generated": false
+    },
+    "deterministic_status_cues": {
+      "multi_hot": true,
+      "bounded_model_text_only": true,
+      "dictionary_state": "must_be_frozen_and_hashed_before_construction",
+      "families": [
+        "confirmed_action",
+        "scheduled_expected",
+        "rumor_unconfirmed",
+        "analysis_opinion"
+      ],
+      "ambiguous_modal_alone_is_ineligible": true
+    },
+    "ordered_features": [
+      "wlite_event_share_firm_operating_financial",
+      "wlite_event_share_policy_corporate",
+      "wlite_event_share_macro_market",
+      "wlite_route_share_target_idiosyncratic",
+      "wlite_route_share_peer_idiosyncratic",
+      "wlite_rule_status_cue_share_confirmed_action",
+      "wlite_rule_status_cue_share_scheduled_expected",
+      "wlite_rule_status_cue_share_rumor_unconfirmed",
+      "wlite_rule_status_cue_share_analysis_opinion",
+      "wlite_rule_status_cue_conflict_weight_share",
+      "wlite_selection_weight_coverage",
+      "wlite_selected_headline_only_weight_share",
+      "wlite_selected_sub150_weight_share",
+      "wlite_event_order_disagreement_weight_share",
+      "wlite_observed_no_selected_article",
+      "wlite_event_entropy_accepted",
+      "wlite_selected_weight_hhi"
+    ],
+    "audit_only_nonpredictors": [
+      "wlite_route_share_common",
+      "wlite_event_accepted_coverage",
+      "wlite_event_other_or_unclear_weight_share",
+      "wlite_rule_status_cue_all_zero_weight_share",
+      "wlite_invalid_or_truncated_selected_article_count"
+    ],
+    "zero_denominator_contract": {
+      "share_and_concentration_features": "missing",
+      "wlite_event_entropy_accepted": "missing_when_selected_weight_is_zero_else_zero_when_accepted_mass_is_zero_or_has_fewer_than_two_positive_groups",
+      "wlite_observed_no_selected_article": 1,
+      "training": "training_only_imputation_with_the_availability_indicator_preserved"
+    },
+    "derived_feature_formulas": {
+      "wlite_event_entropy_accepted": "m=sum_three_predictive_event_shares;p_c=share_c/m;H=-sum(p_c*log(p_c))/log(3);missing_if_selected_weight_zero;zero_if_m_zero_or_fewer_than_two_positive_groups",
+      "wlite_rule_status_cue_conflict_weight_share": "sum_selected_weight_times_indicator_at_least_two_status_cues_divided_by_selected_weight",
+      "wlite_selected_weight_hhi": "sum_over_selected_assignments_of_squared_normalized_weight"
+    },
+    "text_contract": {
+      "view": "existing_bounded_headline_plus_optional_description_excerpt",
+      "maximum_description_unicode_codepoints": 512,
+      "maximum_flan_input_tokens": 512,
+      "silent_truncation_allowed": false,
+      "force_headline_only": false
+    },
+    "semantic_gate": {
+      "prompt_and_mapping_development_records": 72,
+      "evaluation_records_single_pass": 228,
+      "freeze_prompt_mapping_model_tokenizer_and_code_before_evaluation": true,
+      "valid_untruncated_rate_required": 1.0,
+      "mapped_macro_f1_noninferiority_tolerance": 0.02,
+      "mapped_four_way_and_mapped_seven_way_metrics_must_be_materialized": true,
+      "minimum_choice_order_agreement": 0.85,
+      "native_headline_agreement_is_stability_not_accuracy": true,
+      "reference_quality": "silver_not_human"
+    },
+    "runtime_gate": {
+      "pilot_minimum_articles": 500,
+      "pilot_maximum_articles": 1000,
+      "hard_projected_hours": 13.5,
+      "include_model_load_output_validation_and_io": true,
+      "io_reserve_fraction": 0.1,
+      "selection_cannot_use_forecast_targets_or_downstream_loss": true
+    },
+    "planning_estimates": {
+      "benchmark_elapsed_seconds_from_filesystem_timestamps": 1163,
+      "benchmark_model_inputs": 360,
+      "benchmark_model_field_calls": 1102,
+      "benchmark_candidate_sequences": 11020,
+      "sequence_rate_formula": "1163_seconds_divided_by_11020_candidate_sequences",
+      "full_four_way_unique_articles": 55197,
+      "full_four_way_nominal_hours": 12.945,
+      "full_four_way_hours_with_10_percent_reserve": 14.239,
+      "full_four_way_currently_passes_13_5_hour_gate": false,
+      "budget_max_quota_unique_articles": 52100,
+      "budget_max_quota_four_way_nominal_hours": 12.219,
+      "budget_max_quota_four_way_hours_with_10_percent_reserve": 13.441,
+      "next_K22_hours_with_10_percent_reserve": 13.504,
+      "headroom_quota_unique_articles": 50488,
+      "headroom_quota_four_way_nominal_hours": 11.841,
+      "headroom_quota_four_way_hours_with_10_percent_reserve": 13.025,
+      "safety_quota_unique_articles": 45192,
+      "safety_quota_four_way_nominal_hours": 10.599,
+      "safety_quota_four_way_hours_with_10_percent_reserve": 11.658,
+      "seven_way_fallback_unique_articles": 26197,
+      "seven_way_fallback_nominal_hours": 10.75,
+      "seven_way_fallback_hours_with_20_percent_reserve": 12.9,
+      "duration_is_planning_estimate_not_manifested_benchmark": true
+    },
+    "quota_fallback": {
+      "selection_family": "symmetric_K_direct_per_stock_day_sector_common_per_sector_day_macro_common_per_date",
+      "direct_definition": "candidate_roles.direct_including_target_idiosyncratic_and_target_common_not_role_I_only",
+      "budget_max_K": 21,
+      "headroom_K": 16,
+      "safety_K": 8,
+      "seven_way_semantic_fallback_K": 2,
+      "rank": [
+        "aggregation_weight_desc",
+        "published_at_utc_desc",
+        "article_id_asc"
+      ],
+      "deduplicate_unique_article_union": true,
+      "budget_max_profile": {
+        "profiled_unique_articles": 52100,
+        "aggregation_weight_mass_retained": 0.985694,
+        "reserved_hours": 13.441,
+        "estimated_gate_margin_hours": 0.059,
+        "requires_fresh_pilot_confirmation": true
+      },
+      "headroom_profile": {
+        "profiled_unique_articles": 50488,
+        "aggregation_weight_mass_retained": 0.973261,
+        "reserved_hours": 13.025
+      },
+      "safety_profile": {
+        "profiled_unique_articles": 45192,
+        "aggregation_weight_mass_retained": 0.91779,
+        "reserved_hours": 11.658
+      },
+      "seven_way_semantic_fallback_profile": {
+        "profiled_unique_articles": 26197,
+        "assignment_row_fraction_retained": 0.501793,
+        "aggregation_weight_mass_retained": 0.64285,
+        "reserved_hours": 12.9,
+        "reserve_fraction": 0.2
+      },
+      "all_forecast_dates_retained": true,
+      "candidate_bearing_stock_days": 27306,
+      "direct_bearing_stock_days": 18534,
+      "all_candidate_bearing_stock_days_represented": true,
+      "all_direct_news_stock_days_represented": true,
+      "choose_largest_predeclared_four_way_K_in_21_16_8_below_runtime_gate": true,
+      "selection_cannot_use_forecast_targets_or_downstream_loss": true
+    },
+    "semantic_fallback": "existing_seven_way_event_family_on_K2_only"
+  },
+  "gpt_r70_cost_plans": {
+    "model_id": "gpt-5.6-sol",
+    "other_llms_allowed": false,
+    "baseline": {
+      "contract_id": "reference-news-semantics-v1",
+      "target_relative": true,
+      "assignments": 466902,
+      "views": 2,
+      "item_annotations": 933804,
+      "recommended_for_execution": false
+    },
+    "recommended": {
+      "primary_arm_id": "G40__gpt_5_6_sol",
+      "contract_relation": "ordered_article_global_40_feature_subset_not_exact_r70_construction_rules_incomplete",
+      "global_unique_article_one_view_items": 55197,
+      "second_view_stratified_audit_fraction": 0.1,
+      "second_view_stratified_audit_items": 5520,
+      "second_view_sample_is_fixed_before_outputs": true,
+      "second_view_is_dataset_level_audit_not_selective_adjudication": true,
+      "primary_view_always_supplies_daily_features": true,
+      "production_agreement_threshold_must_be_frozen_from_paid_pilot": true,
+      "production_audit_failure_invalidates_whole_panel": true,
+      "diagnostic_escalation_items_included_in_planned_total": 0,
+      "planned_total_items": 60717,
+      "pack_size_subject_to_pilot": 8,
+      "approximate_packed_requests": 7590,
+      "reduction_vs_baseline_fraction": 0.935,
+      "all_forecast_dates_retained": true
+    },
+    "globally_reusable_feature_blocks": {
+      "raw_feature_count": 40,
+      "daily_feature_contract_state": "ordered_names_and_count_frozen_but_construction_contract_incomplete",
+      "article_request_schema_state": "existing_v2_field_subset_must_be_frozen_and_pilot_validated",
+      "must_freeze_before_construction": [
+        "target_free_prompt_and_reduced_article_schema",
+        "primary_output_acceptance",
+        "field_applicability",
+        "daily_coverage_denominators",
+        "no_candidate_and_missingness_behavior",
+        "multi_label_channel_aggregation"
+      ],
+      "blocks": [
+        "event_type",
+        "affected_breadth",
+        "explicit_surprise",
+        "information_status",
+        "transmission_channels"
+      ],
+      "ordered_features": [
+        "g40_event_share_earnings",
+        "g40_event_share_guidance",
+        "g40_event_share_product_technology",
+        "g40_event_share_demand_customer_contract",
+        "g40_event_share_supply_chain_capacity",
+        "g40_event_share_regulation_trade_policy",
+        "g40_event_share_analyst_action",
+        "g40_event_share_corporate_action",
+        "g40_event_share_legal_governance_operations",
+        "g40_event_share_macro_market",
+        "g40_event_share_other",
+        "g40_coverage_event_type",
+        "g40_breadth_share_single_firm",
+        "g40_breadth_share_several_same_sector",
+        "g40_breadth_share_cross_sector",
+        "g40_breadth_share_broad_market",
+        "g40_coverage_affected_breadth",
+        "g40_surprise_share_positive",
+        "g40_surprise_share_negative",
+        "g40_surprise_share_mixed",
+        "g40_surprise_share_none",
+        "g40_coverage_explicit_surprise",
+        "g40_status_share_confirmed",
+        "g40_status_share_scheduled_or_expected",
+        "g40_status_share_rumor_or_unconfirmed",
+        "g40_status_share_analysis_or_opinion",
+        "g40_coverage_information_status",
+        "g40_channel_accepted_claim_share_demand",
+        "g40_channel_accepted_claim_share_pricing_margin",
+        "g40_channel_accepted_claim_share_supply_capacity",
+        "g40_channel_accepted_claim_share_technology_product",
+        "g40_channel_accepted_claim_share_competition",
+        "g40_channel_accepted_claim_share_regulation_trade",
+        "g40_channel_accepted_claim_share_rates_financing",
+        "g40_channel_accepted_claim_share_macro_growth",
+        "g40_channel_accepted_claim_share_geopolitical",
+        "g40_channel_accepted_claim_share_capital_allocation",
+        "g40_channel_accepted_claim_share_legal_operational",
+        "g40_channel_accepted_claim_share_other",
+        "g40_coverage_transmission_channels"
+      ]
+    },
+    "r70_lite_design": {
+      "arm_id": "R70-Lite__gpt_5_6_sol",
+      "schema_state": "incomplete_must_be_frozen_before_construction",
+      "target_feature_count": null,
+      "ordered_target_features": null,
+      "deterministically_projected_blocks": [
+        "relevance",
+        "scope",
+        "target_direction",
+        "sector_direction",
+        "peer_effect",
+        "joint_direction"
+      ],
+      "requires_entity_and_sector_direction_records": true,
+      "universal_exact_text_or_span_grounding_required": true,
+      "unsupported_projection_is_missing_not_zero": true,
+      "must_freeze_before_construction": [
+        "structured_article_schema_and_label_enums",
+        "ordered_daily_feature_names_and_count",
+        "entity_normalization",
+        "target_peer_sector_projection_formulas",
+        "conflict_precedence",
+        "applicability_unknown_and_missingness_rules",
+        "universal_grounding_validation"
+      ]
+    },
+    "options": [
+      {
+        "id": "r70_schema_single_view_all_assignments",
+        "item_annotations": 466902,
+        "reduction_vs_baseline_fraction": 0.5,
+        "recommended": false
+      },
+      {
+        "id": "global40_all_unique_one_view",
+        "item_annotations": 55197,
+        "packed_requests_at_8": 6900,
+        "reduction_vs_baseline_fraction": 0.9409,
+        "recommended": true
+      },
+      {
+        "id": "global40_all_unique_plus_fixed_5520_second_view_audit",
+        "item_annotations": 60717,
+        "packed_requests_at_8": 7590,
+        "reduction_vs_baseline_fraction": 0.935,
+        "recommended": true
+      },
+      {
+        "id": "global40_flan_budget_max_K21_one_view",
+        "item_annotations": 52100,
+        "packed_requests_at_8": 6513,
+        "reduction_vs_baseline_fraction": 0.944207,
+        "recommended": true
+      },
+      {
+        "id": "global40_flan_headroom_K16_one_view",
+        "item_annotations": 50488,
+        "packed_requests_at_8": 6311,
+        "reduction_vs_baseline_fraction": 0.945933,
+        "recommended": true
+      },
+      {
+        "id": "global40_flan_safety_K8_one_view",
+        "item_annotations": 45192,
+        "packed_requests_at_8": 5649,
+        "reduction_vs_baseline_fraction": 0.951604,
+        "recommended": true
+      },
+      {
+        "id": "factorized_global_plus_extractor_visible_direct_followups",
+        "item_annotations": 88961,
+        "packed_requests_at_8": 11121,
+        "reduction_vs_baseline_fraction": 0.9047,
+        "recommended": true
+      },
+      {
+        "id": "factorized_global_plus_all_deterministic_direct_followups",
+        "item_annotations": 130327,
+        "packed_requests_at_8": 16291,
+        "reduction_vs_baseline_fraction": 0.8604,
+        "recommended": false
+      }
+    ],
+    "paid_pilot": {
+      "validates_contract": "G40__gpt_5_6_sol",
+      "initial_unique_source_articles": 300,
+      "maximum_unique_source_articles": 1000,
+      "reference_reasoning_effort": "high",
+      "reference_pack_size": 1,
+      "reference_views_per_article": 2,
+      "initial_reference_annotation_items": 600,
+      "challenger_cells": [
+        {
+          "reasoning_effort": "medium",
+          "pack_size": 1,
+          "views": 1,
+          "annotation_items": 300
+        },
+        {
+          "reasoning_effort": "high",
+          "pack_size": 4,
+          "views": 1,
+          "annotation_items": 300
+        },
+        {
+          "reasoning_effort": "high",
+          "pack_size": 8,
+          "views": 1,
+          "annotation_items": 300
+        },
+        {
+          "reasoning_effort": "medium",
+          "pack_size": 8,
+          "views": 1,
+          "annotation_items": 300
+        }
+      ],
+      "initial_challenger_annotation_items": 1200,
+      "initial_total_annotation_items": 1800,
+      "future_r70_lite_requires_separate_schema_specific_pilot": true,
+      "hard_dollar_and_item_budget_required": true,
+      "licensed_text_confirmation_required": true,
+      "separate_paid_authorization_required": true,
+      "legacy_300_document_fine_schema_is_nonindependent_stability_only": true,
+      "grounding_validation_required_for_projected_or_evidence_bearing_fields": true,
+      "maximum_input_tokens_per_packed_request": 272000,
+      "token_and_retry_headroom_fraction": 0.15
+    },
+    "pricing_snapshot": {
+      "as_of": "2026-07-29",
+      "short_context_standard_usd_per_million_tokens": {
+        "uncached_input": 5.0,
+        "cached_read_input": 0.5,
+        "cache_write_input": 6.25,
+        "billed_output_including_reasoning": 30.0
+      },
+      "short_context_batch_usd_per_million_tokens": {
+        "uncached_input": 2.5,
+        "cached_read_input": 0.25,
+        "cache_write_input": 3.125,
+        "billed_output_including_reasoning": 15.0
+      },
+      "long_context_threshold_input_tokens": 272000,
+      "long_context_multiplier": {
+        "input": 2.0,
+        "output": 1.5
+      },
+      "batch_documented_discount_fraction": 0.5,
+      "batch_completion_window": "24h",
+      "model_source": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+      "pricing_source": "https://developers.openai.com/api/docs/pricing",
+      "batch_source": "https://developers.openai.com/api/docs/guides/batch",
+      "use_published_batch_rates_directly": true,
+      "do_not_apply_a_second_50_percent_reduction": true
+    },
+    "schema_and_packing_profile": {
+      "exact_v2_schema_bytes": 2207,
+      "reduced_schema_and_packing_reductions_are_provisional": true,
+      "must_be_frozen_and_materialized_before_cost_claim": true
+    }
+  },
+  "future_training_ladder": [
+    {
+      "rung": "V3-S0",
+      "inputs": "Q56",
+      "raw_columns": 56
+    },
+    {
+      "rung": "V3-S1",
+      "inputs": "Q56+D2-Normalized",
+      "raw_columns": 86
+    },
+    {
+      "rung": "V3-S2",
+      "inputs": "Q56+WL17__flan_t5_xl",
+      "raw_columns": 73
+    },
+    {
+      "rung": "V3-S3",
+      "inputs": "Q56+D2-Normalized+WL17__flan_t5_xl",
+      "raw_columns": 103
+    },
+    {
+      "rung": "V3-S4",
+      "inputs": "Q56+D2-Normalized+WL17__flan_t5_xl",
+      "estimator": "validation_gated_shallow_xgboost",
+      "raw_columns": 103
+    }
+  ],
+  "future_gpt_training_ladder": [
+    {
+      "rung": "V3-G0",
+      "inputs": "Q56",
+      "raw_columns": 56
+    },
+    {
+      "rung": "V3-G1",
+      "inputs": "Q56+D2-Normalized",
+      "raw_columns": 86
+    },
+    {
+      "rung": "V3-G2",
+      "inputs": "Q56+G40",
+      "raw_columns": 96
+    },
+    {
+      "rung": "V3-G3",
+      "inputs": "Q56+D2-Normalized+G40",
+      "raw_columns": 126
+    },
+    {
+      "rung": "V3-G4",
+      "inputs": "Q56+D2-Normalized+G40",
+      "estimator": "validation_gated_shallow_xgboost",
+      "raw_columns": 126
+    },
+    {
+      "rung_template": "V3-R70L-TBD",
+      "inputs": "Q56_and_optionally_D2_plus_future_frozen_R70_Lite",
+      "raw_columns": null,
+      "state": "blocked_until_ordered_R70_Lite_contract_and_count_are_frozen"
+    }
+  ],
+  "claim_flags": {
+    "point_in_time_version_safe": false,
+    "human_reference_labels": false,
+    "flan_primary_or_confirmatory_eligible": false,
+    "gpt_future_knowledge_contaminated": true,
+    "gpt_confirmatory_eligible": false,
+    "inference_authorized": false,
+    "training_authorized": false
+  }
+}

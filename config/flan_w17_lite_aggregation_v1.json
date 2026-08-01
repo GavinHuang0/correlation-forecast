@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "contract_id": "weak-news-semantics-lite-daily-v1",
+  "status": "frozen_exploratory_aggregation_contract",
+  "source_arm_id": "WL17__flan_t5_xl",
+  "source_contract_id": "weak-news-semantics-lite-v1",
+  "source_profile": "ordinary_massive_retrospective",
+  "selector_k": 16,
+  "weight_contract": {
+    "column": "aggregation_weight",
+    "definition": "exp(-log(2)*article_age_hours/12)/duplication_group_size",
+    "selected_share_denominator": "sum selected assignment weight",
+    "selection_coverage_denominator": "sum all routed candidate assignment weight"
+  },
+  "semantic_quality_gate": {
+    "minimum_article_choice_order_agreement": 0.85,
+    "training_when_failed": "explicit_exploratory_override_only",
+    "primary_or_confirmatory_eligible": false
+  },
+  "text_normalization": {
+    "unicode": "NFKC",
+    "case": "casefold",
+    "whitespace": "collapse_unicode_whitespace_to_ascii_space",
+    "input": "the exact bounded model_text used by FLAN"
+  },
+  "status_cues": {
+    "multi_hot": true,
+    "ambiguous_modal_alone_is_ineligible": true,
+    "families": {
+      "confirmed_action": [
+        "\\b(?:announces?|announced|unveils?|unveiled|files?|filed|approves?|approved|completes?|completed|closes?|closed|signs?|signed|launches?|launched|declares?|declared|enacts?|enacted)\\b",
+        "\\b(?:reported|posts?|posted)\\b.{0,40}\\b(?:earnings|revenue|sales|profit|loss|results?)\\b",
+        "\\b(?:earnings|revenue|sales|profit|loss|results?)\\b.{0,40}\\b(?:reported|posts?|posted)\\b",
+        "\\b(?:sec filing|filed with the sec|according to (?:an?|the) filing)\\b"
+      ],
+      "scheduled_expected": [
+        "\\b(?:scheduled|slated|set|due)\\s+(?:to|for)\\b",
+        "\\bwill\\s+(?:report|announce|release|publish|hold|host)\\b",
+        "\\b(?:expected|expects?|forecast|forecasts|projected|projects?)\\s+to\\b",
+        "\\bupcoming\\b.{0,40}\\b(?:earnings|results?|report|release|meeting|event)\\b",
+        "\\b(?:earnings|results?)\\s+(?:date|preview)\\b"
+      ],
+      "rumor_unconfirmed": [
+        "\\b(?:rumou?r(?:ed|s)?|unconfirmed|reportedly|allegedly)\\b",
+        "\\b(?:people|persons|sources?) familiar with (?:the )?matter\\b",
+        "\\baccording to (?:people|persons|sources?) familiar\\b",
+        "\\b(?:in|holding|held|entered)\\s+(?:early|preliminary|exploratory)?\\s*talks?\\b",
+        "\\b(?:considering|exploring|weighing|mulling)\\b.{0,60}\\b(?:deal|sale|acquisition|merger|offer|bid|options?|transaction)\\b",
+        "\\b(?:has|have|had) not confirmed\\b"
+      ],
+      "analysis_opinion": [
+        "\\b(?:analysts?|brokerage|investment bank)\\b.{0,50}\\b(?:upgrades?|downgrades?|rates?|rating|price target|initiates?|initiated|reiterates?|maintains?|raises?|cuts?|lowers?)\\b",
+        "\\b(?:upgrades?|downgrades?|price target|initiates?|initiated coverage|reiterates?|maintains?)\\b.{0,50}\\b(?:analysts?|brokerage|investment bank|shares?|stock)\\b",
+        "\\b(?:opinion|commentary|editorial)\\b"
+      ]
+    }
+  },
+  "ordered_features": [
+    "wlite_event_share_firm_operating_financial",
+    "wlite_event_share_policy_corporate",
+    "wlite_event_share_macro_market",
+    "wlite_route_share_target_idiosyncratic",
+    "wlite_route_share_peer_idiosyncratic",
+    "wlite_rule_status_cue_share_confirmed_action",
+    "wlite_rule_status_cue_share_scheduled_expected",
+    "wlite_rule_status_cue_share_rumor_unconfirmed",
+    "wlite_rule_status_cue_share_analysis_opinion",
+    "wlite_rule_status_cue_conflict_weight_share",
+    "wlite_selection_weight_coverage",
+    "wlite_selected_headline_only_weight_share",
+    "wlite_selected_sub150_weight_share",
+    "wlite_event_order_disagreement_weight_share",
+    "wlite_observed_no_selected_article",
+    "wlite_event_entropy_accepted",
+    "wlite_selected_weight_hhi"
+  ],
+  "audit_only_columns": [
+    "wlite_full_assignment_count",
+    "wlite_selected_assignment_count",
+    "wlite_full_assignment_weight",
+    "wlite_selected_assignment_weight",
+    "wlite_route_share_common",
+    "wlite_event_accepted_coverage",
+    "wlite_event_other_or_unclear_weight_share",
+    "wlite_rule_status_cue_all_zero_weight_share",
+    "wlite_invalid_or_truncated_selected_article_count",
+    "wlite_event_decomposition_residual"
+  ],
+  "variants": {
+    "canonical": {
+      "selected_assignment_filter": "all K16-selected assignments"
+    },
+    "long_description": {
+      "selected_assignment_filter": "description_available and retained bounded description length at least 150 Unicode code points",
+      "full_candidate_denominator_unchanged": true
+    },
+    "permuted": {
+      "selected_assignment_filter": "all K16-selected assignments",
+      "semantic_fields_permuted": [
+        "event_group"
+      ],
+      "accepted_labels_only": true,
+      "acceptance_disagreement_and_other_states_unchanged": true,
+      "other_features_contemporaneous": true,
+      "strata": [
+        "forecast_date",
+        "sector"
+      ],
+      "algorithm": "within each date-sector stratum, sort only articles with accepted predictive event labels by UTF-8 article ID and rotate their accepted label identities by 1+sha256(seed LF date LF sector) modulo n-1 when n>1; leave each article's accepted-versus-disagreement-versus-other state unchanged",
+      "seed": "wlite-date-sector-event-permutation-v1"
+    }
+  }
+}

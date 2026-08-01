@@ -1,0 +1,26 @@
+{
+  "checks": {
+    "all_correlations_bounded": true,
+    "rth_lag1_max_abs_error": 0.0,
+    "t1_common_stock_variance_max_abs_error": 0.0,
+    "t1_eligibility_identical": true,
+    "t1_etf_component_max_abs_error": 0.0,
+    "t1_etf_fisher_max_abs_error": 0.0,
+    "t1_loo_component_max_abs_error": 0.0,
+    "t1_loo_fisher_max_abs_error": 0.0,
+    "t2_component_sum_max_abs_error": 0.0,
+    "t2_eligibility_identical": true,
+    "t2_etf_component_max_abs_error": 0.0,
+    "t2_etf_end_date_exact": true,
+    "t2_etf_fisher_max_abs_error": 0.0,
+    "t2_loo_component_max_abs_error": 0.0,
+    "t2_loo_end_date_exact": true,
+    "t2_loo_fisher_max_abs_error": 0.0,
+    "valid_interval_counts": [
+      14,
+      26
+    ]
+  },
+  "generated_at_utc": "2026-07-30T06:27:14.164237Z",
+  "status": "passed"
+}

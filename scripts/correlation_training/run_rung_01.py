@@ -206,18 +206,27 @@ def run_rung_01(
 
 def parser() -> argparse.ArgumentParser:
     output = argparse.ArgumentParser(description=__doc__)
-    output.add_argument("--panel", type=Path, default=common.PANEL_PATH)
+    output.add_argument("--panel", type=Path)
     output.add_argument("--protocol", type=Path, default=common.PROTOCOL_PATH)
+    output.add_argument("--experiment-root", type=Path)
+    output.add_argument("--output-root", type=Path)
     return output
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parser().parse_args(argv)
-    predictions, metrics, details = run_rung_01(
-        common.load_panel(args.panel), common.load_protocol(args.protocol)
+    protocol = common.load_protocol(args.protocol)
+    paths = common.resolve_training_paths(
+        protocol,
+        panel=args.panel,
+        experiment_root=args.experiment_root,
+        output_root=args.output_root,
     )
-    output_root = common.OUTPUT_ROOT / "rung_01"
-    experiment_root = common.EXPERIMENT_ROOT / "rung_01"
+    predictions, metrics, details = run_rung_01(
+        common.load_panel(paths.panel), protocol
+    )
+    output_root = paths.output_root / "rung_01"
+    experiment_root = paths.experiment_root / "rung_01"
     common.write_parquet(output_root / "predictions.parquet", predictions)
     common.write_json(output_root / "fits.json", details["fits"])
     common.write_json(output_root / "fold_metrics.json", details["fold_metrics"])

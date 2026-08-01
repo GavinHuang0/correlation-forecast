@@ -1,0 +1,6 @@
+{
+  "bundle": "C-S3-WS",
+  "manifest_path": "outputs/quant_deterministic_news/v3/controls/s3_wrong_stock_semantics/manifest.json",
+  "manifest_sha256": "c2ea7a215cbd512a2d2c982d11d7524035ddff8ba26f441427f4fb41c5db2905",
+  "protocol_sha256": "2455e3a1bbef5ac9b358e7f0aaa92ed209f51cee2a0936de4093e23799c53def"
+}

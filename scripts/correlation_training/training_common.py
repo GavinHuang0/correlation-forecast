@@ -35,6 +35,9 @@ PROTOCOL_PATH = Path("config/quant_training_protocol_v1.json")
 PANEL_PATH = Path("data/features/quant/training_v1/modeling_panel.parquet")
 EXPERIMENT_ROOT = Path("experiments/quant_training/v1")
 OUTPUT_ROOT = Path("outputs/quant_training/v1")
+DCC_CALENDAR_PATH = Path(
+    "data/prices/alpaca/calendar/2016-01-01_2026-06-30.json"
+)
 
 
 @dataclass(frozen=True)
@@ -51,6 +54,15 @@ class TargetSpec:
     shar_features: tuple[str, ...]
     history_stock_return: str
     history_benchmark_return: str
+
+
+@dataclass(frozen=True)
+class TrainingPaths:
+    panel: Path
+    dcc_history_panel: Path
+    dcc_calendar: Path
+    experiment_root: Path
+    output_root: Path
 
 
 def target_specs() -> tuple[TargetSpec, ...]:
@@ -116,6 +128,47 @@ def load_protocol(path: Path = PROTOCOL_PATH) -> dict[str, object]:
     return protocol
 
 
+def resolve_training_paths(
+    protocol: Mapping[str, object],
+    *,
+    panel: Path | None = None,
+    experiment_root: Path | None = None,
+    output_root: Path | None = None,
+) -> TrainingPaths:
+    """Resolve run-specific artifacts while preserving the v1 defaults."""
+
+    configured = protocol.get("artifact_paths", {})
+    if configured is None:
+        configured = {}
+    if not isinstance(configured, Mapping):
+        raise ValueError("artifact_paths must be a mapping when provided")
+
+    def selected(
+        override: Path | None,
+        key: str,
+        fallback: Path,
+    ) -> Path:
+        if override is not None:
+            return Path(override)
+        value = configured.get(key)
+        return Path(value) if value is not None else fallback
+
+    selected_panel = selected(panel, "panel", PANEL_PATH)
+    return TrainingPaths(
+        panel=selected_panel,
+        dcc_history_panel=selected(
+            None, "dcc_history_panel", selected_panel
+        ),
+        dcc_calendar=selected(
+            None, "dcc_calendar", DCC_CALENDAR_PATH
+        ),
+        experiment_root=selected(
+            experiment_root, "experiment_root", EXPERIMENT_ROOT
+        ),
+        output_root=selected(output_root, "output_root", OUTPUT_ROOT),
+    )
+
+
 def load_panel(path: Path = PANEL_PATH) -> pd.DataFrame:
     panel = pd.read_parquet(path)
     panel["forecast_date"] = pd.to_datetime(panel["forecast_date"]).dt.normalize()
@@ -135,7 +188,14 @@ def split_masks(
     spec: TargetSpec,
     fold: Mapping[str, str],
 ) -> dict[str, pd.Series]:
-    target_valid = panel[spec.response_column].notna()
+    # Every model for a target is evaluated on the same rows as its declared
+    # persistence benchmark. This was automatically satisfied in the v1
+    # matched period, while earlier history contains a few valid targets whose
+    # lagged benchmark is unavailable after an input gap.
+    target_valid = (
+        panel[spec.response_column].notna()
+        & panel[spec.persistence_column].notna()
+    )
     masks: dict[str, pd.Series] = {}
     for block, start_key, end_key in (
         ("train", "train_start", "train_end"),
@@ -235,7 +295,14 @@ def linear_pipeline(kind: str, **parameters: float) -> Pipeline:
         raise ValueError(f"Unknown linear estimator {kind}")
     return Pipeline(
         [
-            ("imputer", SimpleImputer(strategy="median", add_indicator=False)),
+            (
+                "imputer",
+                SimpleImputer(
+                    strategy="median",
+                    add_indicator=False,
+                    keep_empty_features=True,
+                ),
+            ),
             ("scaler", StandardScaler()),
             ("model", estimator),
         ]
@@ -265,7 +332,11 @@ def select_linear_hyperparameters(
     l1_ratios: Sequence[float] = (1.0,),
 ) -> tuple[dict[str, float], list[dict[str, float]]]:
     validate_feature_columns(features)
-    imputer = SimpleImputer(strategy="median", add_indicator=False)
+    imputer = SimpleImputer(
+        strategy="median",
+        add_indicator=False,
+        keep_empty_features=True,
+    )
     scaler = StandardScaler()
     train_imputed = imputer.fit_transform(train[list(features)])
     validation_imputed = imputer.transform(validation[list(features)])
