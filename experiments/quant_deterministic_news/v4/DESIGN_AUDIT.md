@@ -59,7 +59,7 @@ interactions remained appropriately sector-common.
 ## V3 outcome evidence
 
 - `S2` Q56+W17 versus Q56 improved only T2 ETF, by 1.2015% incremental MSE
-  \(R^2\); the other three targets worsened.
+  $R^2$; the other three targets worsened.
 - `S3` Q56+D2+W17 beyond Q56+D2 improved T2 ETF by only 0.2362%, with a paired
   interval crossing zero; three targets worsened.
 - The T2 ETF `S2` gain was indistinguishable from the coverage/text-only

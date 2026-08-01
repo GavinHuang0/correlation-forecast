@@ -199,15 +199,15 @@ The raw order-averaged scores remain audit data, not empirical probabilities.
 
 ### Deterministic target-relative scope
 
-For article \(a\), stock \(i\), and forecast date \(t\), reuse the already
+For article $a$, stock $i$, and forecast date $t$, reuse the already
 frozen, mutually exclusive pre-cutoff assignment role
-\(R_{ait}\in\{I,P,C\}\):
+$R_{ait}\in\{I,P,C\}$:
 
-- \(I\): direct target-idiosyncratic;
-- \(P\): single-peer idiosyncratic; and
-- \(C\): sector- or macro-common.
+- $I$: direct target-idiosyncratic;
+- $P$: single-peer idiosyncratic; and
+- $C$: sector- or macro-common.
 
-The predictive matrix includes the weighted \(I\) and \(P\) shares; \(C\) is
+The predictive matrix includes the weighted $I$ and $P$ shares; $C$ is
 the reference category. This avoids both a dead "mixed" feature and the exact
 dummy sum created by including all three shares with an intercept. These are
 deterministic routing roles, not LLM claims about economic scope.
@@ -236,28 +236,28 @@ cannot fire alone.
 
 ### Aggregation
 
-Let \(\mathcal A_{it}\) be all routed candidate assignments for stock \(i\) at
-date \(t\), and let \(\mathcal S_{it}\subseteq\mathcal A_{it}\) be assignments
+Let $\mathcal A_{it}$ be all routed candidate assignments for stock $i$ at
+date $t$, and let $\mathcal S_{it}\subseteq\mathcal A_{it}$ be assignments
 whose unique article was selected for inference. Preserve the existing
 12-hour half-life and duplication adjustment:
 
-\[
+$$
 w_{ait}
 =
 \frac{\exp\{-\log(2)\,\mathrm{age}_{ait}/12\}}
      {\mathrm{duplication\_group\_size}_a}.
-\]
+$$
 
-For predictive event group \(c\), let \(A_{a,c}=1\) when both prompt orderings
-are valid, untruncated, agree, and select \(c\). Let \(U_a=1\) when both
-orderings agree on `other_or_unclear`, and let \(D_a=1\) when both are valid
+For predictive event group $c$, let $A_{a,c}=1$ when both prompt orderings
+are valid, untruncated, agree, and select $c$. Let $U_a=1$ when both
+orderings agree on `other_or_unclear`, and let $D_a=1$ when both are valid
 but disagree. Any invalid or truncated selected article fails the panel
 rather than becoming a zero. Therefore
-\(\sum_c A_{a,c}+U_a+D_a=1\).
+$\sum_c A_{a,c}+U_a+D_a=1$.
 
 The event shares are:
 
-\[
+$$
 \mathrm{eventShare}_{it,c}
 =
 \frac{
@@ -266,17 +266,17 @@ The event shares are:
 }{
   \sum_{a\in\mathcal S_{it}} w_{ait}
 }.
-\]
+$$
 
 Routing and rule-cue shares use the same selected-weight denominator. The
 selector's retained mass is:
 
-\[
+$$
 \mathrm{selectionCoverage}_{it}
 =
 \frac{\sum_{a\in\mathcal S_{it}} w_{ait}}
      {\sum_{a\in\mathcal A_{it}} w_{ait}}.
-\]
+$$
 
 Omitted articles are therefore not treated as semantic zeros.
 
@@ -311,25 +311,25 @@ The contract contains exactly 17 columns:
 | Semantic mixture | `wlite_event_entropy_accepted` |
 | Article concentration | `wlite_selected_weight_hhi` |
 
-Let \(m_{it}=\sum_c\mathrm{eventShare}_{it,c}\) and, when \(m_{it}>0\),
-\(p_{it,c}=\mathrm{eventShare}_{it,c}/m_{it}\). Then
+Let $m_{it}=\sum_c\mathrm{eventShare}_{it,c}$ and, when $m_{it}>0$,
+$p_{it,c}=\mathrm{eventShare}_{it,c}/m_{it}$. Then
 
-\[
+$$
 \mathrm{eventEntropy}_{it}
 =-\frac{\sum_c p_{it,c}\log p_{it,c}}{\log 3}.
-\]
+$$
 
 It is zero when selected weight is positive but accepted event mass is zero,
 or when only one accepted group has positive mass; it is missing when selected
 weight is zero. `wlite_selected_weight_hhi` is
-\(\sum_a (w_{ait}/\sum_b w_{bit})^2\) on selected assignments.
+$\sum_a (w_{ait}/\sum_b w_{bit})^2$ on selected assignments.
 `wlite_rule_status_cue_conflict_weight_share` is:
 
-\[
+$$
 \frac{\sum_{a\in\mathcal S_{it}}w_{ait}
   \mathbf 1\{\sum_j\mathrm{cue}_{a,j}\ge2\}}
  {\sum_{a\in\mathcal S_{it}}w_{ait}},
-\]
+$$
 
 the selected-weight share of articles on which at least two frozen cue
 families fire.
@@ -338,11 +338,11 @@ The builder also records, as audit-only nonpredictors, common-route share,
 accepted-event coverage, agreed-`other_or_unclear` share, status-cue all-zero
 share, invalid/truncated counts, and the identity
 
-\[
+$$
 \sum_c \mathrm{eventShare}_{it,c}
  + \mathrm{otherUnclearShare}_{it}
  + \mathrm{orderDisagreementShare}_{it}=1
-\]
+$$
 
 whenever selected weight is positive. Keeping the redundant components out of
 the 17-column matrix prevents exact linear dependence while retaining the
@@ -408,29 +408,29 @@ forecast target or downstream validation loss enters the choice.
 If the four-way prompt passes semantic checks but the all-article projection
 exceeds 13.5 hours, select the deterministic union of:
 
-- the top \(K\) direct articles per stock-day;
-- the top \(K\) sector-common articles per sector-day; and
-- the top \(K\) macro-common articles per forecast date.
+- the top $K$ direct articles per stock-day;
+- the top $K$ sector-common articles per sector-day; and
+- the top $K$ macro-common articles per forecast date.
 
 Rank within each pool by pre-cutoff aggregation weight descending, publication
 time descending, then article ID ascending; deduplicate the union before
 inference. Here "direct" is the existing `candidate_roles.direct` flag,
 including both target-idiosyncratic and target-common articles; it is not the
-mutually exclusive role \(I\) alone.
+mutually exclusive role $I$ alone.
 
 The predeclared runtime cascade is:
 
-| Mode | \(K\) | Unique articles | Aggregation-weight mass | Reserved time |
+| Mode | $K$ | Unique articles | Aggregation-weight mass | Reserved time |
 |---|---:|---:|---:|---:|
 | Budget-max four-way | 21 | 52,100 | 98.569% | 13.44 hours |
 | Headroom four-way | 16 | 50,488 | 97.326% | 13.03 hours |
 | Safety four-way | 8 | 45,192 | 91.779% | 11.66 hours |
 | Frozen seven-way semantic fallback | 2 | 26,197 | 64.285% | 12.90 hours with a 20% reserve |
 
-The next symmetric selector, \(K=22\), projects to 13.504 hours and is
+The next symmetric selector, $K=22$, projects to 13.504 hours and is
 therefore outside the 13.5-hour gate.
 
-Every profiled \(K\ge1\) represents all 27,306 candidate-bearing stock-days,
+Every profiled $K\ge1$ represents all 27,306 candidate-bearing stock-days,
 all 18,534 direct-bearing stock-days, and all 917 dates. Choose the largest
 predeclared four-way mode whose fresh pilot remains at or below 13.5 hours;
 the choice cannot use forecast outcomes or downstream validation loss. The
@@ -589,23 +589,23 @@ output tokens; the model supports structured outputs and the Batch endpoint.
 OpenAI documents Batch completion within 24 hours at a 50% discount.
 [Official Batch guide](https://developers.openai.com/api/docs/guides/batch)
 
-For measured uncached input \(I_u\), cached-read input \(I_c\), cache-write
-input \(I_w\), and total billed output \(O\), including reasoning tokens, the
+For measured uncached input $I_u$, cached-read input $I_c$, cache-write
+input $I_w$, and total billed output $O$, including reasoning tokens, the
 short-context standard planning formula is:
 
-\[
+$$
 \mathrm{cost}_{standard}
 =
 \frac{5 I_u + 0.5 I_c + 6.25 I_w + 30 O}{10^6}.
-\]
+$$
 
 The corresponding published Batch-rate formula is:
 
-\[
+$$
 \mathrm{cost}_{batch}
 =
 \frac{2.5 I_u + 0.25 I_c + 3.125 I_w + 15 O}{10^6}.
-\]
+$$
 
 The standard, Batch, short-context, and long-context tables are on the
 [official API pricing page](https://developers.openai.com/api/docs/pricing).

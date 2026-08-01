@@ -108,7 +108,7 @@ No `submit` command may run until all four gates are explicit:
    artifact;
 2. licensed-text processing is confirmed;
 3. a hard maximum paid-request budget is stated; and
-4. the user separately authorizes the paid action.
+4. the paid execution is explicitly approved within the research process.
 
 The first authorized action should be a small pilot, never the full 934-file
 workload. `submit` additionally requires both confirmation flags and

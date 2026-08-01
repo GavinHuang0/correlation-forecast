@@ -1,5 +1,13 @@
 # Full-history quant ladder comparison
 
+Status: **complete; the target-level winners are promoted in the active model
+registry**.
+
+See [`../../../../models/active/registry.json`](../../../../models/active/registry.json)
+for canonical forecast routing. All nonwinning target/model combinations in
+this comparison are archived by status, while this report remains the full
+ranking evidence.
+
 The v2 ladder is complete across 13 expanding folds. Six-month outer tests run
 continuously from 2020-H1 through 2026-H1; preprocessing and tuning remain
 inside each training/validation information set, and T2 labels crossing a
@@ -46,8 +54,8 @@ v2 validation-qualified ensemble reaches 0.234796 on those blocks.
 - Extended-hours values begin on 2022-11-01. They remain present as declared
   columns but have zero learned influence in training folds where every value
   is missing.
-- XGBoost ran on CPU because the GPU was occupied by a pre-existing user
-  workload. The model grid and statistical design were unchanged.
+- XGBoost ran on CPU because the GPU was unavailable. The model grid and
+  statistical design were unchanged.
 - This is retrospective development evidence, not a new confirmation. The v1
   results influenced the reused ladder, and its three outer periods appear
   again as v2 folds 11–13.

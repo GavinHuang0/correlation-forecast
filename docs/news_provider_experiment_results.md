@@ -1,5 +1,11 @@
 # News-provider and full-text experiment results
 
+> **Historical provider report.** This page preserves measurements from the
+> 2026-07-26/27 source audit. Forecast-model selection has since completed and
+> is defined in the [active model registry](../models/active/registry.json).
+> Provider observations here remain relevant to the semantic claim boundary,
+> especially the lack of historical article-version safety.
+
 Collection date: 2026-07-26. Local inference and locked evaluation continued
 on 2026-07-27.
 
@@ -505,37 +511,31 @@ article-level uncertainty, all inferential claims remain exploratory.
 
 <!-- MODEL_RESULTS_END -->
 
-## Provider recommendation
+## Provider suitability conclusions
 
-The access and data-readiness evidence already supports three procurement
-decisions:
+The access and data-readiness evidence supports four technical conclusions:
 
-1. **Do not buy a Massive stock plan for quant data now.** Basic REST bars cover
-   only the recent entitlement window and free flat-file objects were not
-   retrievable, but the adjusted Alpaca quant archive and quant panel are
-   already complete.
-2. **Do not buy Massive Stocks Starter solely for ordinary-news schema.** The
-   free ordinary endpoint already supplied and preserved enough data for the
-   exploratory deterministic block. Starter may still be worthwhile for a
-   contractual history/throughput guarantee if Massive confirms the
-   endpoint-specific entitlement in writing.
-3. **Do not buy Alpha premium for presumed text richness.** It addresses the
-   25-call bottleneck, but official documentation does not establish fuller
-   text or revision-aware data.
-
-4. **Do not buy the `$99` Benzinga feed for the current extraction
-   pipeline.** Both local models performed better from ordinary Massive
-   descriptions than from retrieved bodies, and the result stayed negative in
-   the Benzinga-only slice. The paid feed may have cleaner bodies and metadata
-   than public pages, but this experiment supplies no evidence that those
-   fields would improve the frozen extractor enough to justify the cost.
+1. **Massive paid stock data was unnecessary for the completed quant panel.**
+   Basic REST bars covered only the recent entitlement window and the tested
+   flat-file objects were not retrievable, while the adjusted Alpaca archive
+   and quant panel were already complete.
+2. **The free Massive ordinary-news schema was sufficient for the historical
+   deterministic experiment.** A paid tier could change contractual history
+   or throughput, but was not needed to construct the stored exploratory D
+   block.
+3. **Alpha premium was not shown to improve text content.** It could address
+   the request-rate bottleneck, but the documentation did not establish fuller
+   text or revision-aware records.
+4. **Retrieved full text did not improve the frozen extraction pipeline.**
+   Both local models performed better from ordinary Massive descriptions than
+   from retrieved bodies, including the Benzinga-only slice. This experiment
+   therefore supplied no positive extraction evidence for a full-text feed.
 
 The public-body result is not a direct validation of the paid Benzinga feed:
 the benchmark contains 204 Motley Fool pages and 96 Benzinga pages, and it
-measures current public retrieval rather than paid-feed body coverage. Revisit
-the purchase only if a different long-context or target-conditioned pipeline
-first shows a need for body text, then require a matched paid-feed sample and
-written answers from Massive about:
+measures current public retrieval rather than paid-feed body coverage. Any
+future full-text evaluation would require a matched provider sample and
+documented answers about:
 
 - historical body coverage by year and ticker;
 - the fraction of headline-only records;
@@ -543,14 +543,10 @@ written answers from Massive about:
 - retention rights for private research; and
 - whether earlier article versions are retrievable.
 
-Even if a later extractor benefits from full text, a purchase is not justified
-for strict historical training unless the version/availability problem is
-solved. The ordinary feed is sufficient for exploratory deterministic
-features today; the paid Benzinga feed would be a text-quality/provenance
-purchase, not a volume purchase.
-
-For a no-purchase path, begin an hourly forward collector now. Store every raw
-record version immutably under provider ID plus text hash, record local
+Even if a later extractor benefits from full text, strict historical training
+still requires the version/availability problem to be solved. A forward-only
+collector can store every raw record version immutably under provider ID plus
+text hash, record local
 `first_seen_at`, `last_seen_at`, `retrieved_at`, and provider timestamps, and
 never overwrite an earlier body or description. That can create a genuinely
 point-in-time archive for future tests, but it cannot repair the historical
@@ -558,12 +554,13 @@ version uncertainty in the current retrospective backfill.
 
 The subsequent
 [v2 deterministic and semantic feature design](../experiments/quant_deterministic_news/v2/README.md)
-does not reverse these procurement findings or authorize a purchase. It treats
+does not reverse these source-suitability findings. It treats
 the Massive Benzinga partner feed as the most feature-rich documented
-historical candidate under the user's acquisition constraint, conditional on
+historical candidate under the project's acquisition constraint, conditional on
 a coverage audit, while keeping ordinary retrospective, paid retrospective,
 and prospective versioned panels separate. It also removes raw
 coverage/source proxies from the primary feature block and defines distinct
 weak- and high-accuracy LLM contracts. The D2 deterministic panel and
-available-data Q+D ladder have since been built and trained; all semantic
-panels remain construction-blocked.
+available-data Q+D ladder were built and trained. The later v3/v4 semantic
+panels and downstream experiments also completed; see
+[results.md](results.md) for their final selection.

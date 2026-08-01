@@ -7,8 +7,8 @@ been fitted and hash-closed. The final comparison is complete.
 This namespace is separate from every completed v1/v2 model and result. The
 FLAN-T5-XL K-16 article inference completed all 50,488 selected articles with
 zero failures, but only 32,880 canonical/reversed prompt pairs agreed:
-65.124386%, below the frozen 85% semantic-stability requirement. The user's
-2026-07-30 request authorizes a diagnostic fit despite that failure. It does
+65.124386%, below the frozen 85% semantic-stability requirement. The
+downstream fit therefore proceeded only as a diagnostic experiment. It does
 not make the features primary- or confirmatory-training eligible.
 
 The protocol was locked after all feature and joined panels passed preflight:
@@ -105,9 +105,8 @@ version-safe.
 ## Completed results
 
 The canonical/reversed FLAN event-label agreement was 65.124386%, below the
-frozen 85% semantic-stability gate. The user explicitly authorized this
-failed-gate exploratory run; none of the results below is primary or
-confirmatory evidence.
+frozen 85% semantic-stability gate. This was a failed-gate exploratory run;
+none of the results below is primary or confirmatory evidence.
 
 | Rung | T1 ETF RMSE | T1 LOO RMSE | T2 ETF RMSE | T2 LOO RMSE |
 |---|---:|---:|---:|---:|
@@ -117,7 +116,7 @@ confirmatory evidence.
 | `S3` Q56+D2+WL17 | 0.372014 | 0.386355 | 0.241935 | 0.264318 |
 
 For `S2` versus matched `S0`, only T2 ETF improved: incremental MSE
-\(R^2=1.2015\%\), with a paired 95% loss-delta interval of
+$R^2=1.2015\%$, with a paired 95% loss-delta interval of
 `[-0.001196, -0.000332]`. T1 ETF, T1 LOO, and T2 LOO worsened. For `S3`
 versus matched `S1`, T2 ETF improved by only 0.2362%, with an interval crossing
 zero; the other three targets worsened.

@@ -67,7 +67,7 @@ The later v0.4 coarse hybrid raises evaluation-split mean macro-F1 from 0.341 to
 
 The extractor hashes the local weight, tokenizer, configuration, input, schema, rendered prompt corpus, and prompt-building code. Its manifest also records the Python, PyTorch, Transformers, hardware, device, precision, decoding mode, and generation settings.
 
-The GPT-5.6 Sol labels are a silver development reference. The user explicitly allowed the interactive annotator to ignore model-cutoff concerns, so the labels may contain memorized-future contamination even though annotation instructions limited judgments to supplied text. A final scientific evaluation should use a genuinely post-cutoff sample and a reproducibly pinned reference process.
+The GPT-5.6 Sol labels are a silver development reference. The reference process did not enforce a model-cutoff restriction, so the labels may contain memorized-future contamination even though annotation instructions limited judgments to supplied text. A final scientific evaluation should use a genuinely post-cutoff sample and a reproducibly pinned reference process.
 
 ## Install and cache the model
 

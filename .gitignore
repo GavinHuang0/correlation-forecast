@@ -21,10 +21,9 @@ __pycache__/
 .ruff_cache/
 .ipynb_checkpoints/
 
-# Local data, model artifacts, and generated outputs
+# Local data, binary model artifacts, and generated outputs
 data/
 artifacts/
-models/
 outputs/
 reports/generated/
 annotations/parts/
@@ -35,6 +34,21 @@ annotations/news_provider_fulltext/
 *.pickle
 *.pkl
 *.joblib
+
+# `models/` contains tracked public model cards and registries. Keep common
+# binary checkpoint formats out if local artifacts are placed there.
+models/**/*.bin
+models/**/*.pt
+models/**/*.pth
+models/**/*.safetensors
+models/**/*.onnx
+
+# Per-fit experiment outputs are normally local. The compact selected
+# RRES-C6 model card is explicitly retained as public evidence.
+experiments/quant_deterministic_news/v3/training/models/
+experiments/quant_deterministic_news/v4/training/models/*/
+!experiments/quant_deterministic_news/v4/training/models/rres_coupling6_en/
+!experiments/quant_deterministic_news/v4/training/models/rres_coupling6_en/**
 
 # Local databases
 *.db

@@ -1,7 +1,14 @@
 # Cached-score semantic redesign and training v4
 
 Status: **feature construction, exploratory training, controls, and paired
-evaluation complete**.
+evaluation complete; RRES-C6 is selected as the T2 ETF semantic research
+overlay**.
+
+The selection is recorded in
+[`../../../models/active/registry.json`](../../../models/active/registry.json).
+All other v4 forecast candidates and all RRES-C6 target routes except T2 ETF
+are archived by status in
+[`../../../models/archive/registry.json`](../../../models/archive/registry.json).
 
 This experiment is separate from the completed [v3 W17-Lite
 experiment](../v3/README.md). It does not alter v3's locked protocol, feature
@@ -17,8 +24,9 @@ effective-dated.
 
 V4 successfully reused all 50,488 cached FLAN-T5-XL article inferences, built
 role-conditioned soft features without another LLM run, and trained 20
-separately recorded live/control bundles. It did **not** establish a reliable
-incremental semantic-news signal.
+separately recorded live/control bundles. The broad SoftRoute19 designs did
+**not** establish a reliable incremental semantic-news signal. One compact,
+target-specific result was selected: RRES-C6 for T2 ETF.
 
 - `J1` Q56+SoftRoute19 improved T2 ETF MSE by 0.7110% versus matched Q56,
   but its 95% interval crossed zero and it was 1.3219% worse than its stale-20
@@ -32,9 +40,11 @@ incremental semantic-news signal.
   result, not a passed semantic claim.
 - The compact long-Q residual `RRES-C6` improved T2 ETF by 1.3844% versus the
   unchanged long-history Q anchor, with a paired 95% interval of
-  [0.3429%, 2.6228%] and wins in three of five folds. It worsened two other
-  targets and was not assigned the full post-selection control ladder, so it
-  is also a hypothesis for a future protocol rather than a validated endpoint.
+  [0.3429%, 2.6228%] and wins in three of five folds. Its point-loss,
+  confidence-interval, and fold-count tests passed, so the repository selects
+  it as the T2 ETF semantic research overlay. It worsened two other targets
+  and was not assigned its own complete post-selection control ladder;
+  promotion therefore does not constitute prospective confirmation.
 - The full `RRES-L19` residual correction improved long-Q T2 ETF by 0.9342%,
   but its interval crossed zero; the other three target gains were at most
   0.0935%, and T2 LOO worsened. The direct `RSTACK` model worsened all four
@@ -79,9 +89,9 @@ semantic distinctions that FLAN never extracted:
   label. A coarse event family can map to either stronger or weaker
   stock-sector comovement.
 
-These diagnostics explain why the redesign can create occasional T2 gains
-without producing a stable improvement over a strong quant model or its
-nuisance controls.
+These diagnostics explain why the larger semantic designs failed even though
+the compact C6 projection produced a statistically supported, narrowly scoped
+T2 ETF gain.
 
 The 2017 history belongs to the Q anchor, not to L: the first residual
 correction has 166 independent training dates from the post-inference era.
@@ -139,11 +149,11 @@ For each article and each prompt order, normalize the four cached candidate
 mean log scores with a within-order softmax. The v4 consensus score weight is
 the arithmetic mean of the canonical and reversed distributions:
 
-\[
+$$
 p_{a,k}=\frac{1}{2}\left[
 \operatorname{softmax}(s^{can}_a)_k+
 \operatorname{softmax}(s^{rev}_a)_k\right].
-\]
+$$
 
 This transform is invariant to which option order is called canonical. It
 uses every completed article, including top-label disagreements. The values
@@ -153,22 +163,22 @@ from forecast outcomes is prohibited.
 
 ## SoftRoute19
 
-For stock-day \((i,t)\), let selected assignments have deterministic,
-mutually exclusive roles \(r\in\{I,P,C\}\): target-idiosyncratic,
-peer-idiosyncratic, and common. Let \(w_{iat}\) be the already frozen
+For stock-day $(i,t)$, let selected assignments have deterministic,
+mutually exclusive roles $r\in\{I,P,C\}$: target-idiosyncratic,
+peer-idiosyncratic, and common. Let $w_{iat}$ be the already frozen
 recency/duplication weight and let
 
-\[
+$$
 W_{it}=\sum_a w_{iat}.
-\]
+$$
 
 For event classes `firm_operating_financial`, `policy_corporate`, and
 `macro_market`, the nine current joint masses are
 
-\[
+$$
 M_{it,r,k}=\frac{\sum_a w_{iat}\mathbf 1[r_{iat}=r]p_{a,k}}
 {W_{it}}.
-\]
+$$
 
 The denominator includes every selected role and all four score classes, so
 the nine masses are true event×route composition measurements and sum to at
@@ -180,11 +190,11 @@ flag is one. Incomplete query scope is missing/ineligible, never zero.
 For each current mass, define a prior-only innovation relative to the previous
 63 official stock sessions, using a 21-session half-life:
 
-\[
+$$
 B_{it,r,k}=\frac{\sum_{h=1}^{63}2^{-(h-1)/21}M_{i,t-h,r,k}}
 {\sum_{h=1}^{63}2^{-(h-1)/21}},\qquad
 \Delta M_{it,r,k}=M_{it,r,k}-B_{it,r,k}.
-\]
+$$
 
 All 63 prior complete sessions are required. The current session never enters
 its own baseline. The primary block therefore contains exactly:
@@ -203,10 +213,10 @@ controls.
 The low-dimensional residual model uses six predeclared linear projections,
 not SoftRoute19 and Coupling6 together. For each of the three event classes:
 
-\[
+$$
 K_{it,k}=M_{it,C,k}-M_{it,I,k}-M_{it,P,k},\qquad
 \Delta K_{it,k}=\Delta M_{it,C,k}-\Delta M_{it,I,k}-\Delta M_{it,P,k}.
-\]
+$$
 
 This encodes common semantic pressure versus target/peer-idiosyncratic
 pressure. It is intentionally compact because the long-Q corrector has far
@@ -217,8 +227,8 @@ fewer independent dates than the quant base.
 Four score/provider diagnostics are excluded from the primary block:
 
 - weighted canonical/reversed Jensen-Shannon divergence, normalized by
-  \(\log 2\);
-- weighted consensus entropy, normalized by \(\log 4\);
+  $\log 2$;
+- weighted consensus entropy, normalized by $\log 4$;
 - weighted `other_or_unclear` score mass; and
 - selected/full assignment-weight coverage.
 
@@ -280,13 +290,13 @@ serialized frozen booster, and v4 does not claim otherwise.
 V4 never fills 2017–2022 semantic features with zero. It uses only saved
 out-of-sample quant forecasts and forms
 
-\[
+$$
 e_{it}=z_{it}-\widehat z^{Q,long}_{it}.
-\]
+$$
 
 Five prequential evaluations use quant-v2 folds 09–13 (2024-H1 through
 2026-H1). For each test fold, all earlier news-era out-of-sample residual
-blocks through \(j-2\) are training data and fold \(j-1\) is validation. The
+blocks through $j-2$ are training data and fold $j-1$ is validation. The
 final corrector is refit on training plus validation. T2 consumes only the
 already purged long-Q rows.
 
@@ -310,7 +320,7 @@ boundary.
 ## Evaluation and claim gate
 
 Loss is squared error in Fisher-z space. Report RMSE, MAE, correlation-scale
-metrics, per-fold results, incremental MSE \(R^2\), and paired moving-block
+metrics, per-fold results, incremental MSE $R^2$, and paired moving-block
 whole-date bootstrap intervals using ten-session blocks. Blocks are sampled
 separately inside each outer fold and then pooled, so no bootstrap block can
 cross a train/test regime boundary. The live semantic model is not called

@@ -1,0 +1,69 @@
+{
+  "schema_version": "archived-forecast-model-registry-v1",
+  "status": "archive",
+  "archived_at": "2026-08-01",
+  "archive_policy": "Status-based archive. Original experiment paths are preserved to keep protocols, manifests, hashes, reports, and tests reproducible.",
+  "groups": [
+    {
+      "id": "quant_v1",
+      "path": "experiments/quant_training/v1",
+      "status": "superseded",
+      "reason": "Replaced for model selection by quant v2's longer 13-fold evaluation."
+    },
+    {
+      "id": "quant_v2_nonselected",
+      "path": "experiments/quant_training/v2",
+      "status": "archived_candidates_within_active_experiment",
+      "models": [
+        "persistence",
+        "har_ols",
+        "shar_ols",
+        "core22_ols",
+        "nonselected core22_lasso target pairings",
+        "core_dense_lasso",
+        "core_dense_elastic_net",
+        "core_dense_volatility_lasso",
+        "core_dense_volatility_elastic_net",
+        "core_dense_volatility_extended_lasso",
+        "core_dense_volatility_extended_elastic_net",
+        "nonselected xgboost target pairings",
+        "nonselected elastic_xgboost_ensemble target pairings",
+        "dcc_garch"
+      ],
+      "reason": "Not the lowest pooled outer-test Fisher-z RMSE for the corresponding target or did not satisfy the rung-specific validation gate."
+    },
+    {
+      "id": "deterministic_semantic_v1_v3",
+      "paths": [
+        "experiments/quant_deterministic_news/v1",
+        "experiments/quant_deterministic_news/v2",
+        "experiments/quant_deterministic_news/v3"
+      ],
+      "status": "archived_experiments",
+      "reason": "No target established a robust incremental news signal through the required matched and falsification comparisons."
+    },
+    {
+      "id": "semantic_v4_nonselected",
+      "path": "experiments/quant_deterministic_news/v4/training",
+      "status": "archived_candidates_within_selected_experiment",
+      "models": [
+        "J1",
+        "J2",
+        "J3",
+        "R0 fixed-XGBoost semantic-era evidence anchor",
+        "RCAL",
+        "RRES-L19",
+        "RSTACK",
+        "all stale-20 controls",
+        "all wrong-stock controls",
+        "all score-permutation controls",
+        "all quality-only controls",
+        "RRES-C6 for t1_etf",
+        "RRES-C6 for t1_loo",
+        "RRES-C6 for t2_loo"
+      ],
+      "reason": "Only the RRES-C6 T2 ETF matched-base comparison met its point, interval, and fold-count tests and was selected."
+    }
+  ],
+  "active_registry": "models/active/registry.json"
+}

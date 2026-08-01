@@ -1,5 +1,13 @@
 # Quant correlation training v2: full price history
 
+Status: **complete; selected source experiment for the four active long-Q
+forecast routes**.
+
+The canonical target-to-model selection is published in
+[`../../../models/active/registry.json`](../../../models/active/registry.json).
+Models in this ladder that are not selected for a target are retained as
+archived experimental evidence.
+
 This experiment reuses the completed v1 quant-only targets, feature blocks,
 model families, tuning grids, and four-rung ladder while extending the
 expanding-window evaluation backward across the available price history.
@@ -100,9 +108,9 @@ blocks, effectively level with the old v1 XGBoost result. These comparisons
 remain development evidence: v1 influenced the ladder, and the recent outer
 periods are reused.
 
-Rung 3 used XGBoost 3.3.0 on CPU because a pre-existing user workload occupied
-the GPU; all candidate configurations, seeds, early stopping, feature blocks,
-and ensemble gates were unchanged. Rung 4 completed all 780 dense-history
+Rung 3 used XGBoost 3.3.0 on CPU because the GPU was unavailable; all
+candidate configurations, seeds, early stopping, feature blocks, and ensemble
+gates were unchanged. Rung 4 completed all 780 dense-history
 GARCH/DCC systems with zero failures and stationary fitted DCC parameters, but
 it was weaker than the supervised ladder.
 

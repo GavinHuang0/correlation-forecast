@@ -114,7 +114,7 @@ On the frozen 228-document evaluation it achieved:
 These are agreement scores against GPT silver labels, not human-ground-truth
 accuracy. Every semantic field missed its historical frozen threshold. For
 the requested exploratory run, the repository therefore freezes an explicitly
-permissive silver-only \(q=1\) acceptance profile:
+permissive silver-only $q=1$ acceptance profile:
 `config/flan_w17_acceptance_v1.json`. It admits valid predictive classes,
 treats `unclear`/`other_or_unclear` as abstentions, and keeps
 `primary_training_eligible = false` and `confirmatory_eligible = false`.
@@ -171,9 +171,9 @@ merely to prove the size. A paid pilot or full run requires all of:
 - an OpenAI API credential;
 - explicit confirmation that the licensed text may be processed;
 - a hard maximum paid-request budget; and
-- separate user authorization for the paid action.
+- an explicit execution decision.
 
-The user has authorized GPT as an exploratory accuracy reference despite
+GPT is designated only as an exploratory accuracy reference despite
 knowledge-cutoff leakage. Any later GPT W17 or R70 artifact must therefore
 carry:
 
@@ -184,7 +184,7 @@ confirmatory_eligible = 0
 ```
 
 The existing 300-document fine reference does not replace full-corpus
-two-view inference. Without human calibration, GPT R70 uses \(q=1\) and
+two-view inference. Without human calibration, GPT R70 uses $q=1$ and
 remains a silver-only oracle. A future GPT W17 panel should be derived from
 accepted GPT fine labels; it should not use a second independently prompted
 coarse call. GPT W17 was not pursued in this construction pass.
@@ -199,7 +199,7 @@ Completed prerequisites:
    metadata.
 3. Implemented resumable, hash-bound FLAN W17 and GPT R70 construction paths.
 4. Frozen an explicit silver-only FLAN W17 acceptance choice; GPT R70 remains
-   \(q=1\) unless human calibration is later supplied.
+   $q=1$ unless human calibration is later supplied.
 5. Passed and hash-bound the full FLAN tokenizer preflight and CUDA smoke.
 6. Passed and hash-bound the final GPT R70 offline workload preflight.
 

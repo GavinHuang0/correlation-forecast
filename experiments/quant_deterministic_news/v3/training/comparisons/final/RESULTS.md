@@ -2,7 +2,7 @@
 
 Status: **exploratory failed-semantic-gate development diagnostic**.
 
-FLAN W17-Lite canonical/reversed choice-order agreement missed the frozen 85% semantic-quality threshold. The user-authorized fits and every comparison below remain diagnostic, even if a downstream usefulness gate passes.
+FLAN W17-Lite canonical/reversed choice-order agreement missed the frozen 85% semantic-quality threshold. The fits and every comparison below remain diagnostic, even if a downstream usefulness gate passes.
 
 ## Primary matched comparisons
 

@@ -1,6 +1,12 @@
 # V4 cached-score semantic training results
 
-Status: **complete exploratory development experiment**.
+Status: **complete exploratory development experiment; RRES-C6 selected for
+the T2 ETF semantic research route**.
+
+The canonical selection record is
+[`../../../../models/active/registry.json`](../../../../models/active/registry.json).
+All other candidate/target routes are archived in
+[`../../../../models/archive/registry.json`](../../../../models/archive/registry.json).
 
 This is the human-readable result record for the separately versioned
 [v4 cached-score redesign](../README.md). It does not alter the completed v1,
@@ -44,7 +50,7 @@ shrinkage was selected only on validation from `{0, 0.25, 0.5, 0.75, 1}`.
 
 ## Primary matched-base results
 
-Values below are incremental Fisher-z MSE \(R^2\):
+Values below are incremental Fisher-z MSE $R^2$:
 `1 - candidate MSE / base MSE`. Positive values favor the semantic model.
 Confidence intervals use 2,000 paired ten-session moving-block resamples of
 whole dates, sampled separately within each outer fold.
@@ -61,10 +67,14 @@ whole dates, sampled separately within each outer fold.
 Bold values have a paired 95% interval excluding zero in the indicated
 direction. `J3` T2 ETF improved in two of three folds with interval
 `[+0.0013%, +1.3428%]`. `RRES-C6` T2 ETF improved in three of five folds with
-interval `[+0.3429%, +2.6228%]`. Neither diagnostic had the complete
-architecture-matched four-control ladder, so neither qualifies as a passed
-semantic endpoint. The C6 fold gains were also concentrated: approximately
-`+0.317%, -0.152%, 0.000%, +5.182%, +2.150%`, rather than a steady effect.
+interval `[+0.3429%, +2.6228%]`; its stored point-loss, interval, and
+fold-count tests all passed. RRES-C6 is therefore selected as the T2 ETF
+semantic research overlay. J3 remains archived because it was a diagnostic
+without architecture-matched controls. RRES-C6 also lacked its own complete
+four-control ladder, so its promotion is not a claim of prospective or fully
+falsification-validated confirmation. The C6 fold gains were concentrated:
+approximately `+0.317%, -0.152%, 0.000%, +5.182%, +2.150%`, rather than a
+steady effect.
 
 The base-only `RCAL` generally hurt the long-Q anchor, especially T2 LOO
 (-3.2607%). Results versus `RCAL` are therefore secondary; outperforming a
@@ -141,17 +151,23 @@ or record all preprocessing and intercept parameters.
 
 ## Decision
 
-Retain the long-Q model as the production/research baseline. Preserve
-`RRES-C6` T2 ETF as a narrowly specified future hypothesis, not as a selected
-model. Do not spend more compute rerunning the same four-way FLAN extractor:
-the next semantic experiment should add validated target/sector direction,
-surprise/materiality, novelty, and transmission labels, preferably on a
-prospectively versioned period. Any future confirmation period must start
-strictly after the already inspected 2026-06-30 endpoint.
+Promote the four target-specific long-Q winners as the primary quantitative
+suite. Promote `RRES-C6` only for T2 ETF as an active semantic research
+overlay. Preserve the long-Q T2 ETF ensemble as the quantitative benchmark
+and fallback because RRES-C6 was evaluated against a different long-Q
+XGBoost anchor on a shorter semantic-era sample. Archive J1, J2, J3, RCAL,
+RRES-L19, RSTACK, their controls, and the non-T2-ETF RRES-C6 target routes.
+
+Prospective confirmation must begin strictly after the already inspected
+2026-06-30 endpoint and should use version-preserving news with validated
+target/sector direction, surprise/materiality, novelty, and transmission
+labels.
 
 ## Verification
 
-- Full repository suite: 457/457 tests passed.
+- Full repository suite at v4 completion: 457/457 tests passed. The later
+  publication registry added four tests; see the root reproducibility guide
+  for the current total.
 - Focused v4 feature/training suite: 20/20 tests passed.
 - The locked protocol sidecar, seven implementation hashes, and 12 unique
   source-artifact records validate.

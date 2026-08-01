@@ -1,30 +1,21 @@
 # Article-Level News Feature Protocol
 
-Semantic schema version: `0.1.0`
+Original semantic schema version: `0.1.0`
 
-Current FLAN prompt/parser contract: `flan-stock-sector-news-v0.2.0`
+Historical FLAN prompt/parser contract: `flan-stock-sector-news-v0.2.0`
 
-> **Schema history and proposed use.** This document and its JSON files remain
-> the source contracts for the completed annotation/extractor evaluations.
-> The fine schema supplies the article-level ontology for RLLM70, while its
-> frozen fine-to-coarse mapping supplies WLLM17. The v2 experiment
-> crosses both daily contracts with FLAN-T5-XL and GPT-5.6 Sol only; GPT W17 is
-> derived from its fine labels rather than a second coarse call. See the
-> [v2 feature design](../experiments/quant_deterministic_news/v2/README.md) and
-> [training ladder](../experiments/quant_deterministic_news/v2/TRAINING_LADDER.md).
-> The deterministic branch is trained, and the shared v2 semantic input corpus
-> is materialized at 466,902 article-target assignments, 55,197 assigned
-> articles, and 27,510 stock-days. It is an input/assignment corpus, not a
-> labeled semantic panel: no complete W17 or R70 article inference, daily L
-> panel, or semantic downstream model exists.
->
-> The unexecuted full workloads remain frozen in v2. A separately named,
-> documentation-only
-> [cost-bounded v3 design](../experiments/quant_deterministic_news/v3/README.md)
-> proposes a four-way FLAN event-group contract, an ordered 40-column GPT
-> global-semantic subset, and a later factorized GPT R70-Lite event graph.
-> R70-Lite's ordered target-relative contract is not frozen, and neither Lite
-> arm modifies this schema or claims to be exact R70.
+> **Schema history.** This document and its JSON files preserve source
+> contracts for the completed annotation and extractor experiments. The fine
+> schema defined the original article-level ontology; its frozen
+> fine-to-coarse mapping supported the weak semantic contract. V2 materialized
+> 466,902 article-target assignments, 55,197 assigned articles, and 27,510
+> stock-days. The full v2 semantic workloads were not executed, but the
+> cost-bounded v3 and cached-score v4 experiments subsequently completed with
+> narrower FLAN contracts. The selected downstream result is RRES-C6 for T2
+> ETF. See [results.md](results.md) and the
+> [active model registry](../models/active/registry.json). The schemas below
+> remain historical extraction contracts rather than the forecast-selection
+> record.
 
 This protocol measures semantic properties of a supplied financial-news headline and summary for stock-sector coupling research. It does not ask either language model to forecast returns, volatility, correlation, beta, or trading outcomes.
 
@@ -74,7 +65,7 @@ on the RTX 3070 Ti with no failure or truncation; full inference has not
 started. The GPT offline pipeline's final hash-bound full-corpus preflight
 passed over 933,804 two-view requests. No request has been submitted:
 paid execution requires an API credential, explicit licensed-text
-confirmation, a hard request budget, and separate user authorization.
+confirmation and a hard request budget.
 
 ## Legacy benchmark inputs
 

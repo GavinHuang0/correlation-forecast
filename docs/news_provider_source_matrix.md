@@ -1,5 +1,10 @@
 # News-provider and model source matrix
 
+> **Dated source audit.** Capabilities and access observations on this page
+> were verified on 2026-07-26 and may change. They are retained as historical
+> evidence, not as current purchasing advice. The repository's current model
+> selection is in [`../models/active/registry.json`](../models/active/registry.json).
+
 Verified against official provider documentation and official model cards on
 2026-07-26. This file separates documented entitlements from behavior observed
 with this repository's credentials. Observed access is not a contractual
@@ -107,21 +112,21 @@ model contest.
 3. **If ordinary-history access closes:** Stocks Starter is the least expensive
    Massive upgrade, subject to written confirmation of endpoint-specific News
    history because the two official pages conflict.
-4. **Full-text LLM features:** do not buy the Benzinga partner feed for the
-   current frozen extraction pipeline. On the locked 228-document evaluation,
+4. **Full-text LLM features:** the current frozen extraction pipeline showed
+   no benefit from retrieved bodies. On the locked 228-document evaluation,
    chunked retrieved bodies reduced mean macro-F1 versus ordinary Massive
    descriptions by 0.0908 for FLAN-T5-XL and 0.0593 for Llama 3.1. The
    Benzinga-only slices were also negative. Only Benzinga documents an article
    body and update timestamp, but body coverage is optional and version history
    is not guaranteed. The public-page benchmark mixes 204 Motley Fool and 96
    Benzinga pages, so it cannot validate paid-feed coverage. Revisit the
-   partner feed only after a different long-context or target-conditioned
-   extractor demonstrates a need for bodies and a matched paid-feed sample
-   shows incremental value, with written confirmation of historical body
-   coverage, article-version behavior, and retention rights.
-5. **Alpha premium:** buy for throughput, not presumed text quality. The official
-   documentation does not establish that premium supplies fuller articles than
-   the free `NEWS_SENTIMENT` payload.
+   partner-feed evidence would require a different long-context or
+   target-conditioned extractor, a matched provider sample, and documented
+   historical body coverage, article-version behavior, and retention rights.
+5. **Alpha premium:** the documented distinction is throughput rather than
+   demonstrated text richness. The documentation does not establish that a
+   premium tier supplies fuller articles than the free `NEWS_SENTIMENT`
+   payload.
 6. **Forward-only alternative:** poll the ordinary endpoint on a fixed cadence
    and retain every provider-ID/text-hash version with local first-seen,
    last-seen, and retrieval timestamps. This can make future observations

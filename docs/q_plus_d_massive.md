@@ -7,8 +7,11 @@
 > [`experiments/quant_deterministic_news/v2/README.md`](../experiments/quant_deterministic_news/v2/README.md).
 > Their matched Q+D, Q+L, and Q+D+L ladder is in the
 > [v2 training ladder](../experiments/quant_deterministic_news/v2/TRAINING_LADDER.md).
-> The v2 D2 panel and available-data deterministic branch are complete; the
-> semantic panels remain construction-blocked and untrained.
+> Later v3 and v4 semantic experiments have since completed. Their final
+> selection is summarized in [results.md](results.md), and current forecast
+> routing is defined by the
+> [active model registry](../models/active/registry.json). This page remains
+> the exact contract for the historical v1 Q+D artifact.
 
 `scripts/join_quant_deterministic_news.py` joins the frozen quant modeling
 panel to the Massive deterministic stock-day features on:

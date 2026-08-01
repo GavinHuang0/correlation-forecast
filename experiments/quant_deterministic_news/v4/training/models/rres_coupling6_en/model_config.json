@@ -1,0 +1,44 @@
+{
+  "alpha_grid": [
+    0.0001,
+    0.0003,
+    0.001,
+    0.003,
+    0.01,
+    0.03,
+    0.1
+  ],
+  "architecture": "c6",
+  "base_model": "xgboost",
+  "bundle": "RRES-C6",
+  "control": null,
+  "correction_shrinkage_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "feature_ordered_sha256": "94bf04e139f83b6fa39ae7c52c9e1cf53759432aef2e612ba2f69f5ff696b392",
+  "features": [
+    "lsoft_coupling_firm_operating_financial_c_minus_i_minus_p",
+    "lsoft_coupling_firm_operating_financial_innovation_c_minus_i_minus_p",
+    "lsoft_coupling_policy_corporate_c_minus_i_minus_p",
+    "lsoft_coupling_policy_corporate_innovation_c_minus_i_minus_p",
+    "lsoft_coupling_macro_market_c_minus_i_minus_p",
+    "lsoft_coupling_macro_market_innovation_c_minus_i_minus_p"
+  ],
+  "l1_ratio_grid": [
+    0.1,
+    0.5,
+    0.9,
+    1.0
+  ],
+  "prequential_test_folds": [
+    "fold_09",
+    "fold_10",
+    "fold_11",
+    "fold_12",
+    "fold_13"
+  ]
+}

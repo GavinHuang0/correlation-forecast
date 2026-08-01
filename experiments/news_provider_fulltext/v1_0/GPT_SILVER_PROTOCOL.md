@@ -108,7 +108,7 @@ The exact output shape is:
 {"article_id":"","annotator":"gpt-5.6-sol","protocol_version":"news-fulltext-gpt-silver-v1.0.0","labels":{"shock_scope":"","event_family":"","information_status":"","directional_alignment":""},"evidence":{"shock_scope":"","event_family":"","information_status":"","directional_alignment":""},"abstain_reason":null}
 ```
 
-## Exact user instruction for each batch
+## Exact annotation instruction for each batch
 
 Use the following text verbatim, followed by one private 20-document batch:
 

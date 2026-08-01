@@ -21,7 +21,7 @@ for a bounded 2024 semiconductor pipeline pilot.
 The pilot is built by:
 
 ```powershell
-C:\Users\gavin\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe `
+.\.venv-training\Scripts\python.exe `
   scripts\build_deterministic_news_features.py
 ```
 
@@ -248,7 +248,7 @@ ambiguous-timing robustness check.
 Run:
 
 ```powershell
-C:\Users\gavin\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe `
+.\.venv-training\Scripts\python.exe `
   -m unittest tests.test_build_deterministic_news_features -v
 ```
 

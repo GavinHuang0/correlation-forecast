@@ -1,0 +1,113 @@
+{
+  "schema_version": "active-forecast-model-registry-v1",
+  "status": "active_research_suite",
+  "selected_at": "2026-08-01",
+  "meaning_of_active": "Selected for continued research and prospective evaluation; not production or untouched-period confirmation.",
+  "selection_metric": "pooled outer-test Fisher-z RMSE within target, with protocol-specific validation gates",
+  "quantitative_models": [
+    {
+      "id": "long_q_t1_etf_xgboost",
+      "status": "active_primary_quantitative",
+      "target": "t1_etf",
+      "rung": "rung_03",
+      "model": "xgboost",
+      "prediction_artifact": "outputs/quant_training/v2/rung_03/predictions.parquet",
+      "evidence": "experiments/quant_training/v2/comparisons/summary.json",
+      "evaluation": {
+        "rows": 44058,
+        "fisher_z_mae": 0.28373068563760306,
+        "fisher_z_rmse": 0.3577253443613233,
+        "raw_correlation_mae": 0.13218104183808121,
+        "raw_correlation_rmse": 0.18944826359809896,
+        "oos_r2_vs_persistence": 0.39206330536017353
+      }
+    },
+    {
+      "id": "long_q_t1_loo_xgboost",
+      "status": "active_primary_quantitative",
+      "target": "t1_loo",
+      "rung": "rung_03",
+      "model": "xgboost",
+      "prediction_artifact": "outputs/quant_training/v2/rung_03/predictions.parquet",
+      "evidence": "experiments/quant_training/v2/comparisons/summary.json",
+      "evaluation": {
+        "rows": 44058,
+        "fisher_z_mae": 0.2897732439448452,
+        "fisher_z_rmse": 0.36566550792023256,
+        "raw_correlation_mae": 0.15056929210479214,
+        "raw_correlation_rmse": 0.21176363780266802,
+        "oos_r2_vs_persistence": 0.3890800296288647
+      }
+    },
+    {
+      "id": "long_q_t2_etf_elastic_xgboost_ensemble",
+      "status": "active_primary_quantitative",
+      "target": "t2_etf",
+      "rung": "rung_03",
+      "model": "elastic_xgboost_ensemble",
+      "prediction_artifact": "outputs/quant_training/v2/rung_03/predictions.parquet",
+      "evidence": "experiments/quant_training/v2/comparisons/summary.json",
+      "evaluation": {
+        "rows": 42030,
+        "fisher_z_mae": 0.18339695219110416,
+        "fisher_z_rmse": 0.23298548645110306,
+        "raw_correlation_mae": 0.0866117928877945,
+        "raw_correlation_rmse": 0.11798172642513312,
+        "oos_r2_vs_persistence": 0.22001284908617713
+      }
+    },
+    {
+      "id": "long_q_t2_loo_core22_lasso",
+      "status": "active_primary_quantitative",
+      "target": "t2_loo",
+      "rung": "rung_01",
+      "model": "core22_lasso",
+      "prediction_artifact": "outputs/quant_training/v2/rung_01/predictions.parquet",
+      "evidence": "experiments/quant_training/v2/comparisons/summary.json",
+      "evaluation": {
+        "rows": 42030,
+        "fisher_z_mae": 0.19116243858187354,
+        "fisher_z_rmse": 0.24267428641685757,
+        "raw_correlation_mae": 0.10201640790525837,
+        "raw_correlation_rmse": 0.13815735681370775,
+        "oos_r2_vs_persistence": 0.2404241567776404
+      }
+    }
+  ],
+  "semantic_overlays": [
+    {
+      "id": "rres_c6_t2_etf",
+      "status": "active_semantic_research_overlay",
+      "target": "t2_etf",
+      "bundle": "RRES-C6",
+      "model": "rres_coupling6_en",
+      "base_model": "saved expanding-fit long-Q XGBoost OOS forecast stream",
+      "prediction_artifact": "outputs/quant_deterministic_news/v4/models/rres_coupling6_en/predictions.parquet",
+      "model_card": "experiments/quant_deterministic_news/v4/training/models/rres_coupling6_en/RESULTS.md",
+      "comparison_evidence": "experiments/quant_deterministic_news/v4/training/comparisons/final/summary.json",
+      "artifact_manifest": "outputs/quant_deterministic_news/v4/models/rres_coupling6_en/manifest.json",
+      "artifact_manifest_sha256": "f1be949ef9ac9d70458f1a5e6f2f699bd5cefc36ac21afcb10bc0f85f6e33b2e",
+      "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe",
+      "evaluation": {
+        "rows": 18150,
+        "dates": 605,
+        "outer_folds": 5,
+        "fisher_z_mae": 0.17908528291080844,
+        "fisher_z_rmse": 0.22780979177012203,
+        "raw_correlation_mae": 0.09285438986194063,
+        "raw_correlation_rmse": 0.1251427177756012,
+        "oos_r2_vs_persistence": 0.2749816941511718,
+        "incremental_mse_r2_vs_matched_base": 0.01384372026087366,
+        "incremental_mse_r2_bootstrap_95pct": [
+          0.003428991869641024,
+          0.026227884984286232
+        ],
+        "bootstrap_probability_gain_nonpositive": 0.0045,
+        "folds_improved": 3,
+        "folds_total": 5
+      },
+      "claim_limit": "Retrospective selected result without an architecture-matched complete falsification ladder; requires prospective version-safe confirmation after 2026-06-30."
+    }
+  ],
+  "archive_registry": "models/archive/registry.json"
+}
