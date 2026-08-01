@@ -1,0 +1,5 @@
+{
+  "manifest_path": "outputs/quant_deterministic_news/v4/controls/j1_quality_only/manifest.json",
+  "manifest_sha256": "55f69870c05633964e153b6adc34f7656b297c22594c53144cda9626de5e2719",
+  "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe"
+}

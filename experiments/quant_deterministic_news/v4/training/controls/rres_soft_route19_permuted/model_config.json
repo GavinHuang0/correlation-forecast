@@ -1,0 +1,57 @@
+{
+  "alpha_grid": [
+    0.0001,
+    0.0003,
+    0.001,
+    0.003,
+    0.01,
+    0.03,
+    0.1
+  ],
+  "architecture": "l19",
+  "base_model": "xgboost",
+  "bundle": "C-RRES-L19-PERM",
+  "control": "permuted",
+  "correction_shrinkage_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "feature_ordered_sha256": "4838f93c8313b561c0b3ef61e166128d1cadbcf261ad3fa33e184b58fd769153",
+  "features": [
+    "lsoft_target_idiosyncratic_event_firm_operating_financial_joint_mass",
+    "lsoft_target_idiosyncratic_event_policy_corporate_joint_mass",
+    "lsoft_target_idiosyncratic_event_macro_market_joint_mass",
+    "lsoft_peer_idiosyncratic_event_firm_operating_financial_joint_mass",
+    "lsoft_peer_idiosyncratic_event_policy_corporate_joint_mass",
+    "lsoft_peer_idiosyncratic_event_macro_market_joint_mass",
+    "lsoft_common_event_firm_operating_financial_joint_mass",
+    "lsoft_common_event_policy_corporate_joint_mass",
+    "lsoft_common_event_macro_market_joint_mass",
+    "lsoft_target_idiosyncratic_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_target_idiosyncratic_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_target_idiosyncratic_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_observed_no_selected_article"
+  ],
+  "l1_ratio_grid": [
+    0.1,
+    0.5,
+    0.9,
+    1.0
+  ],
+  "prequential_test_folds": [
+    "fold_09",
+    "fold_10",
+    "fold_11",
+    "fold_12",
+    "fold_13"
+  ]
+}

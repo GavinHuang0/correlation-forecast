@@ -1,0 +1,5 @@
+{
+  "manifest_path": "outputs/quant_deterministic_news/v4/controls/j1_stale20/manifest.json",
+  "manifest_sha256": "8fa261d844318032ccf2e604008900e63a0b99b7ce5e24b0fd4d8fd92b459c8c",
+  "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe"
+}

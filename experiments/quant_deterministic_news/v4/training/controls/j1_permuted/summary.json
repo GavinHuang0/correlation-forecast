@@ -1,0 +1,48 @@
+{
+  "bundle": "C-J1-PERM",
+  "label": "J1 permuted-score control",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.29351594655790114,
+      "fisher_z_rmse": 0.3715048538733094,
+      "model": "j1_permuted",
+      "oos_r2_vs_persistence": 0.40608035119195374,
+      "raw_correlation_mae": 0.1459994129472399,
+      "raw_correlation_rmse": 0.20896231555132885,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.3041623252355374,
+      "fisher_z_rmse": 0.38596327665922453,
+      "model": "j1_permuted",
+      "oos_r2_vs_persistence": 0.38196114859079744,
+      "raw_correlation_mae": 0.16288518537926613,
+      "raw_correlation_rmse": 0.23134333368239712,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.19126331994563295,
+      "fisher_z_rmse": 0.2440323488466624,
+      "model": "j1_permuted",
+      "oos_r2_vs_persistence": 0.23154894294928696,
+      "raw_correlation_mae": 0.09585009860372883,
+      "raw_correlation_rmse": 0.13010608641107957,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.20573245274271237,
+      "fisher_z_rmse": 0.26443099598097336,
+      "model": "j1_permuted",
+      "oos_r2_vs_persistence": 0.20568242674080506,
+      "raw_correlation_mae": 0.11268522837041196,
+      "raw_correlation_rmse": 0.15519522601142718,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_non_version_safe_v4",
+  "status": "complete"
+}

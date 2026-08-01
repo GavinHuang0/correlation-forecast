@@ -1,0 +1,48 @@
+{
+  "bundle": "C-J1-WS",
+  "label": "J1 wrong-stock control",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.29325327584459854,
+      "fisher_z_rmse": 0.3711913224618557,
+      "model": "j1_wrong_stock",
+      "oos_r2_vs_persistence": 0.4070824047956283,
+      "raw_correlation_mae": 0.1458501825374157,
+      "raw_correlation_rmse": 0.2087215328435771,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.30372824277746985,
+      "fisher_z_rmse": 0.38539034350582246,
+      "model": "j1_wrong_stock",
+      "oos_r2_vs_persistence": 0.38379465014879455,
+      "raw_correlation_mae": 0.1625979516646604,
+      "raw_correlation_rmse": 0.2306038352193437,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.19155392010254216,
+      "fisher_z_rmse": 0.24421397419242882,
+      "model": "j1_wrong_stock",
+      "oos_r2_vs_persistence": 0.23040465098652885,
+      "raw_correlation_mae": 0.0958519552124754,
+      "raw_correlation_rmse": 0.13004243576461058,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.20678924612718327,
+      "fisher_z_rmse": 0.2655586920306613,
+      "model": "j1_wrong_stock",
+      "oos_r2_vs_persistence": 0.1988930653233626,
+      "raw_correlation_mae": 0.11328663986296302,
+      "raw_correlation_rmse": 0.1559916266205494,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_non_version_safe_v4",
+  "status": "complete"
+}

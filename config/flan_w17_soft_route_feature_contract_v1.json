@@ -1,0 +1,72 @@
+{
+  "contract_id": "flan-w17-soft-route-v1",
+  "status": "frozen_exploratory_feature_contract",
+  "source_arm_id": "WL17__flan_t5_xl",
+  "source_contract_id": "weak-news-semantics-lite-v1",
+  "source_profile": "ordinary_massive_retrospective",
+  "probability_pooling": {
+    "per_order": "softmax over all four candidate mean log scores",
+    "consensus": "arithmetic mean of canonical-order and reversed-order probability vectors",
+    "labels": [
+      "firm_operating_financial",
+      "policy_corporate",
+      "macro_market",
+      "other_or_unclear"
+    ]
+  },
+  "aggregation": {
+    "roles": ["I", "P", "C"],
+    "denominator": "total selected assignment weight across all roles and all four probability classes",
+    "innovation": "current joint mass minus a prior-only finite 63-session EWMA with half-life 21 sessions",
+    "innovation_warmup": 63,
+    "innovation_half_life_sessions": 21
+  },
+  "soft_route_19": [
+    "lsoft_target_idiosyncratic_event_firm_operating_financial_joint_mass",
+    "lsoft_target_idiosyncratic_event_policy_corporate_joint_mass",
+    "lsoft_target_idiosyncratic_event_macro_market_joint_mass",
+    "lsoft_peer_idiosyncratic_event_firm_operating_financial_joint_mass",
+    "lsoft_peer_idiosyncratic_event_policy_corporate_joint_mass",
+    "lsoft_peer_idiosyncratic_event_macro_market_joint_mass",
+    "lsoft_common_event_firm_operating_financial_joint_mass",
+    "lsoft_common_event_policy_corporate_joint_mass",
+    "lsoft_common_event_macro_market_joint_mass",
+    "lsoft_target_idiosyncratic_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_target_idiosyncratic_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_target_idiosyncratic_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_peer_idiosyncratic_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_firm_operating_financial_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_policy_corporate_joint_mass_innovation_ewma63_hl21",
+    "lsoft_common_event_macro_market_joint_mass_innovation_ewma63_hl21",
+    "lsoft_observed_no_selected_article"
+  ],
+  "coupling_6_residual_only": [
+    "lsoft_coupling_firm_operating_financial_c_minus_i_minus_p",
+    "lsoft_coupling_firm_operating_financial_innovation_c_minus_i_minus_p",
+    "lsoft_coupling_policy_corporate_c_minus_i_minus_p",
+    "lsoft_coupling_policy_corporate_innovation_c_minus_i_minus_p",
+    "lsoft_coupling_macro_market_c_minus_i_minus_p",
+    "lsoft_coupling_macro_market_innovation_c_minus_i_minus_p"
+  ],
+  "score_quality_4_audit_or_control": [
+    "lsoft_score_order_js_divergence_normalized",
+    "lsoft_score_consensus_entropy_normalized",
+    "lsoft_score_other_or_unclear_mass",
+    "lsoft_k16_selection_weight_coverage"
+  ],
+  "controls": {
+    "stale20": "lag only the 18 current/innovation semantic fields by 20 stock sessions; keep current no-news and score-quality fields",
+    "wrong_stock": "replace target-specific I/P current and innovation fields with the fixed alphabetically next stock in the same sector and date; retain recipient C, no-news, and score-quality fields",
+    "permuted": "within forecast-date and sector, deterministically permute each unique article's complete four-class consensus vector as one unit; retain recipient assignment weights, roles, and original order-JSD quality; then reaggregate and recompute innovations and coupling",
+    "permutation_seed": "flan-w17-soft-route-probability-permutation-v1",
+    "transformed_mass_decomposition_audit": "not applicable and null for stale20 and wrong_stock because their semantic fields no longer share the current p_other denominator; valid and recomputed for canonical and permuted"
+  },
+  "claim_scope": {
+    "exploratory_only": true,
+    "point_in_time_version_safe": false,
+    "primary_training_eligible": false,
+    "confirmatory_eligible": false
+  }
+}

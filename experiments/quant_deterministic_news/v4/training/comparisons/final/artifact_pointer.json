@@ -1,0 +1,5 @@
+{
+  "manifest_path": "outputs/quant_deterministic_news/v4/comparisons/final/manifest.json",
+  "manifest_sha256": "fa74ed173b9fb60bbe0c399bffaf63f4ca8ef8839a057c0d2f2814fd7dcaed9f",
+  "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe"
+}

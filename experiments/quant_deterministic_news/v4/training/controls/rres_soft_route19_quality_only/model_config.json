@@ -1,0 +1,43 @@
+{
+  "alpha_grid": [
+    0.0001,
+    0.0003,
+    0.001,
+    0.003,
+    0.01,
+    0.03,
+    0.1
+  ],
+  "architecture": "quality5",
+  "base_model": "xgboost",
+  "bundle": "C-RRES-L19-QUALITY",
+  "control": "quality",
+  "correction_shrinkage_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "feature_ordered_sha256": "da485edcf9ea6e884d5fdce66867b71391460ca5357071a10bacd5a215ce1546",
+  "features": [
+    "lsoft_score_order_js_divergence_normalized",
+    "lsoft_score_consensus_entropy_normalized",
+    "lsoft_score_other_or_unclear_mass",
+    "lsoft_k16_selection_weight_coverage",
+    "lsoft_observed_no_selected_article"
+  ],
+  "l1_ratio_grid": [
+    0.1,
+    0.5,
+    0.9,
+    1.0
+  ],
+  "prequential_test_folds": [
+    "fold_09",
+    "fold_10",
+    "fold_11",
+    "fold_12",
+    "fold_13"
+  ]
+}

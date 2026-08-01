@@ -506,6 +506,23 @@ a matched Q+D2-only XGBoost. No linear target passed every useful-semantic
 gate. GPT G40 and R70-Lite remain unconstructed, paid, future-contaminated
 oracle designs.
 
+The separately locked
+[v4 cached-score redesign](experiments/quant_deterministic_news/v4/README.md)
+then reused all 50,488 completed FLAN score maps without another LLM run. It
+replaced hard agreement with averaged four-class score weights, separated
+target-idiosyncratic, peer-idiosyncratic, and common routes, added prior-only
+innovations, and trained 20 live/control bundles. The long arm uses saved
+out-of-sample XGBoost forecasts from expanding quant models whose history
+starts in 2017, plus leakage-safe corrections trained on earlier OOS Q
+residuals. Compact Coupling6 improved long-Q T2 ETF MSE by 1.3844%, but lacked
+a complete architecture-matched control ladder and worsened two other targets.
+No full SoftRoute19 joint or residual target passed the matched-base,
+stale-20, wrong-stock, probability-permutation, quality-only, interval, and
+fold-count gate; the direct Q+L stack worsened all four targets. The
+[v4 training report](experiments/quant_deterministic_news/v4/training/README.md)
+therefore retains long-Q as the baseline and treats Coupling6 T2 ETF only as a
+future hypothesis.
+
 The separate full-text benchmark retrieved 399 documents in 554 attempts
 covering 553 unique public URLs from a 5,180-document queue, then selected 300
 assignment-balanced documents from two publishers, all published strictly

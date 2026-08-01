@@ -1,0 +1,5 @@
+{
+  "manifest_path": "outputs/quant_deterministic_news/v4/controls/j2_wrong_stock/manifest.json",
+  "manifest_sha256": "133f313117c4ea6782c0f1f817a156af7b2be906e0f90bc46fa9aa2c92c0eb3a",
+  "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe"
+}

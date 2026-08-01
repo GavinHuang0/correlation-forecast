@@ -36,6 +36,8 @@ Large Parquet panels, predictions, and fit records are generated locally under
 | `WL17__flan_t5_xl` v3 | Complete exploratory failed-gate run | 50,488/50,488 articles inferred with zero failures; 65.1244% choice-order agreement missed the 85% gate; 27,510 daily rows built; S0-S4 plus ten controls/sensitivities trained; no linear target passed every useful-semantic gate |
 | `G40__gpt_5_6_sol` v3 | Ordered global-only design; construction contract incomplete | Forty named article-global semantic columns; request/acceptance/aggregation rules still require a freeze and paid pilot |
 | `R70-Lite__gpt_5_6_sol` v3 | Cost plan only; schema incomplete | Factorized target projection remains blocked on an ordered feature contract, projection/conflict rules, and universal grounding |
+| `SoftRoute19__flan_t5_xl` v4 | Complete exploratory failed-gate run | Reused all 50,488 cached inference records; four 27,510-row semantic/control panels and four exact Q+D2+L joins; 20 model/control bundles; no full SoftRoute target passed the matched-base and four-control usefulness gate |
+| Long-Q semantic correction v4 | Complete exploratory failed-gate run | Saved expanding 2017-start XGBoost OOS forecasts anchored five residual test folds; compact Coupling6 improved T2 ETF MSE by 1.3844% but had no complete matched control ladder; full SoftRoute19 residual passed no target-level usefulness gate |
 | Economic hedge evaluation and dependence-aware inference | Not yet run | Forecast metrics are complete; economic/statistical follow-up remains |
 
 ## Target design
@@ -465,6 +467,43 @@ Q+D2+WL17 XGBoost fit ran only for T2 ETF and improved MSE by 6.9374% versus
 linear Q+D2, but it does not isolate semantic value because there is no
 matched Q+D2-only XGBoost. See the
 [final v3 report](../experiments/quant_deterministic_news/v3/training/comparisons/final/RESULTS.md).
+
+## V4 cached-score semantic redesign
+
+V4 is a separately locked successor that reuses the 50,488 completed FLAN
+score maps instead of rerunning the model. It averages the within-order
+four-class softmax vectors, crosses three non-unclear event weights with the
+deterministic target-idiosyncratic, peer-idiosyncratic, and common roles, and
+adds prior-only 63-session innovations. The primary SoftRoute19 block contains
+nine current joint masses, nine innovations, and a no-selected indicator.
+
+The redesign produced four 27,510-row semantic panels (live, stale-20,
+wrong-stock, and whole-score-vector permutation) and four exact 186-column
+Q+D2+L joins. Eleven short-history and nine long-Q/control bundles were
+trained under protocol SHA-256
+`361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe`.
+The long-Q anchor uses the saved quant-v2 XGBoost outer forecasts whose
+expanding estimation history begins 2017-12-28. The residual corrections use
+only earlier out-of-sample Q errors; they do not fill the pre-news years with
+zero L features.
+
+The strongest controlled short-history point estimate was current-mass-only
+`J3` on T2 ETF (+0.6195% MSE improvement, 95% interval
+`[+0.0013%, +1.3428%]`, two of three folds), but it lacks a complete matched
+control ladder. Compact long-Q residual `RRES-C6` improved T2 ETF by 1.3844%
+(`95% [+0.3429%, +2.6228%]`, three of five folds), but it worsened two other
+targets and likewise has no complete architecture-matched controls. Full
+SoftRoute19 joint and residual models did not pass any target's complete
+base/stale/wrong-stock/permutation/quality gate; the direct long-Q stack
+worsened all four targets.
+
+The remaining limitation is information, not compute. Soft labels are diffuse
+(mean normalized entropy 0.8293), joint event-route masses still correlate up
+to 0.8143 with D2, target-idiosyncratic masses are zero on 46.99% of
+stock-days, and current/innovation pairs correlate 0.8077-0.9612. The cached
+four-way ontology contains no direction, surprise magnitude, materiality,
+novelty, or transmission semantics. See the [v4 design and conclusion](../experiments/quant_deterministic_news/v4/README.md)
+and [v4 training report](../experiments/quant_deterministic_news/v4/training/README.md).
 
 ## Model definitions
 

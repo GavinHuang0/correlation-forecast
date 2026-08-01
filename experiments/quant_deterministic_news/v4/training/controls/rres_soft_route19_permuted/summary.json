@@ -1,0 +1,48 @@
+{
+  "bundle": "C-RRES-L19-PERM",
+  "label": "Residual SoftRoute19 permuted-score control",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.2841790398410511,
+      "fisher_z_rmse": 0.35915041637242423,
+      "model": "rres_soft_route19_permuted",
+      "oos_r2_vs_persistence": 0.4203750893025211,
+      "raw_correlation_mae": 0.1443592680705375,
+      "raw_correlation_rmse": 0.20388037730501352,
+      "rows": 18750,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.2929491397181166,
+      "fisher_z_rmse": 0.36973714211944286,
+      "model": "rres_soft_route19_permuted",
+      "oos_r2_vs_persistence": 0.41211514053159226,
+      "raw_correlation_mae": 0.16232890297675587,
+      "raw_correlation_rmse": 0.22542215483131794,
+      "rows": 18750,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.1796850464945453,
+      "fisher_z_rmse": 0.22867287770980932,
+      "model": "rres_soft_route19_permuted",
+      "oos_r2_vs_persistence": 0.26947764208259906,
+      "raw_correlation_mae": 0.09324611809976543,
+      "raw_correlation_rmse": 0.1260252515247629,
+      "rows": 18150,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.18885242451714088,
+      "fisher_z_rmse": 0.23996890419868025,
+      "model": "rres_soft_route19_permuted",
+      "oos_r2_vs_persistence": 0.2860004840314868,
+      "raw_correlation_mae": 0.10754479039914988,
+      "raw_correlation_rmse": 0.14354234573114383,
+      "rows": 18150,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_non_version_safe_v4",
+  "status": "complete"
+}

@@ -1,0 +1,48 @@
+{
+  "bundle": "C-J1-L20",
+  "label": "J1 stale-20 control",
+  "metrics": [
+    {
+      "fisher_z_mae": 0.29326561651070143,
+      "fisher_z_rmse": 0.3715324674707367,
+      "model": "j1_stale20",
+      "oos_r2_vs_persistence": 0.4059920569614852,
+      "raw_correlation_mae": 0.14590104223043873,
+      "raw_correlation_rmse": 0.20883550442431703,
+      "rows": 11190,
+      "target": "t1_etf"
+    },
+    {
+      "fisher_z_mae": 0.30350492772967724,
+      "fisher_z_rmse": 0.38516192253902476,
+      "model": "j1_stale20",
+      "oos_r2_vs_persistence": 0.3845248838539006,
+      "raw_correlation_mae": 0.1624724258722935,
+      "raw_correlation_rmse": 0.23045788787832555,
+      "rows": 11190,
+      "target": "t1_loo"
+    },
+    {
+      "fisher_z_mae": 0.18998394572743962,
+      "fisher_z_rmse": 0.24237347769301362,
+      "model": "j1_stale20",
+      "oos_r2_vs_persistence": 0.24196091121978625,
+      "raw_correlation_mae": 0.09487986988381045,
+      "raw_correlation_rmse": 0.12832918998693343,
+      "rows": 10830,
+      "target": "t2_etf"
+    },
+    {
+      "fisher_z_mae": 0.20555508209674844,
+      "fisher_z_rmse": 0.26469598900829444,
+      "model": "j1_stale20",
+      "oos_r2_vs_persistence": 0.20408961735315878,
+      "raw_correlation_mae": 0.11244206793830622,
+      "raw_correlation_rmse": 0.155172318429477,
+      "rows": 10830,
+      "target": "t2_loo"
+    }
+  ],
+  "result_role": "exploratory_non_version_safe_v4",
+  "status": "complete"
+}

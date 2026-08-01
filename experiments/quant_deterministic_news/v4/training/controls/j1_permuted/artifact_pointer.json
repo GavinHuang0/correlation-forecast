@@ -1,0 +1,5 @@
+{
+  "manifest_path": "outputs/quant_deterministic_news/v4/controls/j1_permuted/manifest.json",
+  "manifest_sha256": "c96716a1a8ea3cb45482de6d7c5c8cda8467451f20f4658e29219988107b31c2",
+  "protocol_sha256": "361c235e46bd9322525534da20df98a2f72820670a027739465f620134bc63fe"
+}
