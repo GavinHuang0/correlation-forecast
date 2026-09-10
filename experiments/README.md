@@ -29,6 +29,13 @@ correlation forecasts. Their active status is governed separately by
 stock/ETF-spread directories retain data-source and downstream economic-test
 research.
 
+## Downstream economic experiments
+
+| Experiment | Scope | Outcome |
+|---|---|---|
+| [`stock_etf_spread/v1/`](stock_etf_spread/v1/README.md) | Correlation-gated convergence on the shorter-history XGBoost forecasts | Initial development backtest; cost and stability improvements needed |
+| [`stock_etf_spread/v2/`](stock_etf_spread/v2/README.md) | Same strategy applied to the full-history quant ensemble | Unprofitable before costs over the full sample; strategy redesign pending |
+
 Original paths are intentionally stable. Moving old evidence into new folders
 would invalidate embedded paths and make historical manifests harder to
 audit; archive status is therefore expressed through the public registries

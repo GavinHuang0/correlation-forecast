@@ -8,14 +8,15 @@ versioned protocols linked below.
 
 The modeling universe contains 30 liquid U.S. stocks across five sectors,
 with one sector ETF and five non-target peer stocks available for each stock.
-Price features are derived from 15-minute Alpaca SIP bars adjusted for
-corporate actions and restricted to each official regular session, including
-early closes.
+Price inputs are derived from 15-minute Alpaca SIP bars adjusted for
+corporate actions. Targets use each official regular session, including early
+closes; additional features also use the defined extended-hours windows.
 
 The raw price window begins in 2016. Core features require a 500-session
 warm-up, so the modeling panel begins on 2017-12-28 and ends on 2026-06-30.
-Every forecast-date feature uses information ending no later than the prior
-official session.
+Completed-session features are lagged. Same-day premarket and news inputs
+use information available before the 09:00 ET forecast cutoff, with additional
+publication lags applied to slower market-context sources.
 
 ## Targets
 

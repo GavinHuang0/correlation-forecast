@@ -4,7 +4,7 @@
 
 | Document | Purpose |
 |---|---|
-| [`../README.md`](../README.md) | Project overview, selected models, headline results, and claim boundaries |
+| [`../README.md`](../README.md) | Research question, architecture, results, local setup, and next improvements |
 | [`methodology.md`](methodology.md) | Targets, features, folds, estimators, semantic construction, and statistical tests |
 | [`results.md`](results.md) | Detailed long-Q and Q+L results, promotion decision, negative findings, and interpretation |
 | [`reproducibility.md`](reproducibility.md) | Protocols, commands, artifacts, hashes, and verification workflow |
