@@ -58,48 +58,48 @@ the same construction.
 
 ## Return and correlation construction
 
-Let $d$ denote an official trading session and let
-$\mathcal K_d^{full}$ be its official expected full-day component schedule.
+Let $`d`$ denote an official trading session and let
+$`\mathcal K_d^{full}`$ be its official expected full-day component schedule.
 For the historical core features this set contains:
 
-$$
+```math
 \mathcal K_d^{full}
 =
 \{\text{prior close}\rightarrow\text{open}\}
 \cup
 \{\text{regular-session 15-minute intervals}\}.
-$$
+```
 
 For a traded stock or ETF, the first regular-session interval is an
 open-to-close log return,
 
-$$
+```math
 r_{a,d,1}=\log\!\left(\frac{C_{a,d,1}}{O_{a,d,1}}\right),
-$$
+```
 
 and every later observed interval is close-to-close only when its timestamps
 are exactly 15 minutes apart:
 
-$$
+```math
 r_{a,d,k}
 =
 \log\!\left(\frac{C_{a,d,k}}{C_{a,d,k-1}}\right).
-$$
+```
 
 The overnight component is
 
-$$
+```math
 r^{ON}_{a,d}
 =
 \log\!\left(\frac{O_{a,d,1}}{C_{a,d-1,\mathrm{last}}}\right),
-$$
+```
 
-and exists only when $d-1$ is the immediately preceding official session.
+and exists only when $`d-1`$ is the immediately preceding official session.
 This price-ratio expression applies to a traded stock or ETF. A synthetic LOO
 basket instead aggregates its peers' already-constructed interval returns in
 simple-return space, including the overnight interval, as defined below.
 
-Thus $|\mathcal K_d^{full}|=27$ on a normal session and 15 on an official
+Thus $`|\mathcal K_d^{full}|=27`$ on a normal session and 15 on an official
 13:00 close. These counts differ from the strict RTH target counts of 26 and
 14 because historical core features include the overnight component.
 
@@ -126,36 +126,36 @@ requires the complete regular-session schedule.
 
 More precisely, a historical pair-day is valid only when
 
-$$
+```math
 |\mathcal A_{is,d}|\ge15,\qquad
 \frac{|\mathcal A_{is,d}|}{|\mathcal K_d^{full}|}\ge0.80,
 \qquad
 N^{overnight}_d=1.
-$$
+```
 
 Here
-$\mathcal A_{is,d}\subseteq\mathcal K_d^{full}$ is the observed aligned
+$`\mathcal A_{is,d}\subseteq\mathcal K_d^{full}`$ is the observed aligned
 intersection of the two legs. For strict target construction,
-$\mathcal A_{is,d}=\mathcal K_d^{RTH}$; the historical feature builder
+$`\mathcal A_{is,d}=\mathcal K_d^{RTH}`$; the historical feature builder
 allows the partial coverage above.
 
 A normal session therefore needs at least 22 of 27 aligned components, while
 an early close effectively needs all 15. Failure sets every covariance and
 variance component for that pair-day to missing.
 
-For synchronized stock and benchmark returns $r_{i,k}$ and $r_{s,k}$:
+For synchronized stock and benchmark returns $`r_{i,k}`$ and $`r_{s,k}`$:
 
-$$
+```math
 C_{is,d}=\sum_{k\in\mathcal A_{is,d}} r_{i,d,k}r_{s,d,k},
 \qquad
 V_{i,d}=\sum_{k\in\mathcal A_{is,d}}r_{i,d,k}^2,
-$$
+```
 
-$$
+```math
 \rho_{is,d}
 =
 \frac{C_{is,d}}{\sqrt{V_{i,d}V_{s,d}}}.
-$$
+```
 
 This is a non-demeaned realized correlation: it treats the zero-return point
 as the origin and does not subtract an intraday sample mean.
@@ -163,14 +163,14 @@ as the origin and does not subtract an intraday sample mean.
 The negative semicovariance uses only jointly negative returns, while each
 denominator leg uses all negative returns for that asset:
 
-$$
+```math
 C^-_{is,d}
 =
 \sum_{k\in\mathcal A_{is,d}} r_{i,d,k}r_{s,d,k}
 \mathbf 1\{r_{i,d,k}<0,\ r_{s,d,k}<0\},
-$$
+```
 
-$$
+```math
 V^-_{i,d}
 =
 \sum_{k\in\mathcal A_{is,d}}
@@ -179,7 +179,7 @@ r_{i,d,k}^2\mathbf 1\{r_{i,d,k}<0\},
 \rho^-_{is,d}
 =
 \frac{C^-_{is,d}}{\sqrt{V^-_{i,d}V^-_{s,d}}}.
-$$
+```
 
 In code this is implemented directly as:
 
@@ -198,10 +198,10 @@ first and normalize afterward. They do **not** average daily correlations.
 
 ## HAR features
 
-For a forecast formed before session $t$, all historical components end at
-$t-1$. For $H\in\{1,5,21\}$, the HAR correlation is
+For a forecast formed before session $`t`$, all historical components end at
+$`t-1`$. For $`H\in\{1,5,21\}`$, the HAR correlation is
 
-$$
+```math
 \rho^{HAR(H)}_{is,t}
 =
 \frac{
@@ -212,11 +212,11 @@ $$
 \left(\sum_{d=t-H}^{t-1}V_{s,d}\right)
 }
 }.
-$$
+```
 
-The downside HAR feature replaces $C,V_i,V_s$ with
-$C^-,V_i^-,V_s^-$. The suffixes `d`, `w`, and `m` correspond to
-$H=1,5,21$. A window is valid only when all required session components are
+The downside HAR feature replaces $`C,V_i,V_s`$ with
+$`C^-,V_i^-,V_s^-`$. The suffixes `d`, `w`, and `m` correspond to
+$`H=1,5,21`$. A window is valid only when all required session components are
 finite. The three horizons are a parsimonious heterogeneous-memory
 representation: yesterday captures fast adjustment, while weekly and monthly
 aggregates capture slower persistence. Downside features allow joint declines
@@ -225,15 +225,15 @@ to carry information not present in symmetric correlation.
 ## Exponential weights
 
 The implementation follows the paper's center-of-mass equation exactly. For
-center $h\in\{1,5,21,63\}$:
+center $`h\in\{1,5,21,63\}`$:
 
-$$
+```math
 \lambda=\log(1+1/h),\qquad q=e^{-\lambda}=\frac{h}{h+1}.
-$$
+```
 
-For a component $X_d$, its finite-window estimate at forecast date $t$ is
+For a component $`X_d`$, its finite-window estimate at forecast date $`t`$ is
 
-$$
+```math
 \widetilde X^{(h)}_{t}
 =
 \frac{
@@ -241,9 +241,9 @@ $$
 }{
 \sum_{\ell=0}^{499}q_h^\ell I_{t-1-\ell}
 },
-$$
+```
 
-where $I_d$ is one when that daily component is available. The 500 most
+where $`I_d`$ is one when that daily component is available. The 500 most
 recent observations therefore receive weights proportional to:
 
 ```text
@@ -253,15 +253,15 @@ q^499, q^498, ..., q, 1
 The weighted covariance and variance components are normalized only after
 weighting:
 
-$$
+```math
 \rho^{EW(h)}_{is,t}
 =
 \frac{\widetilde C^{(h)}_{is,t}}
 {\sqrt{\widetilde V^{(h)}_{i,t}\widetilde V^{(h)}_{s,t}}}.
-$$
+```
 
 The downside version applies the same operator to negative components. This
-is not the same as passing $h$ to a library `halflife` argument.
+is not the same as passing $`h`$ to a library `halflife` argument.
 Exponential weighting reacts more smoothly to recent changes than a hard
 rolling window while retaining a persistent long-run state.
 
@@ -273,28 +273,28 @@ zero.
 
 For each sector, the eight exponential sector-state features are the mean of
 the already-normalized features across all unique stock-stock pairs in the
-configured six-stock peer set. If $\mathcal P_s$ is the set of its
-$\binom 62=15$ peer pairs, then
+configured six-stock peer set. If $`\mathcal P_s`$ is the set of its
+$`\binom 62=15`$ peer pairs, then
 
-$$
+```math
 \mathrm{SectorEW}^{(h)}_{s,t}
 =
 \frac{1}{15}
 \sum_{(j,\ell)\in\mathcal P_s}\rho^{EW(h)}_{j\ell,t}.
-$$
+```
 
 The downside sector state replaces each term with
-$\rho^{EW(h),-}_{j\ell,t}$. The ETF is not included in either average. The
+$`\rho^{EW(h),-}_{j\ell,t}`$. The ETF is not included in either average. The
 locked build requires all 15 pair features to be present.
 
 ## ETF and leave-one-out pair histories
 
 The original core builder produces the stock–ETF pair features. The separate
 target builder constructs the corresponding stock–LOO history. For stock
-$i$ in a configured six-stock sector, the five-peer interval return is
+$`i`$ in a configured six-stock sector, the five-peer interval return is
 formed in simple-return space:
 
-$$
+```math
 r^{-i}_{d,k}
 =
 \log\!\left[
@@ -302,11 +302,11 @@ r^{-i}_{d,k}
 \sum_{\substack{j\in s(i)\\j\ne i}}
 \left(e^{r_{j,d,k}}-1\right)
 \right].
-$$
+```
 
 The LOO pair components and all 14 pair-history features are then calculated
-with the same equations above and shifted so the row for forecast date $t$
-ends at session $t-1$. ETF and LOO models share the eight sector-state
+with the same equations above and shifted so the row for forecast date $`t`$
+ends at session $`t-1`$. ETF and LOO models share the eight sector-state
 features, but never share their 14 pair-history features. The peer basket
 itself exists only when all five peers have the exact full-day official
 component set. The subsequent stock-versus-basket pair still follows the

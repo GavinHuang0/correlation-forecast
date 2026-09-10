@@ -116,7 +116,7 @@ none of the results below is primary or confirmatory evidence.
 | `S3` Q56+D2+WL17 | 0.372014 | 0.386355 | 0.241935 | 0.264318 |
 
 For `S2` versus matched `S0`, only T2 ETF improved: incremental MSE
-$R^2=1.2015\%$, with a paired 95% loss-delta interval of
+$`R^2=1.2015\%`$, with a paired 95% loss-delta interval of
 `[-0.001196, -0.000332]`. T1 ETF, T1 LOO, and T2 LOO worsened. For `S3`
 versus matched `S1`, T2 ETF improved by only 0.2362%, with an interval crossing
 zero; the other three targets worsened.

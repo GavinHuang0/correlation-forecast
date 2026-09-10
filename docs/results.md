@@ -36,7 +36,7 @@ models.
 | Matched-base incremental MSE R² | **+1.3844%** |
 | Paired moving-block 95% interval | **[+0.3429%, +2.6228%]** |
 | Folds improved | **3/5** |
-| Bootstrap probability gain $\le 0$ | 0.45% |
+| Bootstrap probability gain $`\le 0`$ | 0.45% |
 
 The mean improvement was uneven across folds: approximately +0.317%,
 -0.152%, 0.000%, +5.182%, and +2.150%. The aggregate paired result passed,

@@ -50,7 +50,7 @@ shrinkage was selected only on validation from `{0, 0.25, 0.5, 0.75, 1}`.
 
 ## Primary matched-base results
 
-Values below are incremental Fisher-z MSE $R^2$:
+Values below are incremental Fisher-z MSE $`R^2`$:
 `1 - candidate MSE / base MSE`. Positive values favor the semantic model.
 Confidence intervals use 2,000 paired ten-session moving-block resamples of
 whole dates, sampled separately within each outer fold.

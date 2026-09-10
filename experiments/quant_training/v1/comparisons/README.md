@@ -1,43 +1,43 @@
 # Quant ladder comparison
 
-Development ranking below uses aggregate outer-test Fisher-$z$ RMSE across
-the three locked chronological folds. Lower RMSE is better; OOS $R^2$ is
+Development ranking below uses aggregate outer-test Fisher-$`z`$ RMSE across
+the three locked chronological folds. Lower RMSE is better; OOS $`R^2`$ is
 measured against the exact target-specific persistence forecast. Since the
 same outer blocks rank the rungs, the winning result is not an untouched
 confirmatory estimate.
 
-For $N$ pooled outer-test rows,
+For $`N`$ pooled outer-test rows,
 
-$$
-\operatorname{RMSE}_z
+```math
+\mathrm{RMSE}_z
 =
 \sqrt{\frac1N\sum_{n=1}^{N}(z_n-\widehat z_n)^2},
 \qquad
-z_n=\operatorname{atanh}(\operatorname{clip}(\rho_n,-0.995,0.995)),
-$$
+z_n=\mathrm{atanh}(\mathrm{clip}(\rho_n,-0.995,0.995)),
+```
 
-$$
-\operatorname{MAE}_z=\frac1N\sum_n|z_n-\widehat z_n|,
+```math
+\mathrm{MAE}_z=\frac1N\sum_n|z_n-\widehat z_n|,
 \qquad
-\operatorname{RMSE}_{\rho}
+\mathrm{RMSE}_{\rho}
 =
 \sqrt{\frac1N\sum_n(\rho_n-\tanh\widehat z_n)^2},
-$$
+```
 
 with raw-correlation MAE defined analogously.
 
-$$
+```math
 R^2_{OOS}
 =
 1-
 \frac{\sum_n(z_n-\widehat z_n)^2}
 {\sum_n(z_n-z^{persist}_n)^2}.
-$$
+```
 
 T1 persistence is the immediately preceding session's strict-RTH realized
 correlation. T2 persistence is the component-aggregated correlation over the
 five completed sessions immediately preceding the forecast. This
-benchmark-relative $R^2$ is not ordinary regression $R^2$; it can be
+benchmark-relative $`R^2`$ is not ordinary regression $`R^2`$; it can be
 negative.
 
 ## Best model within each rung
@@ -72,7 +72,7 @@ omitted.
   it does not directly model intraday realized covariance. Its weak T2 result
   should be read as a benchmark limitation, not a failed implementation.
 - All 180 DCC systems converged and satisfied the configured
-  $a+b<0.999$ constraint. Fifty-nine DCC fits and ten marginal systems had
+  $`a+b<0.999`$ constraint. Fifty-nine DCC fits and ten marginal systems had
   persistence above 0.995, so near-unit persistence is a material diagnostic.
 - These are forecast comparisons, not yet statistical-significance or
   trading-profit claims. Date-block inference and an explicit ETF hedge-error

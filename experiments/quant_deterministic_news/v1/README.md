@@ -138,13 +138,13 @@ T2 LOO
 
 The response is the existing Fisher transform:
 
-$$
+```math
 z_{i,t}
 =
-\operatorname{atanh}\!\left(
-\operatorname{clip}(\rho_{i,t},-0.995,0.995)
+\mathrm{atanh}\!\left(
+\mathrm{clip}(\rho_{i,t},-0.995,0.995)
 \right).
-$$
+```
 
 Track A reuses the three quant-v1 train/validation/test blocks and the existing
 T2 boundary purge. For every T2 train, validation, and test block, require the
@@ -339,11 +339,11 @@ available. This controls search-budget differences between Q-only and Q+D.
 
 The joint model estimates
 
-$$
+```math
 \widehat z^{joint}_{i,t}
 =
 f(Q_{i,t},D_{i,t}).
-$$
+```
 
 Use Elastic Net for the nested feature ladder because it is interpretable and
 handles correlated count/share families. Use the existing shallow XGBoost
@@ -373,19 +373,19 @@ resolve the implementation difference before interpreting A2-A7.
 
 For a saved out-of-sample quant forecast, define
 
-$$
+```math
 e^{Q}_{i,t}=z_{i,t}-\widehat z^{Q}_{i,t},
-$$
+```
 
 then fit
 
-$$
+```math
 \widehat z^{corrected}_{i,t}
 =
 \widehat z^{Q}_{i,t}
 +
 g(D_{i,t},\widehat z^{Q}_{i,t}).
-$$
+```
 
 The primary base is the saved rung-3 XGBoost forecast for all four targets.
 Using one base family avoids changing the residual task by target. A secondary
@@ -452,7 +452,7 @@ OOS R-squared versus persistence
 
 The primary incremental metric is
 
-$$
+```math
 R^2_{news\mid Q}
 =
 1-
@@ -461,11 +461,11 @@ R^2_{news\mid Q}
 }{
 \sum_n(z_n-\widehat z^{Q}_n)^2
 }.
-$$
+```
 
 Also report the paired Fisher-space squared-loss difference,
 
-$$
+```math
 \Delta L
 =
 \frac{1}{N}\sum_n
@@ -474,7 +474,7 @@ $$
 -
 (z_n-\widehat z^{Q}_n)^2
 \right],
-$$
+```
 
 where a negative value favors news. Use date-block bootstrap intervals that
 resample whole dates with all stocks together. Build blocks separately within

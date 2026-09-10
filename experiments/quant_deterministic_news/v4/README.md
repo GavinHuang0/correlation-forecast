@@ -149,11 +149,11 @@ For each article and each prompt order, normalize the four cached candidate
 mean log scores with a within-order softmax. The v4 consensus score weight is
 the arithmetic mean of the canonical and reversed distributions:
 
-$$
+```math
 p_{a,k}=\frac{1}{2}\left[
-\operatorname{softmax}(s^{can}_a)_k+
-\operatorname{softmax}(s^{rev}_a)_k\right].
-$$
+\mathrm{softmax}(s^{can}_a)_k+
+\mathrm{softmax}(s^{rev}_a)_k\right].
+```
 
 This transform is invariant to which option order is called canonical. It
 uses every completed article, including top-label disagreements. The values
@@ -163,22 +163,22 @@ from forecast outcomes is prohibited.
 
 ## SoftRoute19
 
-For stock-day $(i,t)$, let selected assignments have deterministic,
-mutually exclusive roles $r\in\{I,P,C\}$: target-idiosyncratic,
-peer-idiosyncratic, and common. Let $w_{iat}$ be the already frozen
+For stock-day $`(i,t)`$, let selected assignments have deterministic,
+mutually exclusive roles $`r\in\{I,P,C\}`$: target-idiosyncratic,
+peer-idiosyncratic, and common. Let $`w_{iat}`$ be the already frozen
 recency/duplication weight and let
 
-$$
+```math
 W_{it}=\sum_a w_{iat}.
-$$
+```
 
 For event classes `firm_operating_financial`, `policy_corporate`, and
 `macro_market`, the nine current joint masses are
 
-$$
+```math
 M_{it,r,k}=\frac{\sum_a w_{iat}\mathbf 1[r_{iat}=r]p_{a,k}}
 {W_{it}}.
-$$
+```
 
 The denominator includes every selected role and all four score classes, so
 the nine masses are true event×route composition measurements and sum to at
@@ -190,11 +190,11 @@ flag is one. Incomplete query scope is missing/ineligible, never zero.
 For each current mass, define a prior-only innovation relative to the previous
 63 official stock sessions, using a 21-session half-life:
 
-$$
+```math
 B_{it,r,k}=\frac{\sum_{h=1}^{63}2^{-(h-1)/21}M_{i,t-h,r,k}}
 {\sum_{h=1}^{63}2^{-(h-1)/21}},\qquad
 \Delta M_{it,r,k}=M_{it,r,k}-B_{it,r,k}.
-$$
+```
 
 All 63 prior complete sessions are required. The current session never enters
 its own baseline. The primary block therefore contains exactly:
@@ -213,10 +213,10 @@ controls.
 The low-dimensional residual model uses six predeclared linear projections,
 not SoftRoute19 and Coupling6 together. For each of the three event classes:
 
-$$
+```math
 K_{it,k}=M_{it,C,k}-M_{it,I,k}-M_{it,P,k},\qquad
 \Delta K_{it,k}=\Delta M_{it,C,k}-\Delta M_{it,I,k}-\Delta M_{it,P,k}.
-$$
+```
 
 This encodes common semantic pressure versus target/peer-idiosyncratic
 pressure. It is intentionally compact because the long-Q corrector has far
@@ -227,8 +227,8 @@ fewer independent dates than the quant base.
 Four score/provider diagnostics are excluded from the primary block:
 
 - weighted canonical/reversed Jensen-Shannon divergence, normalized by
-  $\log 2$;
-- weighted consensus entropy, normalized by $\log 4$;
+  $`\log 2`$;
+- weighted consensus entropy, normalized by $`\log 4`$;
 - weighted `other_or_unclear` score mass; and
 - selected/full assignment-weight coverage.
 
@@ -290,13 +290,13 @@ serialized frozen booster, and v4 does not claim otherwise.
 V4 never fills 2017–2022 semantic features with zero. It uses only saved
 out-of-sample quant forecasts and forms
 
-$$
+```math
 e_{it}=z_{it}-\widehat z^{Q,long}_{it}.
-$$
+```
 
 Five prequential evaluations use quant-v2 folds 09–13 (2024-H1 through
 2026-H1). For each test fold, all earlier news-era out-of-sample residual
-blocks through $j-2$ are training data and fold $j-1$ is validation. The
+blocks through $`j-2`$ are training data and fold $`j-1`$ is validation. The
 final corrector is refit on training plus validation. T2 consumes only the
 already purged long-Q rows.
 
@@ -320,7 +320,7 @@ boundary.
 ## Evaluation and claim gate
 
 Loss is squared error in Fisher-z space. Report RMSE, MAE, correlation-scale
-metrics, per-fold results, incremental MSE $R^2$, and paired moving-block
+metrics, per-fold results, incremental MSE $`R^2`$, and paired moving-block
 whole-date bootstrap intervals using ten-session blocks. Blocks are sampled
 separately inside each outer fold and then pooled, so no bootstrap block can
 cross a train/test regime boundary. The live semantic model is not called

@@ -36,26 +36,26 @@ All seven steps are complete.
 
 ## Frozen strategy
 
-For stock $i$, sector ETF $E$, and forecast date $t$, the pre-open
+For stock $`i`$, sector ETF $`E`$, and forecast date $`t`$, the pre-open
 signals are
 
-$$
+```math
 \beta_{i,t}
 =
-\frac{\operatorname{Cov}_{252}(r_i,r_E)}
-     {\operatorname{Var}_{252}(r_E)},
+\frac{\mathrm{Cov}_{252}(r_i,r_E)}
+     {\mathrm{Var}_{252}(r_E)},
 \qquad
 D_{i,t}
 =
 \beta_{i,t}\sum_{s=t-5}^{t-1}r_{E,s}
 -
 \sum_{s=t-5}^{t-1}r_{i,s},
-$$
+```
 
 where beta uses at least 126 paired daily observations, is clipped to
-$[0,3]$, and every input ends at $t-1$. The primary gate is
+$`[0,3]`$, and every input ends at $`t-1`$. The primary gate is
 
-$$
+```math
 \widehat{\rho}^{T2}_{i,t} \ge 0.50,
 \qquad
 G_{i,t}
@@ -64,10 +64,10 @@ G_{i,t}
 -
 \rho^{\mathrm{persistence}}_{i,t}
 >0.
-$$
+```
 
-Eligible stocks are ranked by $D$: recent underperformers are long and
-recent outperformers are short. A percentile rank of $G$ continuously
+Eligible stocks are ranked by $`D`$: recent underperformers are long and
+recent outperformers are short. A percentile rank of $`G`$ continuously
 scales conviction. The stock scores are demeaned within sector, and the ETF
 leg is the negative beta-weighted sum of the stock legs. This makes the stock
 book sector-dollar-neutral and the combined stock/ETF book approximately

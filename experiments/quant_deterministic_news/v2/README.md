@@ -202,12 +202,12 @@ availability and revision behavior may differ from teaser availability.
 
 ## Information-time contract
 
-For official session $t$, let $c_t$ be 09:00 ET and let $u_{av}$ be the
-availability time of article version $v$. The v2 news window is
+For official session $`t`$, let $`c_t`$ be 09:00 ET and let $`u_{av}`$ be the
+availability time of article version $`v`$. The v2 news window is
 
-$$
+```math
 \mathcal W_t=\{(a,v):c_{t-1}\leq u_{av}<c_t\}.
-$$
+```
 
 The right boundary is strict. A record first available exactly at 09:00 is not
 used for that day's forecast.
@@ -216,18 +216,14 @@ Availability is defined by source profile:
 
 1. For a prospectively collected immutable version,
 
-   $$
-   u_{av}=\max(published_{av},lastUpdated_{av},localFirstSeen_{av}).
-   $$
+   $`u_{av}=\max(published_{av},lastUpdated_{av},localFirstSeen_{av}).`$
 
    The maximum is over non-null timestamps, and `lastUpdated` must belong to
-   the exact immutable text hash observed for version $v$. A final provider
+   the exact immutable text hash observed for version $`v`$. A final provider
    timestamp must never be back-applied to an earlier locally saved version.
 2. For a retrospective Benzinga final record,
 
-   $$
-   u_a=\max(published_a,lastUpdated_a),
-   $$
+   $`u_a=\max(published_a,lastUpdated_a),`$
 
    and the row is labeled `historical_final_version_conservative`. This can
    exclude an article that existed earlier but was revised later; it still
@@ -235,7 +231,7 @@ Availability is defined by source profile:
    `last_updated` is null, fall back to publication time and label the record
    `historical_published_proxy_unversioned`; do not call it final-version
    conservative.
-3. For ordinary retrospective Massive news, $u_a=published_a$ is an
+3. For ordinary retrospective Massive news, $`u_a=published_a`$ is an
    explicitly non-version-safe proxy. A preregistered 15-minute embargo is a
    useful sensitivity, not a cure.
 
@@ -257,36 +253,36 @@ Entity aliases, sector membership, and benchmark membership must be
 effective-dated. If historical membership is unavailable, outputs must say
 `research_peer_set` rather than imply point-in-time index membership.
 
-For target stock $i$, article $a$, and session $t$, define:
+For target stock $`i`$, article $`a`$, and session $`t`$, define:
 
-- $D_{iat}=1$, direct target, when the provider tags $i$, or the headline
+- $`D_{iat}=1`$, direct target, when the provider tags $`i`$, or the headline
   or eligible provider text contains an exact effective-dated ticker/company
-  alias for $i$.
-- $S_{iat}=1$, sector common, when the article has an explicit sector
+  alias for $`i`$.
+- $`S_{iat}=1`$, sector common, when the article has an explicit sector
   benchmark tag, an unambiguous curated multi-word sector expression, or at
   least two distinct effective-dated entities from the research peer set.
   Bare words such as "energy" are insufficient.
-- $M_{iat}=M_{at}=1$, macro common, when a provider macro channel/tag or a curated
+- $`M_{iat}=M_{at}=1`$, macro common, when a provider macro channel/tag or a curated
   macro phrase is present. An SPY tag or the fact that an SPY query retrieved
   the article is never sufficient by itself.
-- $C_{iat}=S_{iat}\lor M_{at}$, any common article.
-- $I_{iat}=D_{iat}(1-C_{iat})$, target-idiosyncratic.
-- $TC_{iat}=D_{iat}C_{iat}$, target plus common.
-- $P_{iat}=1$ when the article is neither direct nor common and identifies
+- $`C_{iat}=S_{iat}\lor M_{at}`$, any common article.
+- $`I_{iat}=D_{iat}(1-C_{iat})`$, target-idiosyncratic.
+- $`TC_{iat}=D_{iat}C_{iat}`$, target plus common.
+- $`P_{iat}=1`$ when the article is neither direct nor common and identifies
   exactly one non-target peer, and zero otherwise.
 
-Thus $C$, $I$, and $P$ are disjoint article roles. $S$ and $M$ may
-overlap, $TC$ is a subset of $C$, and $D=I+TC$ in count form. An article
+Thus $`C`$, $`I`$, and $`P`$ are disjoint article roles. $`S`$ and $`M`$ may
+overlap, $`TC`$ is a subset of $`C`$, and $`D=I+TC`$ in count form. An article
 identifying two peer-set firms is sector-common, not peer-idiosyncratic. Query
 provenance can establish collection coverage, but never semantic scope.
 
 Let
 
-$$
+```math
 N_X(i,t)=\sum_{a\in\mathcal W_t}X_{iat}
-$$
+```
 
-for $X\in\{D,I,TC,P,S,M,C\}$. All article-level cue flags below count each
+for $`X\in\{D,I,TC,P,S,M,C\}`$. All article-level cue flags below count each
 provider article at most once.
 
 ## `D2-Normalized`: primary deterministic block
@@ -297,7 +293,7 @@ they are not primary predictors.
 
 A primary D2 row is eligible only when the current session and all prior 126
 official sessions needed by the ranks are complete within the same frozen
-source profile, and when the effective peer set has $K_{it}\geq2$. This also
+source profile, and when the effective peer set has $`K_{it}\geq2`$. This also
 covers the 63-session attention history. Incomplete-history or
 incomplete-query rows are excluded from the primary D2 comparison rather than
 imputed or represented by extra hidden flags, so `D2-Normalized` remains an
@@ -305,51 +301,51 @@ exact 30-feature complete-case contract.
 
 ### Normalized activity and commonality (6)
 
-For a nonnegative measurement $x_t$, define its trailing 126-session midrank
+For a nonnegative measurement $`x_t`$, define its trailing 126-session midrank
 using only prior official sessions:
 
-$$
+```math
 R_{126}(x_t)=\frac{
 \sum_{h=1}^{126}\mathbf 1[x_{t-h}<x_t]
 +\frac12\sum_{h=1}^{126}\mathbf 1[x_{t-h}=x_t]
 }{126}.
-$$
+```
 
 A full 126-session history is required; otherwise the D2 row is ineligible.
 Ranks are computed separately within source profile and target/sector series.
 
 | Feature | Definition |
 |---|---|
-| `d2_target_direct_intensity_midrank_126` | $R_{126}(N_D)$ for the target |
-| `d2_peer_idio_intensity_midrank_126` | $R_{126}(N_P)$ for the target's peer set |
-| `d2_common_intensity_midrank_126` | $R_{126}(N_C)$ for the target sector |
-| `d2_observed_no_direct_target_article` | $\mathbf 1[N_D=0]$ |
-| `d2_common_article_share` | $N_C/\max(1,N_C+N_I+N_P)$ |
-| `d2_target_common_share` | $N_{TC}/\max(1,N_D)$ |
+| `d2_target_direct_intensity_midrank_126` | $`R_{126}(N_D)`$ for the target |
+| `d2_peer_idio_intensity_midrank_126` | $`R_{126}(N_P)`$ for the target's peer set |
+| `d2_common_intensity_midrank_126` | $`R_{126}(N_C)`$ for the target sector |
+| `d2_observed_no_direct_target_article` | $`\mathbf 1[N_D=0]`$ |
+| `d2_common_article_share` | $`N_C/\max(1,N_C+N_I+N_P)`$ |
+| `d2_target_common_share` | $`N_{TC}/\max(1,N_D)`$ |
 
 The explicit no-direct flag distinguishes a genuine zero denominator from a
 small share. It is non-null only when collection coverage is complete.
 
 ### Entity breadth and relative attention (6)
 
-Let $m_j$ count articles with entity evidence for peer-set entity $j$,
+Let $`m_j`$ count articles with entity evidence for peer-set entity $`j`$,
 counting an entity at most once per provider article. Entity evidence is the
 same union used by the role rules: a provider ticker tag or an exact
-effective-dated ticker/company alias in eligible text. Let $J_{it}$ be the
+effective-dated ticker/company alias in eligible text. Let $`J_{it}`$ be the
 effective research peer set, including the target, and
-$K_{it}=|J_{it}|\geq2$.
+$`K_{it}=|J_{it}|\geq2`$.
 
 | Feature | Definition |
 |---|---|
-| `d2_observed_no_peer_set_entity_mention` | $\mathbf 1[\sum_jm_j=0]$ |
-| `d2_peer_set_entity_hhi` | $\sum_j(m_j/\sum_km_k)^2$, or 0 when $\sum_km_k=0$ |
-| `d2_peer_coverage_ratio` | Mentioned non-target peers / $(K_{it}-1)$ |
-| `d2_target_peer_co_mention_share` | Direct articles naming at least one peer / $\max(1,N_D)$ |
+| `d2_observed_no_peer_set_entity_mention` | $`\mathbf 1[\sum_jm_j=0]`$ |
+| `d2_peer_set_entity_hhi` | $`\sum_j(m_j/\sum_km_k)^2`$, or 0 when $`\sum_km_k=0`$ |
+| `d2_peer_coverage_ratio` | Mentioned non-target peers / $`(K_{it}-1)`$ |
+| `d2_target_peer_co_mention_share` | Direct articles naming at least one peer / $`\max(1,N_D)`$ |
 | `d2_target_attention_share_delta_63` | Current target entity share minus its median over the prior 63 sessions |
-| `d2_macro_share_of_common` | $N_M/\max(1,N_C)$ |
+| `d2_macro_share_of_common` | $`N_M/\max(1,N_C)`$ |
 
 For the attention delta, the current target entity share is
-$m_i/\sum_jm_j$, defined as zero when the denominator is zero. A complete
+$`m_i/\sum_jm_j`$, defined as zero when the denominator is zero. A complete
 63-session trailing history is required. The explicit no-peer-set-entity flag
 must be interpreted jointly with HHI and target attention: when it is one,
 their zero convention means no entity activity, not diffuse concentration or
@@ -357,18 +353,18 @@ zero economic attention.
 
 ### Availability-aware timing (4)
 
-For an eligible article with age $h_a=(c_t-u_a)$ hours, define
+For an eligible article with age $`h_a=(c_t-u_a)`$ hours, define
 
-$$
+```math
 w_a=\exp\left(-\log(2)h_a/12\right).
-$$
+```
 
 | Feature | Definition |
 |---|---|
-| `d2_target_mean_recency_weight_12h` | $\sum_{a:D=1}w_a/\max(1,N_D)$ |
-| `d2_common_mean_recency_weight_12h` | $\sum_{a:C=1}w_a/\max(1,N_C)$ |
-| `d2_target_premarket_article_share` | Direct articles available from 04:00 through before 09:00 ET on $t$ / $\max(1,N_D)$ |
-| `d2_common_premarket_article_share` | Common articles available from 04:00 through before 09:00 ET on $t$ / $\max(1,N_C)$ |
+| `d2_target_mean_recency_weight_12h` | $`\sum_{a:D=1}w_a/\max(1,N_D)`$ |
+| `d2_common_mean_recency_weight_12h` | $`\sum_{a:C=1}w_a/\max(1,N_C)`$ |
+| `d2_target_premarket_article_share` | Direct articles available from 04:00 through before 09:00 ET on $`t`$ / $`\max(1,N_D)`$ |
+| `d2_common_premarket_article_share` | Common articles available from 04:00 through before 09:00 ET on $`t`$ / $`\max(1,N_C)`$ |
 
 Mean weights deliberately separate freshness from volume. V1's
 hours-since-latest fields and their imputation flags are not retained.
@@ -393,8 +389,8 @@ d2_target_<family>_article_share
 d2_common_<family>_article_share
 ```
 
-where the target denominator is $\max(1,N_D)$ and the common denominator is
-$\max(1,N_C)$. These ten fields are joined by:
+where the target denominator is $`\max(1,N_D)`$ and the common denominator is
+$`\max(1,N_C)`$. These ten fields are joined by:
 
 ```text
 d2_target_positive_surprise_article_share
@@ -403,7 +399,7 @@ d2_common_positive_surprise_article_share
 d2_common_negative_surprise_article_share
 ```
 
-The macro cue is removed because strict $M$ already defines macro-common
+The macro cue is removed because strict $`M`$ already defines macro-common
 articles. Cue absence means "not detected by this dictionary," not semantic
 absence. The 14 shares are not a simplex: cue dictionaries may overlap, a
 direct common article enters both target and common denominators, and both
@@ -422,8 +418,8 @@ d2_log1p_sector_common_article_count
 d2_log1p_macro_common_article_count
 ```
 
-These are respectively $\log(1+N_I)$, $\log(1+N_{TC})$,
-$\log(1+N_P)$, $\log(1+N_S)$, and $\log(1+N_M)$.
+These are respectively $`\log(1+N_I)`$, $`\log(1+N_{TC})`$,
+$`\log(1+N_P)`$, $`\log(1+N_S)`$, and $`\log(1+N_M)`$.
 
 They are never substituted silently for `D2-Normalized`.
 
@@ -436,7 +432,7 @@ d2_common_near_duplicate_ratio
 d2_common_max_cluster_source_count
 ```
 
-Clusters may use only records available before $c_t$, may not be bridged by a
+Clusters may use only records available before $`c_t`$, may not be bridged by a
 future article, and remain duplication groups rather than inferred events.
 
 ## Relationship to the completed v1 D43
@@ -448,7 +444,7 @@ artifact.
 | V1 concept | V2 treatment |
 |---|---|
 | Window `(previous 09:00, current 09:00]` | Use the non-overlapping, decision-safe window `[previous 09:00, current 09:00)` |
-| Broad relevant/direct/target-only/peer/common/mixed raw counts | Recompute strict $D,I,TC,P,S,M,C$; use three 126-session midranks in the primary block |
+| Broad relevant/direct/target-only/peer/common/mixed raw counts | Recompute strict $`D,I,TC,P,S,M,C`$; use three 126-session midranks in the primary block |
 | SPY-derived or broadly inferred macro-common assignment | Require explicit macro metadata/text; SPY retrieval alone is audit provenance |
 | Multi-ticker share, unique-peer count, peer coverage, two balance formulas | Remove redundancies; keep one peer coverage measure, a no-entity flag, HHI, target co-mention share, and common share |
 | Raw target share of entity mentions | Replace with the target's deviation from its own trailing 63-session median |
@@ -471,89 +467,89 @@ when it was available, or whether a query completed.
 
 Classify headline plus provider teaser/description first. Full body is a
 separate sensitivity. To reduce the weight of syndicated copies, an online
-near-duplicate group $g(a,t)$ may be used only as a duplication weight:
+near-duplicate group $`g(a,t)`$ may be used only as a duplication weight:
 
-$$
+```math
 \omega_{a,t}=
 \frac{\exp[-\log(2)h_a/12]}{|g(a,t)|}.
-$$
+```
 
-Singleton articles have $|g|=1$. The group contains only versions available
-before $c_t$. A future panel must hash and name its duplication method. Until
+Singleton articles have $`|g|=1`$. The group contains only versions available
+before $`c_t`$. A future panel must hash and name its duplication method. Until
 a cutoff-safe near-duplicate method is validated, every provider-ID-deduplicated
 article is a singleton; source profiles using different methods cannot be
 compared as if their semantic aggregation were identical.
 
-Let $\mathcal A_{it}$ be the deterministic $C\cup I\cup P$ candidate set.
-For semantic field $k$:
+Let $`\mathcal A_{it}`$ be the deterministic $`C\cup I\cup P`$ candidate set.
+For semantic field $`k`$:
 
-- $E_{a,k}=1$ means the field is structurally applicable before its label is
+- $`E_{a,k}=1`$ means the field is structurally applicable before its label is
   scored;
-- $A_{a,k}=1$ means a usable predictive label passed its frozen
+- $`A_{a,k}=1`$ means a usable predictive label passed its frozen
   field/class-specific acceptance rule; and
-- $q_{a,k}$ is its quality weight.
+- $`q_{a,k}`$ is its quality weight.
 
 For WLLM, all three fields are applicable to every candidate. For RLLM,
 relevance is applicable to every candidate; accepted `irrelevant` is a valid
 structural rejection that stops downstream routing. Scope, event, breadth,
 surprise, status, and channels apply to routed relevant articles. Target
-direction additionally requires extractor-visible $D=1$, sector direction
-requires extractor-visible $C=1$, and peer effect requires
+direction additionally requires extractor-visible $`D=1`$, sector direction
+requires extractor-visible $`C=1`$, and peer effect requires
 extractor-visible direct-target plus peer-entity evidence. These
 extractor-visible flags are recomputed from bounded `model_text`; the
 full-source `candidate_roles` that admitted an article are provenance and do
 not silently broaden applicability. Applicability is frozen from those
 visible deterministic roles and any accepted upstream relevance route before
-that field is extracted. When $E=0$,
-`not_applicable` is the expected structural audit state. When $E=1$, a
-returned `not_applicable` is unusable for that field and sets $A=0$; it never
-retroactively rewrites $E$.
+that field is extracted. When $`E=0`$,
+`not_applicable` is the expected structural audit state. When $`E=1`$, a
+returned `not_applicable` is unusable for that field and sets $`A=0`$; it never
+retroactively rewrites $`E`$.
 
-For a single-label field and accepted predictive class $\ell$, the daily
+For a single-label field and accepted predictive class $`\ell`$, the daily
 class share is
 
-$$
+```math
 L_{i,t,k,\ell}=
 \frac{\sum_{a\in\mathcal A_{it}}
 \omega_{a,t}E_{a,k}q_{a,k}A_{a,k}
 \mathbf 1[\widehat y_{a,k}=\ell]}
 {\sum_{a\in\mathcal A_{it}}
 \omega_{a,t}E_{a,k}q_{a,k}A_{a,k}}.
-$$
+```
 
-Transmission channels are multi-label. Let $\mathcal L_{ch}$ be the 12
+Transmission channels are multi-label. Let $`\mathcal L_{ch}`$ be the 12
 predictive channels. Use a share of accepted channel claims:
 
-$$
+```math
 ChannelShare_{i,t,\ell}=
 \frac{\sum_a\omega_{a,t}E_{a,ch}
 A_{a,ch,\ell}q_{a,ch,\ell}}
 {\sum_a\omega_{a,t}E_{a,ch}
 \sum_{r\in\mathcal L_{ch}}A_{a,ch,r}q_{a,ch,r}}.
-$$
+```
 
 Each channel has its own acceptance and quality weight. These 12 values sum to
 one over accepted predictive channel claims; they are all missing when the
-denominator is zero. For channel coverage, $A_{a,ch}=1$ when at least one
+denominator is zero. For channel coverage, $`A_{a,ch}=1`$ when at least one
 predictive, non-`unclear` channel is accepted.
 
-Usable-label coverage deliberately excludes $q$:
+Usable-label coverage deliberately excludes $`q`$:
 
-$$
+```math
 Coverage_{i,t,k}=
 \frac{\sum_a\omega_{a,t}E_{a,k}A_{a,k}}
 {\sum_a\omega_{a,t}E_{a,k}}.
-$$
+```
 
-The mean accepted $q$ is recorded separately; it must not be called
+The mean accepted $`q`$ is recorded separately; it must not be called
 coverage. `insufficient`, `unclear`, and `unknown` are epistemic abstentions.
 `irrelevant` and `not_applicable` are valid structural routing states. All raw
 states and rates remain in the audit output even when they are excluded from
 predictive class shares.
 
 For each field, coverage is missing when
-$\sum_a\omega_{a,t}E_{a,k}=0$. It is zero only when applicable mass exists
-but every applicable prediction abstains. If $\mathcal A_{it}$ is empty,
+$`\sum_a\omega_{a,t}E_{a,k}=0`$. It is zero only when applicable mass exists
+but every applicable prediction abstains. If $`\mathcal A_{it}`$ is empty,
 class shares and semantic coverage are missing, and the semantic block's own
 no-eligible-article feature equals one. If candidates exist but every
 applicable prediction abstains, class shares are missing, applicable-field
@@ -616,7 +612,7 @@ Until a human calibration sample exists, the quality statistic must be named
 `estimated silver agreement`, never accuracy or precision.
 
 Thresholds must be frozen by field and class on an earlier annotated split.
-For the weak contract, accepted labels use $q_{a,k}=1$; model scores are not
+For the weak contract, accepted labels use $`q_{a,k}=1`$; model scores are not
 silently treated as calibrated correctness probabilities. Every WLLM slot
 also carries an audit-only `enabled_by_calibration` flag; under the current
 silver-only evaluation no slot is approved for confirmatory training.
@@ -704,10 +700,10 @@ Training eligibility requires:
 - stable evidence-substring and entity-grounding checks; and
 - abstention when the text does not support a label.
 
-With human calibration, $q_{a,k}$ is the cross-fitted estimated probability
-that accepted field $k$ is correct. Without it, $q=1$ and the entire block
+With human calibration, $`q_{a,k}`$ is the cross-fitted estimated probability
+that accepted field $`k`$ is correct. Without it, $`q=1`$ and the entire block
 remains a silver-only research artifact. Multi-label channels use a separately
-calibrated $q_{a,ch,\ell}$ for each accepted channel.
+calibrated $`q_{a,ch,\ell}`$ for each accepted channel.
 
 ### RLLM70 class and accepted-channel-claim shares (55)
 
@@ -765,14 +761,14 @@ The two target-sector direction shares are deliberately narrower than the
 repository's coarse directional-alignment mapping; explicit peer relationships
 remain in the four `peer_effect` features. Define
 
-$$
+```math
 J_a=E_{a,target}E_{a,sector}A_{a,target}A_{a,sector}
 \mathbf 1[\widehat y_{a,target},\widehat y_{a,sector}
 \in\{positive,negative\}]
-$$
+```
 
-and $q_a^J=\min(q_{a,target},q_{a,sector})$. The same-direction share is the
-$\omega_aq_a^J J_a$-weighted fraction with equal signs; the
+and $`q_a^J=\min(q_{a,target},q_{a,sector})`$. The same-direction share is the
+$`\omega_aq_a^J J_a`$-weighted fraction with equal signs; the
 opposite-direction share is the fraction with opposite signs. Neutral and
 mixed labels do not enter this joint denominator. Both shares are missing when
 the joint positive/negative denominator is zero.
@@ -780,23 +776,23 @@ the joint positive/negative denominator is zero.
 The no-eligible feature follows the WLLM rule. The mean accepted quality
 feature is
 
-$$
+```math
 \overline q_{i,t}=
 \frac{\sum_{a,k}\omega_{a,t}E_{a,k}A_{a,k}q_{a,k}}
 {\sum_{a,k}\omega_{a,t}E_{a,k}A_{a,k}},
-$$
+```
 
 counting each single-label field once. For channels, first average the
 accepted per-channel quality weights within article so the multi-label field
 also contributes once. The feature is missing when no usable label is
 accepted.
 
-For an exploratory extractor profile with uncalibrated $q=1$,
+For an exploratory extractor profile with uncalibrated $`q=1`$,
 `rllm_mean_accepted_quality_weight` is identically one whenever any label is
 accepted. Retain it in the raw RLLM70 schema and audit output, but exclude it
 as a zero-variance fitting column and report an effective 69-column semantic
 matrix. It may re-enter only under a frozen, cross-fitted calibration that
-makes $q$ nonconstant.
+makes $`q`$ nonconstant.
 
 Exact evidence grounding is a QA gate and audit statistic, not a predictor.
 Its denominator includes only accepted claims for which the schema requires an
@@ -848,7 +844,7 @@ Q + L
 Q + D2-Normalized + L
 ```
 
-where $L$ is instantiated separately as `W17__flan_t5_xl`,
+where $`L`$ is instantiated separately as `W17__flan_t5_xl`,
 `W17__gpt_5_6_sol`, `R70__flan_t5_xl`, and `R70__gpt_5_6_sol`.
 `D43-recomputed` was intended to be rebuilt on the exact D2 source profile and
 row set; the completed v1 result is not a matched substitute. That exact

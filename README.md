@@ -67,12 +67,12 @@ start after 2026-06-30.
 
 ## What is being forecast
 
-For each stock $i$, sector reference $s$, and forecast date $t$, the response
+For each stock $`i`$, sector reference $`s`$, and forecast date $`t`$, the response
 is realized correlation transformed to Fisher-z space:
 
-$$
-z_{i,t}=\operatorname{atanh}(\rho_{i,t}).
-$$
+```math
+z_{i,t}=\mathrm{atanh}(\rho_{i,t}).
+```
 
 The repository models four related targets:
 
@@ -90,7 +90,7 @@ Rows whose forward target crosses a fold boundary are purged.
 ## Quantitative model ladder
 
 The long-Q experiment preserves strict information timing: every feature for
-date $t$ ends no later than the preceding official session, preprocessing is
+date $`t`$ ends no later than the preceding official session, preprocessing is
 fit only on the permitted training data, hyperparameters are selected only on
 the immediately preceding validation block, and all stocks on a date remain
 in the same fold.
@@ -127,44 +127,44 @@ V4 reused all 50,488 cached FLAN-T5-XL article inferences rather than running
 the language model again. SoftRoute19 represents three event families across
 three mutually exclusive target-relative roles:
 
-- $I$: target-idiosyncratic;
-- $P$: peer-idiosyncratic; and
-- $C$: sector- or macro-common.
+- $`I`$: target-idiosyncratic;
+- $`P`$: peer-idiosyncratic; and
+- $`C`$: sector- or macro-common.
 
-For event family $k$, the current joint mass is
+For event family $`k`$, the current joint mass is
 
-$$
+```math
 M_{i,t,r,k}=
 \frac{\sum_a w_{i,a,t}\,\mathbf{1}[r_{i,a,t}=r]p_{a,k}}
 {\sum_a w_{i,a,t}},
-$$
+```
 
-where $p_{a,k}$ is the average of canonical- and reversed-order normalized
-candidate scores and $w_{i,a,t}$ is the frozen recency/duplication weight.
+where $`p_{a,k}`$ is the average of canonical- and reversed-order normalized
+candidate scores and $`w_{i,a,t}`$ is the frozen recency/duplication weight.
 Prior-only 63-session exponentially weighted baselines produce innovations
-$\Delta M_{i,t,r,k}$.
+$`\Delta M_{i,t,r,k}`$.
 
 RRES-C6 compresses those features to current and innovation contrasts for the
 three event families:
 
-$$
+```math
 K_{i,t,k}=M_{i,t,C,k}-M_{i,t,I,k}-M_{i,t,P,k},
-$$
+```
 
-$$
+```math
 \Delta K_{i,t,k}=\Delta M_{i,t,C,k}-\Delta M_{i,t,I,k}-\Delta M_{i,t,P,k}.
-$$
+```
 
 For each forecast, the semantic model learns a shrunk Elastic-Net correction
 to an already out-of-sample quant forecast:
 
-$$
+```math
 \widehat z^{\mathrm{RRES}}_{i,t}
 =\widehat z^{Q,\mathrm{long}}_{i,t}
 +\lambda\,\widehat e^{\mathrm{C6}}_{i,t},
-$$
+```
 
-where $\lambda\in\{0,0.25,0.5,0.75,1\}$ is chosen only on the preceding
+where $`\lambda\in\{0,0.25,0.5,0.75,1\}`$ is chosen only on the preceding
 validation block. Residual training uses earlier out-of-sample Q errors; no
 in-sample quant residual enters the corrector.
 

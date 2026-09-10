@@ -4,3 +4,7 @@
 # The first FLAN-T5-XL experiment uses the original safetensors weights loaded
 # as CUDA FP16. It deliberately avoids quantization as an accuracy confound.
 transformers>=4.56,<5
+
+# Verified with the pinned XL shards on Windows/Python 3.13. Safetensors 0.8.0
+# intermittently crashed in native memory-mapped tensor loading on this setup.
+safetensors==0.6.2; sys_platform == "win32"

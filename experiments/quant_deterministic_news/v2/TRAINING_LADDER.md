@@ -142,9 +142,9 @@ The remaining semantic gaps are:
   versions.
 
 The shared corpus, both requested runners, and both daily aggregators exist.
-FLAN W17 deliberately uses a frozen permissive $q=1$ silver-only acceptance
+FLAN W17 deliberately uses a frozen permissive $`q=1`$ silver-only acceptance
 profile because no human calibration exists; it remains ineligible for primary
-or confirmatory claims. GPT R70 also remains an uncalibrated $q=1$ oracle
+or confirmatory claims. GPT R70 also remains an uncalibrated $`q=1`$ oracle
 unless an earlier human calibration is added.
 
 The current FLAN-T5-XL evaluation covers 228 benchmark documents and reports
@@ -329,18 +329,18 @@ sensitivity rung and never changes `V2-D3`.
 
 ## Semantic ladder
 
-Repeat the table below for each of the four arm IDs. $L_{E,C}$ denotes the
-17- or 70-column daily block created by extractor $E$ under contract $C$.
+Repeat the table below for each of the four arm IDs. $`L_{E,C}`$ denotes the
+17- or 70-column daily block created by extractor $`E`$ under contract $`C`$.
 
 | Rung template | Estimator | Inputs | W17 columns | R70 columns | Purpose |
 |---|---|---|---:|---:|---|
 | `V2-S0__<arm>` | Elastic Net | Q56 | 56 | 56 | Exact matched Q control |
 | `V2-S1__<arm>` | Elastic Net | Q56 + D2-Normalized | 86 | 86 | Exact matched Q+D control |
-| `V2-S2__<arm>` | Elastic Net | Q56 + $L_{E,C}$ | 73 | 126 | Q+L total semantic-pipeline contribution |
-| `V2-S3__<arm>` | Elastic Net | Q56 + D2-Normalized + $L_{E,C}$ | 103 | 156 | Q+D+L semantic increment beyond D2 |
+| `V2-S2__<arm>` | Elastic Net | Q56 + $`L_{E,C}`$ | 73 | 126 | Q+L total semantic-pipeline contribution |
+| `V2-S3__<arm>` | Elastic Net | Q56 + D2-Normalized + $`L_{E,C}`$ | 103 | 156 | Q+D+L semantic increment beyond D2 |
 | `V2-S4__<arm>` | Shallow XGBoost | Same inputs as `S3` | 103 | 156 | Validation-gated nonlinear endpoint |
 
-These are raw contract counts. In an uncalibrated $q=1$ R70 arm,
+These are raw contract counts. In an uncalibrated $`q=1`$ R70 arm,
 `rllm_mean_accepted_quality_weight` is constant whenever labels are present
 and is excluded from fitting, producing effective Q+L and Q+D+L counts of 125
 and 155 before missingness indicators. The raw 70-column artifact remains

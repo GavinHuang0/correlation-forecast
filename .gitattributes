@@ -8,3 +8,7 @@
 *.mjs text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+
+# The frozen active extractor records this calibration's original CRLF bytes.
+# Preserve them on checkout so its SHA-256 contract survives a fresh clone.
+experiments/flan_t5_xl/v1_1/calibration.json text eol=crlf
